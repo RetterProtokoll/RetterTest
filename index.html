@@ -735,11 +735,14 @@
                 <div class="messwerte-grid" id="messwerte-grid-container"></div>
                 
                 <div class="messwerte-item" style="margin-top: 14px; width: 100%;">
-                    <label style="margin-bottom: 6px; text-align: left;">EKG (Mehrfachauswahl möglich)</label>
+                    <div class="status-container" style="justify-content: flex-start; gap: 8px; margin-bottom: 6px;">
+                        <label style="margin-top: 0; margin-bottom: 0;">EKG (Mehrfachauswahl möglich)</label>
+                        <span id="status-ekg" class="status-indicator" onclick="toggleEkgStatus()">❓</span>
+                    </div>
                     <div class="ekg-checklist" id="ekg-checklist-container"></div>
                 </div>
             </div>
-
+            
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; margin-bottom: 6px; gap: 8px; flex-wrap: wrap;">
                 <label for="freitext" style="margin-top: 0; margin-bottom: 0; flex: 1 1 auto; min-width: 100px;">Text bearbeiten:</label>
                 <div style="display: flex; gap: 8px; align-items: center; flex-shrink: 0; flex-wrap: nowrap;">
@@ -830,7 +833,22 @@
         let bleDevice = null;
         let rxCharacteristic = null;
         let txCharacteristic = null;
+        
+         function toggleEkgStatus() {
+            const statusEl = document.getElementById("status-ekg");
+            if (!statusEl) return;
+            const checkboxes = document.querySelectorAll(".ekg-checkbox");
+            const hasChecked = Array.from(checkboxes).some(cb => cb.checked);
 
+            if (statusEl.innerText === "✅" || statusEl.innerText === "❓") {
+                statusEl.innerText = "❌";
+                // Bei "nicht geschrieben" (Kreuz) alle ausgewählten Rhythmen wieder abwählen
+                checkboxes.forEach(cb => cb.checked = false);
+            } else if (statusEl.innerText === "❌") {
+                statusEl.innerText = hasChecked ? "✅" : "❓";
+            }
+            updateSubmitButtonState();
+        }
         const PARAMETER_CONFIG = [
             { id: "rr-sys", label: "RR Sys", unit: "mmHg", type: "number", maxLen: 3, placeholder: "120", class: "narrow", minPlaus: 50, maxPlaus: 240 },
             { id: "rr-dia", label: "RR Dia", unit: "mmHg", type: "number", maxLen: 3, placeholder: "80", class: "narrow", minPlaus: 30, maxPlaus: 140 },
@@ -1652,15 +1670,34 @@
                 cb.id = item.id;
                 cb.className = "ekg-checkbox";
                 
+                // Event-Listener hinzufügen
+                cb.addEventListener("change", handleEkgCheckboxChange);
+                
                 const span = document.createElement("span");
                 span.innerText = item.label;
                 
                 label.appendChild(cb);
                 label.appendChild(span);
                 container.appendChild(label);
-            });
+          });
         }
+        function handleEkgCheckboxChange() {
+            const statusEl = document.getElementById("status-ekg");
+            if (!statusEl) return;
+            const checkboxes = document.querySelectorAll(".ekg-checkbox");
+            const hasChecked = Array.from(checkboxes).some(cb => cb.checked);
 
+            if (hasChecked) {
+                if (statusEl.innerText === "❓" || statusEl.innerText === "❌") {
+                    statusEl.innerText = "✅";
+                }
+            } else {
+                if (statusEl.innerText === "✅") {
+                    statusEl.innerText = "❓";
+                }
+            }
+            updateSubmitButtonState();
+        }
         function limitLength(el, max) {
             if (el.value.length > max) el.value = el.value.slice(0, max);
         }
@@ -1790,10 +1827,19 @@
                 }
             });
 
-            const ausgewaehlteEkg = [];
-            document.querySelectorAll(".ekg-checkbox:checked").forEach(cb => ausgewaehlteEkg.push(cb.value));
-            if (ausgewaehlteEkg.length > 0) {
-                eintraege.push(`EKG: ${ausgewaehlteEkg.join(", ")}`);
+           const ekgStatus = getStatusOf("ekg");
+            if (ekgStatus !== "❓" && ekgStatus !== null) {
+                if (ekgStatus === "❌") {
+                    eintraege.push("EKG nicht geschrieben");
+                } else {
+                    const ausgewaehlteEkg = [];
+                    document.querySelectorAll(".ekg-checkbox:checked").forEach(cb => ausgewaehlteEkg.push(cb.value));
+                    if (ausgewaehlteEkg.length > 0) {
+                        eintraege.push(`EKG: ${ausgewaehlteEkg.join(", ")}`);
+                    } else {
+                        eintraege.push("EKG gemessen");
+                    }
+                }
             }
 
             return eintraege.length > 0 ? "\n\nMesswerte: " + eintraege.join(" | ") : "";
