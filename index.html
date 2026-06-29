@@ -570,38 +570,67 @@
         <button id="update-btn" style="width: auto; margin: 0 0 0 12px; padding: 6px 16px; background: white; color: var(--md-color-primary); font-weight: bold; font-size: 13px;">Aktualisieren</button>
     </div> 
 
-    <!-- 1. LOGIN- & REGISTRIERUNGSSCHIRM -->
+     <!-- 1. LOGIN- & REGISTRIERUNGSSCHIRM -->
     <div id="login-screen" class="card">
         <div class="title-container">
             <img class="title-logo" src="/RetterProtokoll/logo.png" alt="Logo">
-            <h2>RetterProtokoll Login</h2>
+            <h2 id="login-title">RetterProtokoll Login</h2>
         </div>
         
         <div id="auth-error-msg" style="color: var(--md-color-error); font-size: 13px; text-align: center; display: none; margin-bottom: 12px; font-weight: 500;"></div>
 
-        <!-- Tab-Auswahl (Anmelden / Registrieren) -->
-        <div class="segmented-control" style="width: 100%; margin-bottom: 20px; height: 38px;">
-            <input type="radio" id="tab-login" name="authtab" value="login" checked onchange="toggleAuthFields()">
-            <label for="tab-login">Anmelden</label>
-            <input type="radio" id="tab-register" name="authtab" value="register" onchange="toggleAuthFields()">
-            <label for="tab-register">Registrieren</label>
+        <!-- Passwort zurücksetzen Ansicht (standardmäßig versteckt) -->
+        <div id="forgot-password-view" style="display: none;">
+            <label for="reset-email">E-Mail-Adresse für Zurücksetzung:</label>
+            <input type="email" id="reset-email" placeholder="E-Mail-Adresse...">
+            <button type="button" class="btn-ki" onclick="sendePasswortZuruecksetzen()">Link zum Zurücksetzen senden</button>
+            <p style="text-align: center; margin-top: 16px;">
+                <a href="#" onclick="zeigePasswortVergessen(false); return false;" style="color: var(--md-color-primary); font-size: 14px; font-weight: 500; text-decoration: none;">Zurück zum Login</a>
+            </p>
         </div>
 
-        <!-- Name (Nur bei Registrierung sichtbar) -->
-        <div id="reg-name-field" style="display: none;">
-            <label for="auth-name">Name (z.B. Tim):</label>
-            <input type="text" id="auth-name" placeholder="Name..." autocomplete="off">
+        <!-- Haupt-Anmelde- und Registrierungs-Ansicht -->
+        <div id="main-auth-view">
+            <!-- Tab-Auswahl (Anmelden / Registrieren) -->
+            <div class="segmented-control" style="width: 100%; margin-bottom: 20px; height: 38px;">
+                <input type="radio" id="tab-login" name="authtab" value="login" checked onchange="toggleAuthFields()">
+                <label for="tab-login">Anmelden</label>
+                <input type="radio" id="tab-register" name="authtab" value="register" onchange="toggleAuthFields()">
+                <label for="tab-register">Registrieren</label>
+            </div>
+
+            <!-- Name (Nur bei Registrierung sichtbar) -->
+            <div id="reg-name-field" style="display: none;">
+                <label for="auth-name">Name (z.B. Tim):</label>
+                <input type="text" id="auth-name" placeholder="Name..." autocomplete="off">
+            </div>
+
+            <label for="auth-email">E-Mail (z.B. 71@sailauf.de):</label>
+            <input type="email" id="auth-email" placeholder="E-Mail-Adresse..." autocomplete="username">
+
+            <label for="auth-password">Passwort:</label>
+            <div style="position: relative; margin-bottom: 16px;">
+                <input type="password" id="auth-password" placeholder="Passwort..." autocomplete="current-password" style="padding-right: 48px; margin-bottom: 0;">
+                <span onclick="togglePasswordVisibility('auth-password', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 18px;">👁️</span>
+            </div>
+
+            <!-- Passwort Bestätigung (Nur bei Registrierung sichtbar) -->
+            <div id="reg-password-confirm-field" style="display: none;">
+                <label for="auth-password-confirm">Passwort bestätigen:</label>
+                <div style="position: relative; margin-bottom: 16px;">
+                    <input type="password" id="auth-password-confirm" placeholder="Passwort wiederholen..." autocomplete="new-password" style="padding-right: 48px; margin-bottom: 0;">
+                    <span onclick="togglePasswordVisibility('auth-password-confirm', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 18px;">👁️</span>
+                </div>
+            </div>
+
+            <button type="button" id="auth-submit-btn" class="btn-ki" onclick="fuehreAuthAus()">Anmelden</button>
+            
+            <p id="forgot-password-link" style="text-align: center; margin-top: 16px; margin-bottom: 0;">
+                <a href="#" onclick="zeigePasswortVergessen(true); return false;" style="color: var(--md-color-primary); font-size: 14px; font-weight: 500; text-decoration: none;">Passwort vergessen?</a>
+            </p>
         </div>
-
-        <label for="auth-email">E-Mail (z.B. 71@sailauf.de):</label>
-        <input type="email" id="auth-email" placeholder="E-Mail-Adresse..." autocomplete="username">
-
-        <label for="auth-password">Passwort:</label>
-        <input type="password" id="auth-password" placeholder="Passwort..." autocomplete="current-password">
-
-        <button type="button" id="auth-submit-btn" class="btn-ki" onclick="fuehreAuthAus()">Anmelden</button>
     </div>
-
+    
     <!-- 2. VORLAGEN-, PROMPT- & PASSWORT-EDITOR (Verwaltungsbereich) -->
     <div id="editor-screen" class="card" style="display: none;">
         <div class="title-container">
@@ -615,7 +644,7 @@
             <input type="radio" id="tab-edit-prompts" name="editortab" value="prompts" onchange="switchEditorTab()">
             <label for="tab-edit-prompts">KI-Prompts</label>
             <input type="radio" id="tab-edit-password" name="editortab" value="password" onchange="switchEditorTab()">
-            <label for="tab-edit-password">🔑 PW ändern</label>
+            <label for="tab-edit-password">🔑 Profil/PW</label>
         </div>
 
         <!-- Sektion für Vorlagen & Prompts -->
@@ -657,17 +686,32 @@
             </div>
         </div>
 
-        <!-- Sektion für Passwortänderung -->
+       <!-- Sektion für Passwortänderung -->
         <div id="editor-password-section" style="display: none;">
             <div id="pw-error-msg" style="color: var(--md-color-error); font-size: 13px; text-align: center; display: none; margin-bottom: 12px; font-weight: 500;"></div>
             
-            <label for="new-password">Neues Passwort:</label>
-            <input type="password" id="new-password" placeholder="Mindestens 6 Zeichen..." autocomplete="new-password">
+            <label for="edit-display-name">Anzeigename ändern:</label>
+            <input type="text" id="edit-display-name" placeholder="Ihr Name...">
+
+            <label for="new-password">Neues Passwort (optional):</label>
+            <div style="position: relative; margin-bottom: 16px;">
+                <input type="password" id="new-password" placeholder="Mindestens 6 Zeichen (leer lassen)..." autocomplete="new-password" style="padding-right: 48px; margin-bottom: 0;">
+                <span onclick="togglePasswordVisibility('new-password', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 18px;">👁️</span>
+            </div>
 
             <label for="new-password-confirm">Passwort bestätigen:</label>
-            <input type="password" id="new-password-confirm" placeholder="Passwort wiederholen..." autocomplete="new-password">
+            <div style="position: relative; margin-bottom: 16px;">
+                <input type="password" id="new-password-confirm" placeholder="Passwort wiederholen..." autocomplete="new-password" style="padding-right: 48px; margin-bottom: 0;">
+                <span onclick="togglePasswordVisibility('new-password-confirm', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 18px;">👁️</span>
+            </div>
 
-            <button type="button" class="btn-ki" style="margin-bottom: 12px;" onclick="fuehrePasswortAenderungAus()">🔑 Passwort aktualisieren</button>
+            <button type="button" class="btn-ki" style="margin-bottom: 12px;" onclick="fuehreProfilAenderungAus()">💾 Profil aktualisieren</button>
+
+            <!-- Gefahrenbereich zum Löschen des Accounts -->
+            <div style="border-top: 1px solid var(--md-color-outline-variant); margin-top: 24px; padding-top: 16px;">
+                <span style="display: block; font-size: 12px; color: var(--md-color-outline); margin-bottom: 8px;">Gefahrenbereich:</span>
+                <button type="button" class="btn-device" style="background: var(--md-color-error); margin-top: 0; margin-bottom: 12px;" onclick="loescheBenutzerKonto()">⚠️ Account dauerhaft löschen</button>
+            </div>
         </div>
 
         <!-- Zurück-Button für alle Tabs -->
@@ -984,45 +1028,52 @@
             }
         });
 
-        function toggleAuthFields() {
+         function toggleAuthFields() {
             const isRegister = document.getElementById("tab-register").checked;
             document.getElementById("reg-name-field").style.display = isRegister ? "block" : "none";
+            document.getElementById("reg-password-confirm-field").style.display = isRegister ? "block" : "none";
             document.getElementById("auth-submit-btn").innerText = isRegister ? "Registrieren & starten" : "Anmelden";
+            document.getElementById("forgot-password-link").style.display = isRegister ? "none" : "block";
         }
 
-        async function fuehreAuthAus() {
-        const isRegister = document.getElementById("tab-register").checked;
-        const email = document.getElementById("auth-email").value.trim();
-        const password = document.getElementById("auth-password").value;
-        const name = document.getElementById("auth-name").value.trim();
-        const errorEl = document.getElementById("auth-error-msg");
+          async function fuehreAuthAus() {
+            const isRegister = document.getElementById("tab-register").checked;
+            const email = document.getElementById("auth-email").value.trim();
+            const password = document.getElementById("auth-password").value;
+            const passwordConfirm = document.getElementById("auth-password-confirm").value;
+            const name = document.getElementById("auth-name").value.trim();
+            const errorEl = document.getElementById("auth-error-msg");
 
-        errorEl.style.display = "none";
+            errorEl.style.display = "none";
 
-        if (!email || !password) {
-            zegeAuthFehler("Bitte füllen Sie alle Felder aus.");
-            return;
-        }
-
-        try {
-            if (isRegister) {
-                if (!name) {
-                    zegeAuthFehler("Bitte tragen Sie Ihren Namen ein.");
-                    return;
-                }
-                // Temporär den Namen für den asynchronen Ablauf zwischenspeichern
-                registrationName = name; 
-            
-                // Registrierung durchführen (löst onAuthStateChanged aus)
-                await auth.createUserWithEmailAndPassword(email, password);
-            } else {
-                await auth.signInWithEmailAndPassword(email, password);
+            if (!email || !password) {
+                zegeAuthFehler("Bitte füllen Sie alle Pflichtfelder aus.");
+                return;
             }
-        } catch (err) {
-            console.error(err);
-            zegeAuthFehler(uebersetzeFehlermeldung(err.code));
+
+            try {
+                if (isRegister) {
+                    if (!name) {
+                        zegeAuthFehler("Bitte tragen Sie Ihren Namen ein.");
+                        return;
+                    }
+                    if (password !== passwordConfirm) {
+                        zegeAuthFehler("Die Passwörter stimmen nicht überein.");
+                        return;
+                    }
+                    // Temporär den Namen für den asynchronen Ablauf zwischenspeichern
+                    registrationName = name; 
+                
+                    // Registrierung durchführen (löst onAuthStateChanged aus)
+                    await auth.createUserWithEmailAndPassword(email, password);
+                } else {
+                    await auth.signInWithEmailAndPassword(email, password);
+                }
+            } catch (err) {
+                console.error(err);
+                zegeAuthFehler(uebersetzeFehlermeldung(err.code));
+            }
         }
-    }
 
         function logoffUser() {
             // 1. Prüfen, ob ungespeicherter Text im Feld steht
@@ -1064,7 +1115,45 @@
                 default: return "Fehler bei der Anmeldung. Bitte Eingaben prüfen.";
             }
         }
+        function zeigePasswortVergessen(show) {
+            const mainAuthView = document.getElementById("main-auth-view");
+            const forgotPasswordView = document.getElementById("forgot-password-view");
+            const loginTitle = document.getElementById("login-title");
+            const errorEl = document.getElementById("auth-error-msg");
 
+            errorEl.style.display = "none";
+
+            if (show) {
+                mainAuthView.style.display = "none";
+                forgotPasswordView.style.display = "block";
+                loginTitle.innerText = "Passwort zurücksetzen";
+            } else {
+                forgotPasswordView.style.display = "none";
+                mainAuthView.style.display = "block";
+                loginTitle.innerText = "RetterProtokoll Login";
+            }
+        }
+
+        async function sendePasswortZuruecksetzen() {
+            const email = document.getElementById("reset-email").value.trim();
+            const errorEl = document.getElementById("auth-error-msg");
+            errorEl.style.display = "none";
+
+            if (!email) {
+                zegeAuthFehler("Bitte geben Sie Ihre E-Mail-Adresse ein.");
+                return;
+            }
+
+            try {
+                await auth.sendPasswordResetEmail(email);
+                alert("Eine E-Mail zum Zurücksetzen des Passworts wurde an " + email + " versendet.");
+                zeigePasswortVergessen(false);
+            } catch (err) {
+                console.error(err);
+                zegeAuthFehler(uebersetzeFehlermeldung(err.code));
+            }
+        }
+        
         // ==========================================
         // FIRESTORE DATENBANK-OPERATIONEN
         // ==========================================
@@ -1203,10 +1292,13 @@
             newInput.value = "";
             document.getElementById("new-gender-n").checked = true;
 
-            if (selectedTab === "password") {
-                contentSection.style.display = "none";
-                passwordSection.style.display = "block";
-            } else {
+        if (selectedTab === "password") {
+            contentSection.style.display = "none";
+            passwordSection.style.display = "block";
+            if (ACTIVE_PROFILE) {
+                document.getElementById("edit-display-name").value = ACTIVE_PROFILE.name || "";
+            }
+        } else {
                 passwordSection.style.display = "none";
                 contentSection.style.display = "block";
                 itemSelect.innerHTML = "";
@@ -1380,49 +1472,68 @@
             }
         }
 
-        async function fuehrePasswortAenderungAus() {
+        async function fuehreProfilAenderungAus() {
+            const newDisplayName = document.getElementById("edit-display-name").value.trim();
             const newPassword = document.getElementById("new-password").value;
             const confirmPassword = document.getElementById("new-password-confirm").value;
             const errorEl = document.getElementById("pw-error-msg");
 
             errorEl.style.display = "none";
 
-            if (!newPassword || !confirmPassword) {
-                errorEl.innerText = "Bitte füllen Sie beide Felder aus.";
-                errorEl.style.display = "block";
-                return;
-            }
-
-            if (newPassword.length < 6) {
-                errorEl.innerText = "Das Passwort muss mindestens 6 Zeichen lang sein.";
-                errorEl.style.display = "block";
-                return;
-            }
-
-            if (newPassword !== confirmPassword) {
-                errorEl.innerText = "Die Passwörter stimmen nicht überein.";
+            if (!newDisplayName) {
+                errorEl.innerText = "Bitte geben Sie einen Anzeigenamen ein.";
                 errorEl.style.display = "block";
                 return;
             }
 
             const user = auth.currentUser;
-            if (user) {
-                try {
+            if (!user || !ACTIVE_PROFILE) {
+                errorEl.innerText = "Kein angemeldeter Benutzer gefunden.";
+                errorEl.style.display = "block";
+                return;
+            }
+
+            try {
+                let profilGeaendert = false;
+
+                // 1. Anzeigename in Firestore aktualisieren, falls geändert
+                if (newDisplayName !== ACTIVE_PROFILE.name) {
+                    ACTIVE_PROFILE.name = newDisplayName;
+                    await db.collection("users").doc(user.uid).set(ACTIVE_PROFILE);
+                    document.getElementById("app-title").innerText = `RetterProtokoll ${ACTIVE_PROFILE.name}`;
+                    profilGeaendert = true;
+                }
+
+                // 2. Passwort aktualisieren, falls Felder ausgefüllt sind
+                if (newPassword || confirmPassword) {
+                    if (newPassword.length < 6) {
+                        errorEl.innerText = "Das neue Passwort muss mindestens 6 Zeichen lang sein.";
+                        errorEl.style.display = "block";
+                        return;
+                    }
+                    if (newPassword !== confirmPassword) {
+                        errorEl.innerText = "Die Passwörter stimmen nicht überein.";
+                        errorEl.style.display = "block";
+                        return;
+                    }
                     await user.updatePassword(newPassword);
-                    alert("Passwort erfolgreich aktualisiert!");
                     document.getElementById("new-password").value = "";
                     document.getElementById("new-password-confirm").value = "";
-                } catch (err) {
-                    console.error("Fehler beim Ändern des Passworts:", err);
-                    if (err.code === "auth/requires-recent-login") {
-                        errorEl.innerText = "Aus Sicherheitsgründen müssen Sie sich neu anmelden, um das Passwort zu ändern.";
-                    } else {
-                        errorEl.innerText = "Fehler: " + err.message;
-                    }
-                    errorEl.style.display = "block";
+                    profilGeaendert = true;
                 }
-            } else {
-                errorEl.innerText = "Kein angemeldeter Benutzer gefunden.";
+
+                if (profilGeaendert) {
+                    alert("Änderungen erfolgreich gespeichert!");
+                } else {
+                    alert("Keine Änderungen vorgenommen.");
+                }
+            } catch (err) {
+                console.error("Fehler beim Aktualisieren des Profils:", err);
+                if (err.code === "auth/requires-recent-login") {
+                    errorEl.innerText = "Aus Sicherheitsgründen müssen Sie sich neu anmelden, um sensible Profildaten oder Passwörter zu ändern.";
+                } else {
+                    errorEl.innerText = "Fehler: " + err.message;
+                }
                 errorEl.style.display = "block";
             }
         }
@@ -1996,6 +2107,64 @@
                 event.returnValue = 'Es liegen ungespeicherte Daten vor. Möchten Sie die Seite wirklich verlassen?';
             }
         });
+                // Funktion zum Umschalten der Passwort-Sichtbarkeit (Auge-Icon)
+        function togglePasswordVisibility(inputId, iconEl) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            if (input.type === "password") {
+                input.type = "text";
+                iconEl.innerText = "🙈";
+            } else {
+                input.type = "password";
+                iconEl.innerText = "👁️";
+            }
+        }
+
+        // Funktion zur dauerhaften Löschung des Benutzerkontos und der Profildaten
+        async function loescheBenutzerKonto() {
+            const user = auth.currentUser;
+            if (!user) {
+                alert("Kein angemeldeter Benutzer gefunden.");
+                return;
+            }
+
+            const ersteBestaetigung = confirm("Möchten Sie Ihr Benutzerkonto wirklich dauerhaft löschen? Alle Ihre gespeicherten Vorlagen und Prompts gehen unwiderruflich verloren.");
+            if (!ersteBestaetigung) return;
+
+            const zweiteBestaetigung = confirm("Sind Sie absolut sicher? Diese Aktion kann NICHT rückgängig gemacht werden!");
+            if (!zweiteBestaetigung) return;
+
+            const errorEl = document.getElementById("pw-error-msg");
+            if (errorEl) errorEl.style.display = "none";
+
+            try {
+                // 1. Daten aus der Firestore-Datenbank löschen
+                await db.collection("users").doc(user.uid).delete();
+                console.log("Profildaten in Firestore gelöscht.");
+
+                // 2. Account aus der Firebase Authentifizierung löschen
+                await user.delete();
+                alert("Ihr Account wurde erfolgreich gelöscht.");
+                location.reload();
+            } catch (err) {
+                console.error("Fehler beim Löschen des Kontos:", err);
+                if (err.code === "auth/requires-recent-login") {
+                    if (errorEl) {
+                        errorEl.innerText = "Aus Sicherheitsgründen müssen Sie sich neu anmelden (abmelden und neu einloggen), um Ihr Konto zu löschen.";
+                        errorEl.style.display = "block";
+                    } else {
+                        alert("Aus Sicherheitsgründen müssen Sie sich neu anmelden (abmelden und neu einloggen), um Ihr Konto zu löschen.");
+                    }
+                } else {
+                    if (errorEl) {
+                        errorEl.innerText = "Fehler beim Löschen: " + err.message;
+                        errorEl.style.display = "block";
+                    } else {
+                        alert("Fehler beim Löschen: " + err.message);
+                    }
+                }
+            }
+        }
     </script>
 </body>
 </html>
