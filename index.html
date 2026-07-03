@@ -134,7 +134,7 @@
             outline: none;
             border-color: var(--md-color-primary);
             border-width: 2px;
-            padding: 14px; 
+            padding: 15px; 
         }
 
         textarea { 
@@ -549,27 +549,6 @@
             accent-color: var(--md-color-primary);
         }
 
-        /* Password visibility toggle icon styling */
-        .password-toggle-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 24px;
-            height: 24px;
-            color: var(--md-color-outline);
-            transition: color 0.2s ease;
-        }
-
-        .password-toggle-icon:hover {
-            color: var(--md-color-primary);
-        }
-
-        .password-toggle-icon svg {
-            width: 100%;
-            height: 100%;
-            fill: currentColor;
-        }
-
         @media (max-width: 500px) {
             body { padding: 12px 8px; }
             .card { padding: 20px 16px; border-radius: 24px; }
@@ -586,7 +565,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-    <div id="update-banner" style="display: none; position: fixed; top: 0; left: 0; width: 100%; background: var(--md-color-primary); color: white; padding: 12px; text-align: center; z-index: 2000; font-size: 14px;">
+    <div id="update-banner" style="display: none; position: fixed; top: 0; left: 0; width: 100%; background: var(--md-color-primary); color: white; padding: 12px; text-align: center; z-index: 2000; font-size: 14px; font-weight: 500; box-shadow: var(--md-elevation-2);">
         Eine neue Version ist verfügbar! 
         <button id="update-btn" style="width: auto; margin: 0 0 0 12px; padding: 6px 16px; background: white; color: var(--md-color-primary); font-weight: bold; font-size: 13px;">Aktualisieren</button>
     </div> 
@@ -632,9 +611,7 @@
             <label for="auth-password">Passwort:</label>
             <div style="position: relative; margin-bottom: 16px;">
                 <input type="password" id="auth-password" placeholder="Passwort..." autocomplete="current-password" style="padding-right: 48px; margin-bottom: 0;">
-                <span onclick="togglePasswordVisibility('auth-password', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: center;" class="password-toggle-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M607.5-372.5Q660-425 660-500t-52.5-127.5Q555-680 480-680t-127.5 52.5Q300-575 300-500t52.5 127.5Q405-320 480-320t127.5-52.5Zm-204-51Q372-455 372-500t31.5-76.5Q435-608 480-608t76.5 31.5Q588-545 588-500t-31.5 76.5Q525-392 480-392t-76.5-31.5ZM214-281.5Q94-363 40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200q-146 0-266-81.5ZM480-500Zm207.5 160.5Q782-399 832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280q113 0 207.5-59.5Z"/></svg>
-                </span>
+                <span onclick="togglePasswordVisibility('auth-password', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 18px;">👁️</span>
             </div>
 
             <!-- Passwort Bestätigung (Nur bei Registrierung sichtbar) -->
@@ -642,9 +619,7 @@
                 <label for="auth-password-confirm">Passwort bestätigen:</label>
                 <div style="position: relative; margin-bottom: 16px;">
                     <input type="password" id="auth-password-confirm" placeholder="Passwort wiederholen..." autocomplete="new-password" style="padding-right: 48px; margin-bottom: 0;">
-                    <span onclick="togglePasswordVisibility('auth-password-confirm', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: center;" class="password-toggle-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M607.5-372.5Q660-425 660-500t-52.5-127.5Q555-680 480-680t-127.5 52.5Q300-575 300-500t52.5 127.5Q405-320 480-320t127.5-52.5Zm-204-51Q372-455 372-500t31.5-76.5Q435-608 480-608t76.5 31.5Q588-545 588-500t-31.5 76.5Q525-392 480-392t-76.5-31.5ZM214-281.5Q94-363 40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200q-146 0-266-81.5ZM480-500Zm207.5 160.5Q782-399 832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280q113 0 207.5-59.5Z"/></svg>
-                    </span>
+                    <span onclick="togglePasswordVisibility('auth-password-confirm', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 18px;">👁️</span>
                 </div>
             </div>
 
@@ -721,17 +696,13 @@
             <label for="new-password">Neues Passwort (optional):</label>
             <div style="position: relative; margin-bottom: 16px;">
                 <input type="password" id="new-password" placeholder="Mindestens 6 Zeichen (leer lassen)..." autocomplete="new-password" style="padding-right: 48px; margin-bottom: 0;">
-                <span onclick="togglePasswordVisibility('new-password', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: center;" class="password-toggle-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M607.5-372.5Q660-425 660-500t-52.5-127.5Q555-680 480-680t-127.5 52.5Q300-575 300-500t52.5 127.5Q405-320 480-320t127.5-52.5Zm-204-51Q372-455 372-500t31.5-76.5Q435-608 480-608t76.5 31.5Q588-545 588-500t-31.5 76.5Q525-392 480-392t-76.5-31.5ZM214-281.5Q94-363 40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200q-146 0-266-81.5ZM480-500Zm207.5 160.5Q782-399 832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280q113 0 207.5-59.5Z"/></svg>
-                </span>
+                <span onclick="togglePasswordVisibility('new-password', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 18px;">👁️</span>
             </div>
 
             <label for="new-password-confirm">Passwort bestätigen:</label>
             <div style="position: relative; margin-bottom: 16px;">
                 <input type="password" id="new-password-confirm" placeholder="Passwort wiederholen..." autocomplete="new-password" style="padding-right: 48px; margin-bottom: 0;">
-                <span onclick="togglePasswordVisibility('new-password-confirm', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: center;" class="password-toggle-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M607.5-372.5Q660-425 660-500t-52.5-127.5Q555-680 480-680t-127.5 52.5Q300-575 300-500t52.5 127.5Q405-320 480-320t127.5-52.5Zm-204-51Q372-455 372-500t31.5-76.5Q435-608 480-608t76.5 31.5Q588-545 588-500t-31.5 76.5Q525-392 480-392t-76.5-31.5ZM214-281.5Q94-363 40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200q-146 0-266-81.5ZM480-500Zm207.5 160.5Q782-399 832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280q113 0 207.5-59.5Z"/></svg>
-                </span>
+                <span onclick="togglePasswordVisibility('new-password-confirm', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 18px;">👁️</span>
             </div>
 
             <button type="button" class="btn-ki" style="margin-bottom: 12px;" onclick="fuehreProfilAenderungAus()">💾 Profil aktualisieren</button>
@@ -757,7 +728,7 @@
             
             <div style="display: flex; gap: 8px; margin-top: 10px; width: 100%; justify-content: flex-end;">
                 <button type="button" class="secondary" style="width: auto; margin-top: 0; padding: 6px 14px; font-size: 12px;" onclick="zeigeEditor()">⚙️ Vorlagen bearbeiten</button>
-                <button type="button" class="secondary" style="width: auto; margin-top: 0; padding: 6px 14px; font-size: 12px; border-color: var(--md-color-error); color: var(--md-color-error);" onclick="logout()">🚪 Abmelden</button>
+                <button type="button" class="secondary" style="width: auto; margin-top: 0; padding: 6px 14px; font-size: 12px; border-color: var(--md-color-error); color: var(--md-color-error);" onclick="logoffUser()">Abmelden 🚪</button>
             </div>
         </div>
         
@@ -820,10 +791,10 @@
                 <label for="freitext" style="margin-top: 0; margin-bottom: 0; flex: 1 1 auto; min-width: 100px;">Text bearbeiten:</label>
                 <div style="display: flex; gap: 8px; align-items: center; flex-shrink: 0; flex-wrap: nowrap;">
                     <button type="button" id="connect-ble-btn" class="btn-connect" onclick="connectBluetooth()">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="1.4em" viewBox="0 -960 960 960" width="1.4em" fill="currentColor" style="vertical-align:middle; margin-right:4px; display:inline;"><path d="M520-520v-120h120v120h-120Zm0 360v-360h120v360h-120ZM280-280v-80h80v80h-80Zm240-240v-80h80v80h-80Z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1.4em" viewBox="0 -960 960 960" width="1.4em" fill="currentColor" style="vertical-align:middle; margin-right:4px; display:inline-block;"><path d="M440-80v-304L256-200l-56-56 224-224-224-224 56-56 184 184v-304h40l228 228-172 172 172 172L480-80h-40Zm80-496 76-76-76-74v150Zm0 342 76-74-76-76v150Z"/></svg>
                         <span id="connect-text">Verbinden</span>
                     </button>
-                    <button type="button" id="clear-btn" class="secondary" style="margin-top: 0; width: auto; padding: 6px 16px; font-size: 13px; border-radius: 100px;" onclick="zeigeLoeschSlider()">🗑️ Text löschen</button>
+                    <button type="button" id="clear-btn" class="secondary" style="margin-top: 0; width: auto; padding: 6px 16px; font-size: 13px; border-radius: 100px;" onclick="zeigeLoeschSlider()">🗑️ Löschen</button>
                 </div>
             </div>
 
@@ -860,7 +831,7 @@
                 <h3 style="margin: 15px 0; color: var(--md-color-primary);">✍️ Daten werden verarbeitet...</h3>
                 <p id="countdown-text" style="color: var(--md-color-primary); font-weight: bold; font-size: 18px; margin: 10px 0;">Bitte warten...</p>
                 <p style="color: var(--md-color-on-surface-variant); font-size: 14px; margin-bottom: 20px;">Bitte trennen Sie die Verbindung nicht.</p>
-                <button type="button" id="stop-ble-btn" class="btn-device" style="background: var(--md-color-error); margin: 10px auto 0 auto; max-width: 200px;" onclick="sendeStopSignal()">🛑 Stopp</button>
+                <button type="button" id="stop-ble-btn" class="btn-device" style="background: var(--md-color-error); margin: 10px auto 0 auto; max-width: 200px;" onclick="sendeStopSignal()">🛑 Schreiben abbrechen</button>
             </div>
             <div id="overlay-success" style="text-align: center; display: none;">
                 <span style="font-size: 60px;">✅</span>
@@ -907,29 +878,7 @@
         let rxCharacteristic = null;
         let txCharacteristic = null;
         
-        // ==========================================
-        // PASSWORD VISIBILITY TOGGLE
-        // ==========================================
-        function togglePasswordVisibility(fieldId, iconElement) {
-            const field = document.getElementById(fieldId);
-            if (!field) return;
-
-            const isPassword = field.type === 'password';
-            field.type = isPassword ? 'text' : 'password';
-
-            // Update icon
-            if (iconElement) {
-                if (isPassword) {
-                    // Show eye-hide icon (visibility off)
-                    iconElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"/></svg>';
-                } else {
-                    // Show eye icon (visibility on)
-                    iconElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M607.5-372.5Q660-425 660-500t-52.5-127.5Q555-680 480-680t-127.5 52.5Q300-575 300-500t52.5 127.5Q405-320 480-320t127.5-52.5Zm-204-51Q372-455 372-500t31.5-76.5Q435-608 480-608t76.5 31.5Q588-545 588-500t-31.5 76.5Q525-392 480-392t-76.5-31.5ZM214-281.5Q94-363 40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200q-146 0-266-81.5ZM480-500Zm207.5 160.5Q782-399 832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280q113 0 207.5-59.5Z"/></svg>';
-                }
-            }
-        }
-
-        function toggleEkgStatus() {
+         function toggleEkgStatus() {
             const statusEl = document.getElementById("status-ekg");
             if (!statusEl) return;
             const checkboxes = document.querySelectorAll(".ekg-checkbox");
@@ -989,7 +938,7 @@
             { id: "ekg-kf", label: "Kammerflimmern (KF)" },
             { id: "ekg-asystolie", label: "Asystolie" },
             { id: "ekg-pea", label: "PEA (Pulslose elektrische Aktivität)" },
-            { id: "ekg-schrittmacher", label: "Schrittmacherrhythmus" },
+            { id: "ekg-brady", label: "Schrittmacherrhythmus" },
             { id: "ekg-av1", label: "AV-Block I°" },
             { id: "ekg-av2w", label: "AV-Block II° (Wenckebach)" },
             { id: "ekg-av2m", label: "AV-Block II° (Mobitz)" },
@@ -1001,6 +950,8 @@
             { id: "ekg-brady", label: "Bradykardie" },
             { id: "ekg-tachy", label: "Tachykardie" }
         ];
+
+        const BT_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" height="1.4em" viewBox="0 -960 960 960" width="1.4em" fill="currentColor" style="vertical-align:middle; margin-right:4px; display:inline-block;"><path d="M440-80v-304L256-200l-56-56 224-224-224-224 56-56 184 184v-304h40l228 228-172 172 172 172L480-80h-40Zm80-496 76-76-76-74v150Zm0 342 76-74-76-76v150Z"/></svg>`;
 
         // Helper zur dynamischen und fehlertoleranten Bestimmung des Installationspfads
         function ermittleRessourcenPfad(dateiname) {
@@ -1047,38 +998,1174 @@
 
         function zeigeUpdateBanner(worker) {
             const banner = document.getElementById('update-banner');
-            banner.style.display = 'block';
-            document.getElementById('update-btn').onclick = () => {
-                worker.postMessage({ type: 'SKIP_WAITING' });
-            };
+            const btn = document.getElementById('update-btn');
+            if (banner && btn) {
+                banner.style.display = 'block';
+                btn.onclick = () => worker.postMessage({ action: 'skipWaiting' });
+            }
         }
 
-        // Stub functions für Authentifizierung und Funktionalität
-        function toggleAuthFields() { /* Implementierung */ }
-        function fuehreAuthAus() { /* Implementierung */ }
-        function sendePasswortZuruecksetzen() { /* Implementierung */ }
-        function zeigePasswortVergessen(show) { /* Implementierung */ }
-        function zeigeEditor() { /* Implementierung */ }
-        function logout() { auth.signOut(); }
-        function switchEditorTab() { /* Implementierung */ }
-        function ladeEditorInhalt() { /* Implementierung */ }
-        function speichereEditorAenderung() { /* Implementierung */ }
-        function loescheEditorElement() { /* Implementierung */ }
-        function erstelleNeuesElement() { /* Implementierung */ }
-        function fuehreProfilAenderungAus() { /* Implementierung */ }
-        function loescheBenutzerKonto() { /* Implementierung */ }
-        function zurueckZurHauptseite() { /* Implementierung */ }
-        function handleFormSubmit(e) { return false; }
-        function resetForm() { /* Implementierung */ }
-        function toggleMesswerte() { /* Implementierung */ }
-        function clearMesswerte() { /* Implementierung */ }
-        function connectBluetooth() { /* Implementierung */ }
-        function zeigeLoeschSlider() { /* Implementierung */ }
-        function handleSliderInput(el) { /* Implementierung */ }
-        function handleSliderChange(el) { /* Implementierung */ }
-        function anwendenAusgewaehltenText() { /* Implementierung */ }
-        function updateSubmitButtonState() { /* Implementierung */ }
-        function sendeStopSignal() { /* Implementierung */ }
+        // ==========================================
+        // AUTHENTICATION LOGIK
+        // ==========================================
+        auth.onAuthStateChanged(async (user) => {
+            const loginScreen = document.getElementById("login-screen");
+            const appScreen = document.getElementById("app-screen");
+            const editorScreen = document.getElementById("editor-screen");
+
+            if (user) {
+                currentUser = user;
+                loginScreen.style.display = "none";
+                
+                await ladeBenutzerProfil(user.uid);
+                
+                appScreen.style.display = "block";
+            } else {
+                currentUser = null;
+                ACTIVE_PROFILE = null;
+                appScreen.style.display = "none";
+                editorScreen.style.display = "none";
+                loginScreen.style.display = "block";
+            }
+        });
+
+         function toggleAuthFields() {
+            const isRegister = document.getElementById("tab-register").checked;
+            document.getElementById("reg-name-field").style.display = isRegister ? "block" : "none";
+            document.getElementById("reg-password-confirm-field").style.display = isRegister ? "block" : "none";
+            document.getElementById("auth-submit-btn").innerText = isRegister ? "Registrieren & starten" : "Anmelden";
+            document.getElementById("forgot-password-link").style.display = isRegister ? "none" : "block";
+        }
+
+          async function fuehreAuthAus() {
+            const isRegister = document.getElementById("tab-register").checked;
+            const email = document.getElementById("auth-email").value.trim();
+            const password = document.getElementById("auth-password").value;
+            const passwordConfirm = document.getElementById("auth-password-confirm").value;
+            const name = document.getElementById("auth-name").value.trim();
+            const errorEl = document.getElementById("auth-error-msg");
+
+            errorEl.style.display = "none";
+
+            if (!email || !password) {
+                zegeAuthFehler("Bitte füllen Sie alle Pflichtfelder aus.");
+                return;
+            }
+
+            try {
+                if (isRegister) {
+                    if (!name) {
+                        zegeAuthFehler("Bitte tragen Sie Ihren Namen ein.");
+                        return;
+                    }
+                    if (password !== passwordConfirm) {
+                        zegeAuthFehler("Die Passwörter stimmen nicht überein.");
+                        return;
+                    }
+                    // Temporär den Namen für den asynchronen Ablauf zwischenspeichern
+                    registrationName = name; 
+                
+                    // Registrierung durchführen (löst onAuthStateChanged aus)
+                    await auth.createUserWithEmailAndPassword(email, password);
+                } else {
+                    await auth.signInWithEmailAndPassword(email, password);
+                }
+            } catch (err) {
+                console.error(err);
+                zegeAuthFehler(uebersetzeFehlermeldung(err.code));
+            }
+        }
+
+        function logoffUser() {
+            // 1. Prüfen, ob ungespeicherter Text im Feld steht
+            if (textarea && textarea.value.trim() !== "") {
+                const abmeldungBestaetigen = confirm("Möchten Sie sich wirklich abmelden? Ihr aktueller Entwurf geht verloren.");
+                
+                // Wenn der Nutzer auf "Abbrechen" klickt, die Funktion sofort abbrechen
+                if (!abmeldungBestaetigen) {
+                    return; 
+                }
+            }
+
+            // 2. Falls der Nutzer abmelden möchte (oder kein Text da war):
+            // Textfeld leeren, damit die Browser-Sicherheitsabfrage nicht doppelt anspringt
+            if (textarea) {
+                textarea.value = "";
+            }
+            localStorage.removeItem("aktueller_entwurf");
+
+            // 3. Erst jetzt die eigentliche Abmeldung durchführen
+            auth.signOut().then(() => {
+                location.reload();
+            });
+        }
+        
+        function zegeAuthFehler(text) {
+            const errorEl = document.getElementById("auth-error-msg");
+            errorEl.innerText = text;
+            errorEl.style.display = "block";
+        }
+
+        function uebersetzeFehlermeldung(code) {
+            switch(code) {
+                case "auth/invalid-email": return "Ungültige E-Mail-Adresse.";
+                case "auth/user-not-found": return "Benutzer wurde nicht gefunden.";
+                case "auth/wrong-password": return "Falsches Passwort.";
+                case "auth/email-already-in-use": return "Diese E-Mail-Adresse wird bereits verwendet.";
+                case "auth/weak-password": return "Das Passwort muss mindestens 6 Zeichen lang sein.";
+                default: return "Fehler bei der Anmeldung. Bitte Eingaben prüfen.";
+            }
+        }
+        function zeigePasswortVergessen(show) {
+            const mainAuthView = document.getElementById("main-auth-view");
+            const forgotPasswordView = document.getElementById("forgot-password-view");
+            const loginTitle = document.getElementById("login-title");
+            const errorEl = document.getElementById("auth-error-msg");
+
+            errorEl.style.display = "none";
+
+            if (show) {
+                mainAuthView.style.display = "none";
+                forgotPasswordView.style.display = "block";
+                loginTitle.innerText = "Passwort zurücksetzen";
+            } else {
+                forgotPasswordView.style.display = "none";
+                mainAuthView.style.display = "block";
+                loginTitle.innerText = "RetterProtokoll Login";
+            }
+        }
+
+        async function sendePasswortZuruecksetzen() {
+            const email = document.getElementById("reset-email").value.trim();
+            const errorEl = document.getElementById("auth-error-msg");
+            errorEl.style.display = "none";
+
+            if (!email) {
+                zegeAuthFehler("Bitte geben Sie Ihre E-Mail-Adresse ein.");
+                return;
+            }
+
+            try {
+                await auth.sendPasswordResetEmail(email);
+                alert("Eine E-Mail zum Zurücksetzen des Passworts wurde an " + email + " versendet.");
+                zeigePasswortVergessen(false);
+            } catch (err) {
+                console.error(err);
+                zegeAuthFehler(uebersetzeFehlermeldung(err.code));
+            }
+        }
+        
+        // ==========================================
+        // FIRESTORE DATENBANK-OPERATIONEN
+        // ==========================================
+        async function ladeBenutzerProfil(userId) {
+          try {
+            const docRef = db.collection("users").doc(userId);
+            let doc = await docRef.get();
+
+            // Falls das Benutzerdokument nicht existiert, wird es initialisiert
+            if (!doc.exists) {
+                console.log("Profil nicht gefunden. Initialisiere mit Standardvorlagen...");
+            
+                // Bevorzuge den Registrierungsnamen, sonst Fallback auf E-Mail-Teil
+                const standardName = registrationName || ((currentUser && currentUser.email) ? currentUser.email.split('@')[0] : "Benutzer");
+            
+                await initialisiereNeuesProfil(userId, standardName);
+            
+                // Speicher wieder freigeben
+                registrationName = null;
+            
+                doc = await docRef.get();
+            }
+
+            if (doc.exists) {
+                ACTIVE_PROFILE = doc.data();
+                document.getElementById("app-title").innerText = `RetterProtokoll ${ACTIVE_PROFILE.name}`;
+                befuelleVorlagenButtons();
+                anpassenKiDropdowns();
+            } else {
+                console.error("Profil konnte nach Initialisierung nicht geladen werden.");
+            }
+        } catch (err) {
+            console.error("Fehler beim Laden des Profils:", err);
+        }
+    }
+
+        async function initialisiereNeuesProfil(userId, name) {
+            try {
+                console.log("Kopiere globale Standard-Vorlagen aus globalSettings/defaultTemplates...");
+                
+                // Standardkonfiguration aus globalSettings abrufen
+                const defaultTemplatesDoc = await db.collection("globalSettings").doc("defaultTemplates").get();
+                
+                if (!defaultTemplatesDoc.exists) {
+                    throw new Error("Das Standardvorlagen-Dokument (globalSettings/defaultTemplates) existiert nicht.");
+                }
+
+                const defaultData = defaultTemplatesDoc.data();
+
+                // Profil für den Benutzer erstellen
+                const neuesProfil = {
+                    id: userId,
+                    name: name,
+                    vorlagen: defaultData.vorlagen || {},
+                    prompts: defaultData.prompts || {}
+                };
+
+                // In der Collection "users" speichern
+                await db.collection("users").doc(userId).set(neuesProfil);
+                console.log("Neues Benutzerprofil erfolgreich erstellt.");
+            } catch (err) {
+                console.error("Fehler beim Erstellen des neuen Profils:", err);
+                alert("Fehler beim Erstellen des Profils: " + err.message + "\nEin leeres Profil wurde angelegt.");
+                
+                // Fallback im Fehlerfall
+                const leeresProfil = {
+                    id: userId,
+                    name: name,
+                    vorlagen: {},
+                    prompts: {}
+                };
+                await db.collection("users").doc(userId).set(leeresProfil);
+            }
+        }
+
+        function anpassenKiDropdowns() {
+            const kiContainer = document.getElementById("ki-selection-container");
+            const restoreOptKi = document.getElementById("restore-opt-ki");
+            const restoreSourceBt = document.getElementById("restore-source-bt");
+            const restoreSourceKi = document.getElementById("restore-source-ki");
+
+            if (!ACTIVE_PROFILE) return;
+
+            const prompts = ACTIVE_PROFILE.prompts || {};
+            const hatPrompts = Object.keys(prompts).length > 0;
+
+            if (hatPrompts) {
+                kiContainer.style.display = "block";
+                
+                kiSelect.innerHTML = '<option value="keine" selected>Keine KI (Text direkt senden)</option>';
+                Object.keys(prompts).forEach(key => {
+                    const opt = document.createElement("option");
+                    opt.value = key;
+                    opt.innerText = formatiereKey(key);
+                    kiSelect.appendChild(opt);
+                });
+
+                if (restoreOptKi) restoreOptKi.style.display = "flex";
+            } else {
+                kiContainer.style.display = "none";
+                kiSelect.value = "keine";
+                if (restoreOptKi) restoreOptKi.style.display = "none";
+                if (restoreSourceKi && restoreSourceKi.checked) {
+                    if (restoreSourceBt) restoreSourceBt.checked = true;
+                }
+            }
+        }
+
+         // ==========================================
+        // ERWEITERTE EDITOR-, PROMPT- & EINSTELLUNGSLOGIK
+        // ==========================================
+        function zeigeEditor() {
+            if (!ACTIVE_PROFILE) return;
+            document.getElementById("app-screen").style.display = "none";
+            document.getElementById("editor-screen").style.display = "block";
+
+            document.getElementById("tab-edit-templates").checked = true;
+            switchEditorTab();
+        }
+
+        function switchEditorTab() {
+            const selectedTab = document.querySelector('input[name="editortab"]:checked').value;
+            const contentSection = document.getElementById("editor-content-section");
+            const passwordSection = document.getElementById("editor-password-section");
+            const itemSelect = document.getElementById("editor-item-select");
+            const selectLabel = document.getElementById("editor-select-label");
+            const textLabel = document.getElementById("editor-text-label");
+            const newLabel = document.getElementById("new-item-label");
+            const newInput = document.getElementById("new-item-key");
+            const genderContainer = document.getElementById("new-item-gender-container");
+
+            // Zurücksetzen
+            document.getElementById("pw-error-msg").style.display = "none";
+            document.getElementById("new-password").value = "";
+            document.getElementById("new-password-confirm").value = "";
+            newInput.value = "";
+            document.getElementById("new-gender-n").checked = true;
+
+        if (selectedTab === "password") {
+            contentSection.style.display = "none";
+            passwordSection.style.display = "block";
+            if (ACTIVE_PROFILE) {
+                document.getElementById("edit-display-name").value = ACTIVE_PROFILE.name || "";
+            }
+        } else {
+                passwordSection.style.display = "none";
+                contentSection.style.display = "block";
+                itemSelect.innerHTML = "";
+
+                if (selectedTab === "templates") {
+                    selectLabel.innerText = "Vorlage wählen:";
+                    textLabel.innerText = "Inhalt bearbeiten:";
+                    newLabel.innerText = "Neue Vorlage erstellen:";
+                    newInput.placeholder = "Name der Vorlage (z.B. ABCDE)...";
+                    genderContainer.style.display = "flex"; // Geschlechtsfilter anzeigen
+                    
+                    Object.keys(ACTIVE_PROFILE.vorlagen || {}).forEach(key => {
+                        const opt = document.createElement("option");
+                        opt.value = key;
+                        opt.innerText = OPTIONEN_NAMEN[key] || formatiereKey(key);
+                        itemSelect.appendChild(opt);
+                    });
+                } else if (selectedTab === "prompts") {
+                    selectLabel.innerText = "Prompt wählen:";
+                    textLabel.innerText = "Prompt-Text bearbeiten:";
+                    newLabel.innerText = "Neuen Prompt erstellen:";
+                    newInput.placeholder = "Name des Prompts (z.B. rechtschreibung)...";
+                    genderContainer.style.display = "none"; // Geschlechtsfilter ausblenden
+                    
+                    Object.keys(ACTIVE_PROFILE.prompts || {}).forEach(key => {
+                        const opt = document.createElement("option");
+                        opt.value = key;
+                        opt.innerText = formatiereKey(key);
+                        itemSelect.appendChild(opt);
+                    });
+                }
+                ladeEditorInhalt();
+            }
+        }
+
+        function ladeEditorInhalt() {
+            const selectedTab = document.querySelector('input[name="editortab"]:checked').value;
+            const key = document.getElementById("editor-item-select").value;
+            const textarea = document.getElementById("editor-item-text");
+
+            if (!ACTIVE_PROFILE || !key) {
+                textarea.value = "";
+                return;
+            }
+
+            if (selectedTab === "templates") {
+                textarea.value = ACTIVE_PROFILE.vorlagen[key] || "";
+            } else if (selectedTab === "prompts") {
+                textarea.value = ACTIVE_PROFILE.prompts[key] || "";
+            }
+        }
+
+        function erstelleNeuesElement() {
+            const selectedTab = document.querySelector('input[name="editortab"]:checked').value;
+            const inputEl = document.getElementById("new-item-key");
+            const nameRaw = inputEl.value.trim();
+
+            if (!nameRaw) {
+                alert("Bitte geben Sie einen Namen ein.");
+                return;
+            }
+
+            // Normalisierung der Eingabe für die Datenbank
+            let dbKey = nameRaw.toLowerCase()
+                .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+                .replace(/[^a-z0-9_]/g, '_')
+                .replace(/_+/g, '_');
+
+            if (dbKey.startsWith('_')) dbKey = dbKey.substring(1);
+            if (dbKey.endsWith('_')) dbKey = dbKey.slice(0, -1);
+
+            if (!dbKey) {
+                alert("Ungültiger Name.");
+                return;
+            }
+
+            if (selectedTab === "templates") {
+                const gender = document.querySelector('input[name="newgender"]:checked').value;
+                
+                // Eventuell bereits eingetippte Endungen entfernen, um Doppelungen zu vermeiden
+                dbKey = dbKey.replace(/_m$/, '').replace(/_w$/, '');
+
+                if (gender === "m") {
+                    dbKey += "_m";
+                } else if (gender === "w") {
+                    dbKey += "_w";
+                }
+
+                if (!ACTIVE_PROFILE.vorlagen) ACTIVE_PROFILE.vorlagen = {};
+                if (ACTIVE_PROFILE.vorlagen[dbKey] !== undefined) {
+                    alert("Diese Vorlage existiert bereits.");
+                    return;
+                }
+                ACTIVE_PROFILE.vorlagen[dbKey] = "";
+            } else if (selectedTab === "prompts") {
+                if (!ACTIVE_PROFILE.prompts) ACTIVE_PROFILE.prompts = {};
+                if (ACTIVE_PROFILE.prompts[dbKey] !== undefined) {
+                    alert("Dieser Prompt existiert bereits.");
+                    return;
+                }
+                ACTIVE_PROFILE.prompts[dbKey] = "";
+            }
+
+            inputEl.value = "";
+            
+            // Editor neu laden und das neue Element direkt auswählen
+            switchEditorTab();
+            document.getElementById("editor-item-select").value = dbKey;
+            ladeEditorInhalt();
+            document.getElementById("editor-item-text").focus();
+        }
+
+        async function speichereEditorAenderung() {
+            const selectedTab = document.querySelector('input[name="editortab"]:checked').value;
+            const key = document.getElementById("editor-item-select").value;
+            const text = document.getElementById("editor-item-text").value;
+
+            if (!ACTIVE_PROFILE || !key || !currentUser) return;
+
+            if (selectedTab === "templates") {
+                ACTIVE_PROFILE.vorlagen[key] = text;
+            } else if (selectedTab === "prompts") {
+                ACTIVE_PROFILE.prompts[key] = text;
+            }
+
+            try {
+                await db.collection("users").doc(currentUser.uid).set(ACTIVE_PROFILE);
+                alert("Änderungen erfolgreich in der Cloud gespeichert!");
+                befuelleVorlagenButtons();
+                anpassenKiDropdowns();
+            } catch (err) {
+                console.error("Firestore-Fehler beim Speichern:", err);
+                alert("Speichern fehlgeschlagen. Keine Berechtigung oder offline.");
+            }
+        }
+
+        async function loescheEditorElement() {
+            const selectedTab = document.querySelector('input[name="editortab"]:checked').value;
+            const key = document.getElementById("editor-item-select").value;
+
+            if (!ACTIVE_PROFILE || !key || !currentUser) {
+                alert("Kein Element zum Löschen ausgewählt.");
+                return;
+            }
+
+            const anzeigenName = OPTIONEN_NAMEN[key] || formatiereKey(key);
+            if (!confirm(`Möchten Sie das Element "${anzeigenName}" wirklich unwiderruflich löschen?`)) {
+                return;
+            }
+
+            if (selectedTab === "templates") {
+                if (ACTIVE_PROFILE.vorlagen && ACTIVE_PROFILE.vorlagen[key] !== undefined) {
+                    delete ACTIVE_PROFILE.vorlagen[key];
+                }
+            } else if (selectedTab === "prompts") {
+                if (ACTIVE_PROFILE.prompts && ACTIVE_PROFILE.prompts[key] !== undefined) {
+                    delete ACTIVE_PROFILE.prompts[key];
+                }
+            }
+
+            try {
+                await db.collection("users").doc(currentUser.uid).set(ACTIVE_PROFILE);
+                alert("Element erfolgreich gelöscht!");
+                
+                befuelleVorlagenButtons();
+                anpassenKiDropdowns();
+                switchEditorTab();
+            } catch (err) {
+                console.error("Firestore-Fehler beim Löschen:", err);
+                alert("Löschen fehlgeschlagen. Keine Berechtigung oder offline.");
+            }
+        }
+
+        async function fuehreProfilAenderungAus() {
+            const newDisplayName = document.getElementById("edit-display-name").value.trim();
+            const newPassword = document.getElementById("new-password").value;
+            const confirmPassword = document.getElementById("new-password-confirm").value;
+            const errorEl = document.getElementById("pw-error-msg");
+
+            errorEl.style.display = "none";
+
+            if (!newDisplayName) {
+                errorEl.innerText = "Bitte geben Sie einen Anzeigenamen ein.";
+                errorEl.style.display = "block";
+                return;
+            }
+
+            const user = auth.currentUser;
+            if (!user || !ACTIVE_PROFILE) {
+                errorEl.innerText = "Kein angemeldeter Benutzer gefunden.";
+                errorEl.style.display = "block";
+                return;
+            }
+
+            try {
+                let profilGeaendert = false;
+
+                // 1. Anzeigename in Firestore aktualisieren, falls geändert
+                if (newDisplayName !== ACTIVE_PROFILE.name) {
+                    ACTIVE_PROFILE.name = newDisplayName;
+                    await db.collection("users").doc(user.uid).set(ACTIVE_PROFILE);
+                    document.getElementById("app-title").innerText = `RetterProtokoll ${ACTIVE_PROFILE.name}`;
+                    profilGeaendert = true;
+                }
+
+                // 2. Passwort aktualisieren, falls Felder ausgefüllt sind
+                if (newPassword || confirmPassword) {
+                    if (newPassword.length < 6) {
+                        errorEl.innerText = "Das neue Passwort muss mindestens 6 Zeichen lang sein.";
+                        errorEl.style.display = "block";
+                        return;
+                    }
+                    if (newPassword !== confirmPassword) {
+                        errorEl.innerText = "Die Passwörter stimmen nicht überein.";
+                        errorEl.style.display = "block";
+                        return;
+                    }
+                    await user.updatePassword(newPassword);
+                    document.getElementById("new-password").value = "";
+                    document.getElementById("new-password-confirm").value = "";
+                    profilGeaendert = true;
+                }
+
+                if (profilGeaendert) {
+                    alert("Änderungen erfolgreich gespeichert!");
+                } else {
+                    alert("Keine Änderungen vorgenommen.");
+                }
+            } catch (err) {
+                console.error("Fehler beim Aktualisieren des Profils:", err);
+                if (err.code === "auth/requires-recent-login") {
+                    errorEl.innerText = "Aus Sicherheitsgründen müssen Sie sich neu anmelden, um sensible Profildaten oder Passwörter zu ändern.";
+                } else {
+                    errorEl.innerText = "Fehler: " + err.message;
+                }
+                errorEl.style.display = "block";
+            }
+        }
+
+        // ==========================================
+        // BLUETOOTH & UI SYSTEMLOGIK
+        // ==========================================
+        async function connectBluetooth() {
+            if (!navigator.bluetooth) {
+                alert("Web Bluetooth wird von diesem Browser nicht unterstützt.");
+                return;
+            }
+            try {
+                connectBleBtn.innerHTML = BT_ICON_SVG + " ⏳ Suche...";
+                bleDevice = await navigator.bluetooth.requestDevice({
+                    filters: [{ services: [BLE_SERVICE_UUID] }]
+                });
+                connectBleBtn.innerHTML = BT_ICON_SVG + " ⏳ Verbinde...";
+                const server = await bleDevice.gatt.connect();
+                const service = await server.getPrimaryService(BLE_SERVICE_UUID);
+                rxCharacteristic = await service.getCharacteristic(BLE_RX_UUID);
+                txCharacteristic = await service.getCharacteristic(BLE_TX_UUID);
+                await txCharacteristic.startNotifications();
+                txCharacteristic.addEventListener('characteristicvaluechanged', handleBleNotification);
+
+                connectBleBtn.innerHTML = BT_ICON_SVG + " " + (bleDevice.name ? bleDevice.name.substring(0, 10) : "Verbunden");
+                connectBleBtn.style.background = "#2563eb";
+                bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
+                updateSubmitButtonState();
+            } catch (error) {
+                console.error("Bluetooth Fehler: ", error);
+                connectBleBtn.innerHTML = BT_ICON_SVG + " Fehler";
+                connectBleBtn.style.background = "#dc2626";
+                onDisconnected();
+            }
+        }
+
+        function onDisconnected() {
+            connectBleBtn.innerHTML = BT_ICON_SVG + " Verbinden";
+            connectBleBtn.style.background = "#dc2626";
+            bleDevice = null;
+            rxCharacteristic = null;
+            txCharacteristic = null;
+            updateSubmitButtonState();
+        }
+
+        function handleBleNotification(event) {
+            const decoder = new TextDecoder();
+            const value = decoder.decode(event.target.value).trim();
+            if (value === "DONE") {
+                loadingDiv.style.display = "none";
+                successDiv.style.display = "block";
+                localStorage.removeItem("aktueller_entwurf");
+                clearMesswerte();
+            } else if (value === "STOPPED") {
+                alert("Der Tippvorgang wurde erfolgreich abgebrochen.");
+                resetForm();
+            } else if (value === "BUSY") {
+                alert("Das Gerät ist beschäftigt.");
+                resetForm();
+            }
+        }
+
+        async function sendeStopSignal() {
+            if (!rxCharacteristic) return;
+            try {
+                countdownEl.innerText = "Abbruchsignal wird gesendet...";
+                const encoder = new TextEncoder();
+                await rxCharacteristic.writeValueWithResponse(encoder.encode("STOP"));
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function befuelleVorlagenButtons() {
+            vorlageScrollContainer.innerHTML = '';
+            if (!ACTIVE_PROFILE) return;
+
+            const selectedGenderElement = document.querySelector('input[name="gender"]:checked');
+            const selectedGender = selectedGenderElement ? selectedGenderElement.value : 'm';
+
+            const keys = Object.keys(ACTIVE_PROFILE.vorlagen || {});
+            
+            let filteredKeys = [];
+            if (selectedGender === 'm') {
+                filteredKeys = keys.filter(key => !key.endsWith('_w'));
+            } else if (selectedGender === 'w') {
+                filteredKeys = keys.filter(key => !key.endsWith('_m'));
+            } else {
+                filteredKeys = keys;
+            }
+
+            filteredKeys.forEach(key => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "scroll-btn";
+                btn.innerText = OPTIONEN_NAMEN[key] || formatiereKey(key);
+                btn.onclick = () => vorlageEinfuegen(key);
+                vorlageScrollContainer.appendChild(btn);
+            });
+        }
+
+        // Formatierung von DB-Schlüsseln zur Anzeige
+        function formatiereKey(key) {
+            return key.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+        }
+
+        function zeigeLoeschSlider() {
+            const text = textarea.value.trim();
+            if (!text) {
+                alert("Das Textfeld ist bereits leer.");
+                return;
+            }
+            loeschSliderContainer.classList.toggle("show");
+            resetSliderStyles();
+        }
+
+        function resetSliderStyles() {
+            loeschSliderContainer.style.backgroundColor = "";
+            loeschSliderContainer.style.borderColor = "";
+            deleteSlider.value = 0;
+            const textSpan = document.querySelector(".slide-text");
+            if (textSpan) {
+                textSpan.style.opacity = 1;
+                textSpan.style.transform = "translateX(0)";
+            }
+        }
+
+        function handleSliderInput(slider) {
+            const textSpan = document.querySelector(".slide-text");
+            const val = slider.value;
+            if (textSpan) {
+                textSpan.style.opacity = (100 - val) / 100;
+                textSpan.style.transform = `translateX(-${val * 0.2}px)`;
+            }
+            loeschSliderContainer.style.backgroundColor = `color-mix(in srgb, var(--md-color-error-container) ${val}%, var(--md-color-surface-container))`;
+            loeschSliderContainer.style.borderColor = `color-mix(in srgb, var(--md-color-error) ${val}%, var(--md-color-outline-variant))`;
+        }
+
+        function handleSliderChange(slider) {
+            if (slider.value == 100) {
+                textarea.value = "";
+                localStorage.removeItem("aktueller_entwurf");
+                autoResize();
+                updateSubmitButtonState();
+                loeschSliderContainer.classList.remove("show");
+                setTimeout(resetSliderStyles, 300);
+            } else {
+                resetSliderStyles();
+            }
+        }
+
+        function inZwischenablageKopieren(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                return navigator.clipboard.writeText(text);
+            } else {
+                const tempTextArea = document.createElement("textarea");
+                tempTextArea.value = text;
+                tempTextArea.style.position = "fixed"; 
+                document.body.appendChild(tempTextArea);
+                tempTextArea.focus();
+                tempTextArea.select();
+                try { document.execCommand("copy"); } catch (err) {}
+                document.body.removeChild(tempTextArea);
+                return Promise.resolve();
+            }
+        }
+
+        function updateSubmitButtonState() {
+            const text = textarea.value.trim();
+            const kiAuswahl = kiSelect ? kiSelect.value : 'keine';
+
+            if (text === "") {
+                submitBtn.disabled = true;
+                submitBtn.className = "btn-disabled";
+                submitBtn.innerText = "Text senden";
+            } else {
+                submitBtn.disabled = false;
+                if (kiAuswahl !== "keine") {
+                    submitBtn.className = "btn-ki";
+                    submitBtn.innerText = "An KI senden";
+                } else {
+                    if (rxCharacteristic) {
+                        submitBtn.className = "btn-device";
+                        submitBtn.innerText = "Über Bluetooth senden";
+                    } else {
+                        submitBtn.className = "btn-disabled";
+                        submitBtn.innerText = "Bitte erst Bluetooth verbinden";
+                        submitBtn.disabled = true;
+                    }
+                }
+            }
+        }
+
+        // Back-Button-Routing
+        function zurueckZurHauptseite() {
+            document.getElementById("editor-screen").style.display = "none";
+            document.getElementById("app-screen").style.display = "block";
+            autoResize();
+            updateSubmitButtonState();
+        }
+
+        function anwendenAusgewaehltenText() {
+            const selectedSource = document.querySelector('input[name="restore-source"]:checked').value;
+            let gespeicherterText = "";
+            if (selectedSource === "bt") {
+                gespeicherterText = localStorage.getItem("letzter_gesendeter_text");
+            } else if (selectedSource === "ki") {
+                gespeicherterText = localStorage.getItem("letzter_ki_gesendeter_text");
+            }
+
+            if (gespeicherterText) {
+                textarea.value = gespeicherterText;
+                localStorage.setItem("aktueller_entwurf", gespeicherterText);
+                autoResize();
+                updateSubmitButtonState();
+            } else {
+                alert("Kein entsprechender Text im Speicher gefunden.");
+            }
+        }
+
+        function toggleMesswerte() {
+            const container = document.getElementById("messwerte-container");
+            const btn = document.getElementById("toggle-messwerte-btn");
+            if (container.style.display === "none") {
+                container.style.display = "block";
+                btn.innerText = "📊 Messwerte ausblenden";
+            } else {
+                container.style.display = "none";
+                btn.innerText = "📊 Messwerte eingeben";
+            }
+        }
+
+        function renderEkgChecklist() {
+            const container = document.getElementById("ekg-checklist-container");
+            container.innerHTML = "";
+            EKG_RYHTMEN.forEach(item => {
+                const label = document.createElement("label");
+                label.className = "ekg-item-row";
+                label.htmlFor = item.id;
+                
+                const cb = document.createElement("input");
+                cb.type = "checkbox";
+                cb.value = item.label;
+                cb.id = item.id;
+                cb.className = "ekg-checkbox";
+                
+                // Event-Listener hinzufügen
+                cb.addEventListener("change", handleEkgCheckboxChange);
+                
+                const span = document.createElement("span");
+                span.innerText = item.label;
+                
+                label.appendChild(cb);
+                label.appendChild(span);
+                container.appendChild(label);
+          });
+        }
+        function handleEkgCheckboxChange() {
+            const statusEl = document.getElementById("status-ekg");
+            if (!statusEl) return;
+            const checkboxes = document.querySelectorAll(".ekg-checkbox");
+            const hasChecked = Array.from(checkboxes).some(cb => cb.checked);
+
+            if (hasChecked) {
+                if (statusEl.innerText === "❓" || statusEl.innerText === "❌") {
+                    statusEl.innerText = "✅";
+                }
+            } else {
+                if (statusEl.innerText === "✅") {
+                    statusEl.innerText = "❓";
+                }
+            }
+            updateSubmitButtonState();
+        }
+        function limitLength(el, max) {
+            if (el.value.length > max) el.value = el.value.slice(0, max);
+        }
+
+        function renderMesswerteInput() {
+            const container = document.getElementById("messwerte-grid-container");
+            container.innerHTML = "";
+            PARAMETER_CONFIG.forEach(cfg => {
+                const div = document.createElement("div");
+                div.className = `messwerte-item ${cfg.class || ""}`;
+                
+                div.innerHTML = `
+                    <div class="status-container">
+                        <label for="mw-${cfg.id}">${cfg.label}</label>
+                        <span id="status-${cfg.id}" class="status-indicator" onclick="toggleStatus('${cfg.id}')">❓</span>
+                    </div>
+                    <input type="${cfg.type === 'number' ? 'number' : 'text'}" id="mw-${cfg.id}" placeholder="${cfg.placeholder}" autocomplete="off">
+                `;
+                
+                const inputEl = div.querySelector("input");
+                inputEl.addEventListener("input", () => {
+                    limitLength(inputEl, cfg.maxLen);
+                    handleValueInput(inputEl, `status-${cfg.id}`);
+                    checkPlausibility(inputEl, cfg);
+                });
+                container.appendChild(div);
+            });
+        }
+
+        function checkPlausibility(inputEl, config) {
+            const valStr = inputEl.value.trim().toLowerCase();
+            if (!valStr) {
+                inputEl.style.backgroundColor = "";
+                inputEl.style.borderColor = "";
+                return;
+            }
+            if (config.isTextAllowed && (valStr === "hi" || valStr === "low")) {
+                inputEl.style.backgroundColor = "";
+                inputEl.style.borderColor = "";
+                return;
+            }
+            const val = parseFloat(valStr.replace(',', '.'));
+            if (isNaN(val)) return;
+
+            if (val < config.minPlaus || val > config.maxPlaus) {
+                inputEl.style.borderColor = "var(--md-color-error)";
+                inputEl.style.backgroundColor = "rgba(186, 26, 26, 0.12)";
+            } else {
+                inputEl.style.backgroundColor = "";
+                inputEl.style.borderColor = "";
+            }
+        }
+
+        function handleValueInput(inputEl, statusId) {
+            const val = inputEl.value.trim();
+            const statusEl = document.getElementById(statusId);
+            if (val.length > 0) {
+                if (statusEl.innerText === "❓") {
+                    statusEl.innerText = "✅";
+                }
+            } else {
+                if (statusEl.innerText === "✅") {
+                    statusEl.innerText = "❓";
+                }
+            }
+            updateSubmitButtonState();
+        }
+
+        function toggleStatus(id) {
+            const statusEl = document.getElementById(`status-${id}`);
+            const inputEl = document.getElementById(`mw-${id}`);
+            if (!statusEl || !inputEl) return;
+            const hasValue = inputEl.value.trim().length > 0;
+
+            if (statusEl.innerText === "✅" || statusEl.innerText === "❓") {
+                statusEl.innerText = "❌";
+            } else if (statusEl.innerText === "❌") {
+                statusEl.innerText = hasValue ? "✅" : "❓";
+            }
+        }
+
+        function clearMesswerte() {
+            PARAMETER_CONFIG.forEach(cfg => {
+                const inputEl = document.getElementById(`mw-${cfg.id}`);
+                if (inputEl) {
+                    inputEl.value = "";
+                    inputEl.style.backgroundColor = "";
+                    inputEl.style.borderColor = "";
+                }
+            });
+            document.querySelectorAll(".ekg-checkbox").forEach(cb => cb.checked = false);
+            document.querySelectorAll(".status-indicator").forEach(ind => {
+                ind.innerText = "❓";
+            });
+        }
+
+        function formatMesswerteFuerAusgabe() {
+            let eintraege = [];
+            const getStatusOf = (id) => {
+                const el = document.getElementById(`status-${id}`);
+                return el ? el.innerText : null;
+            };
+
+            const sysStatus = getStatusOf("rr-sys");
+            const diaStatus = getStatusOf("rr-dia");
+            const sysVal = document.getElementById("mw-rr-sys").value.trim();
+            const diaVal = document.getElementById("mw-rr-dia").value.trim();
+
+            if (sysStatus !== "❓" || diaStatus !== "❓") {
+                if (sysStatus === "❌" || diaStatus === "❌") {
+                    eintraege.push("RR nicht gemessen");
+                } else {
+                    eintraege.push(`RR: ${sysVal || '??'}/${diaVal || '??'} mmHg`);
+                }
+            }
+
+            PARAMETER_CONFIG.forEach(cfg => {
+                if (cfg.id === "rr-sys" || cfg.id === "rr-dia") return;
+                const status = getStatusOf(cfg.id);
+                if (status !== "❓" && status !== null) {
+                    if (status === "❌") {
+                        eintraege.push(`${cfg.label} nicht gemessen`);
+                    } else {
+                        const rawVal = document.getElementById(`mw-${cfg.id}`).value.trim();
+                        eintraege.push(`${cfg.label}: ${rawVal}${cfg.unit ? ' ' + cfg.unit : ''}`);
+                    }
+                }
+            });
+
+           const ekgStatus = getStatusOf("ekg");
+            if (ekgStatus !== "❓" && ekgStatus !== null) {
+                if (ekgStatus === "❌") {
+                    eintraege.push("EKG nicht geschrieben");
+                } else {
+                    const ausgewaehlteEkg = [];
+                    document.querySelectorAll(".ekg-checkbox:checked").forEach(cb => ausgewaehlteEkg.push(cb.value));
+                    if (ausgewaehlteEkg.length > 0) {
+                        eintraege.push(`EKG: ${ausgewaehlteEkg.join(", ")}`);
+                    } else {
+                        eintraege.push("EKG gemessen");
+                    }
+                }
+            }
+
+            return eintraege.length > 0 ? "\n\nMesswerte: " + eintraege.join(" | ") : "";
+        }
+
+        function autoResize() {
+            textarea.style.height = 'auto';
+            const maxHeight = 350;
+            const newHeight = textarea.scrollHeight;
+            if (newHeight > maxHeight) {
+                textarea.style.height = maxHeight + 'px';
+                textarea.style.overflowY = 'auto';
+            } else {
+                textarea.style.height = (newHeight > 180 ? newHeight : 180) + 'px';
+                textarea.style.overflowY = 'hidden';
+            }
+        }
+
+        function vorlageEinfuegen(key) {
+            if (!ACTIVE_PROFILE) return;
+            const textEinfuegen = ACTIVE_PROFILE.vorlagen[key];
+            if (!textEinfuegen) return;
+
+            const aktuellerText = textarea.value.trim();
+            textarea.value = aktuellerText === "" ? textEinfuegen : aktuellerText + "\n\n" + textEinfuegen;
+            localStorage.setItem("aktueller_entwurf", textarea.value); 
+            autoResize();
+            updateSubmitButtonState();
+        }
+
+        function resetForm() {
+            textarea.value = "";
+            kiSelect.value = "keine";
+            loeschSliderContainer.classList.remove("show");
+            localStorage.removeItem("aktueller_entwurf"); 
+            clearMesswerte();
+            autoResize();
+            updateSubmitButtonState();
+            overlay.style.display = "none";
+        }
+
+        async function sendBleData(text) {
+            const fullText = text + "\x04";
+            const encoder = new TextEncoder();
+            const dataBytes = encoder.encode(fullText);
+            const chunkSize = 128;
+            for (let offset = 0; offset < dataBytes.length; offset += chunkSize) {
+                const chunk = dataBytes.slice(offset, offset + chunkSize);
+                await rxCharacteristic.writeValueWithResponse(chunk);
+                const prozent = Math.round(((offset + chunk.length) / dataBytes.length) * 100);
+                countdownEl.innerText = `Übertrage: ${prozent}%`;
+            }
+        }
+
+        async function handleFormSubmit(event) {
+            if (event) event.preventDefault();
+            if (!ACTIVE_PROFILE) return false;
+
+            const selectedProvider = document.querySelector('input[name="provider"]:checked');
+            const selectedProviderVal = selectedProvider ? selectedProvider.value : 'chatgpt';
+            const kiAuswahl = kiSelect.value;
+            
+            const basisText = textarea.value;
+            const messwerteText = formatMesswerteFuerAusgabe();
+            const textMitMesswerten = basisText + messwerteText;
+
+            if (kiAuswahl !== "keine") {
+                if (!basisText.trim()) {
+                    alert("Bitte schreiben oder wählen Sie zuerst einen Text.");
+                    return false;
+                }
+
+                const basisPrompt = ACTIVE_PROFILE.prompts[kiAuswahl] || "";
+                const promptString = basisPrompt + textMitMesswerten;
+
+                localStorage.setItem("letzter_ki_gesendeter_text", basisText);
+                
+                inZwischenablageKopieren(promptString);
+
+                let targetUrl = selectedProviderVal === 'chatgpt' 
+                    ? "https://chatgpt.com/?q=" + encodeURIComponent(promptString)
+                    : "https://gemini.google.com/";
+
+                window.open(targetUrl, "_blank");
+                
+                resetForm();
+                return false; 
+            }
+
+            if (!rxCharacteristic) {
+                alert("Bitte verbinden Sie zuerst das Bluetooth-Gerät.");
+                return false;
+            }
+
+            localStorage.setItem("letzter_gesendeter_text", basisText);
+            overlay.style.display = "flex";
+            loadingDiv.style.display = "block";
+            successDiv.style.display = "none";
+            countdownEl.innerText = "Übertragung startet...";
+
+            try {
+                await sendBleData(textMitMesswerten);
+                countdownEl.innerText = "Übertragen. Gerät schreibt...";
+            } catch (error) {
+                alert("Übertragungsfehler: " + error.message);
+                overlay.style.display = "none";
+            }
+            return false;
+        }
+
+        // Event-Listener
+        textarea.addEventListener("input", () => {
+            autoResize();
+            updateSubmitButtonState();
+            localStorage.setItem("aktueller_entwurf", textarea.value);
+        });
+
+        kiSelect.addEventListener("change", updateSubmitButtonState);
+
+        document.querySelectorAll('input[name="gender"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                befuelleVorlagenButtons();
+                updateSubmitButtonState();
+            });
+        });
+
+        document.querySelectorAll('input[name="provider"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const val = e.target.value;
+                localStorage.setItem("saved_provider", val);
+                updateSubmitButtonState();
+            });
+        });
+
+        window.addEventListener("DOMContentLoaded", () => {
+            renderMesswerteInput();
+            renderEkgChecklist();
+            
+            const gespeicherterEntwurf = localStorage.getItem("aktueller_entwurf");
+            if (gespeicherterEntwurf) textarea.value = gespeicherterEntwurf;
+
+            const savedProvider = localStorage.getItem("saved_provider") || "chatgpt";
+            const radio = document.getElementById(`provider-${savedProvider}`);
+            if (radio) {
+                radio.checked = true;
+            }
+        });
+               
+        window.addEventListener('beforeunload', (event) => {
+            // Nur warnen, wenn tatsächlich Text im Eingabefeld steht
+            if (textarea && textarea.value.trim() !== "") {
+                event.preventDefault();
+                // Standardkonformität für moderne Browser
+                event.returnValue = 'Es liegen ungespeicherte Daten vor. Möchten Sie die Seite wirklich verlassen?';
+            }
+        });
+                // Funktion zum Umschalten der Passwort-Sichtbarkeit (Auge-Icon)
+        function togglePasswordVisibility(inputId, iconEl) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            if (input.type === "password") {
+                input.type = "text";
+                iconEl.innerText = "🚑";
+            } else {
+                input.type = "password";
+                iconEl.innerText = "👁️";
+            }
+        }
+
+        // Funktion zur dauerhaften Löschung des Benutzerkontos und der Profildaten
+        async function loescheBenutzerKonto() {
+            const user = auth.currentUser;
+            if (!user) {
+                alert("Kein angemeldeter Benutzer gefunden.");
+                return;
+            }
+
+            const ersteBestaetigung = confirm("Möchten Sie Ihr Benutzerkonto wirklich dauerhaft löschen? Alle Ihre gespeicherten Vorlagen und Prompts gehen unwiderruflich verloren.");
+            if (!ersteBestaetigung) return;
+
+            const zweiteBestaetigung = confirm("Sind Sie absolut sicher? Diese Aktion kann NICHT rückgängig gemacht werden!");
+            if (!zweiteBestaetigung) return;
+
+            const errorEl = document.getElementById("pw-error-msg");
+            if (errorEl) errorEl.style.display = "none";
+
+            try {
+                // 1. Daten aus der Firestore-Datenbank löschen
+                await db.collection("users").doc(user.uid).delete();
+                console.log("Profildaten in Firestore gelöscht.");
+
+                // 2. Account aus der Firebase Authentifizierung löschen
+                await user.delete();
+                alert("Ihr Account wurde erfolgreich gelöscht.");
+                location.reload();
+            } catch (err) {
+                console.error("Fehler beim Löschen des Kontos:", err);
+                if (err.code === "auth/requires-recent-login") {
+                    if (errorEl) {
+                        errorEl.innerText = "Aus Sicherheitsgründen müssen Sie sich neu anmelden (abmelden und neu einloggen), um Ihr Konto zu löschen.";
+                        errorEl.style.display = "block";
+                    } else {
+                        alert("Aus Sicherheitsgründen müssen Sie sich neu anmelden (abmelden und neu einloggen), um Ihr Konto zu löschen.");
+                    }
+                } else {
+                    if (errorEl) {
+                        errorEl.innerText = "Fehler beim Löschen: " + err.message;
+                        errorEl.style.display = "block";
+                    } else {
+                        alert("Fehler beim Löschen: " + err.message);
+                    }
+                }
+            }
+        }
     </script>
 </body>
 </html>
