@@ -8,6 +8,7 @@
     <link rel="manifest" href="/RetterProtokoll/manifest.json">
     <link id="favicon" rel="icon" type="image/png" href="/RetterProtokoll/logo.png">
     <link id="apple-touch-icon" rel="apple-touch-icon" href="/RetterProtokoll/logo.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     
     <style>
         /* CSS-Variablen im Material Design 3 Farbschema */
@@ -557,6 +558,13 @@
             textarea { min-height: 140px; }
             button { padding: 12px; font-size: 14px; }
         }
+        
+        .material-symbols-outlined {
+            font-size: inherit;
+            vertical-align: middle;
+            line-height: 1;
+            display: inline-block;
+        }
     </style>
 
     <!-- FIREBASE SDKs -->
@@ -611,7 +619,7 @@
             <label for="auth-password">Passwort:</label>
             <div style="position: relative; margin-bottom: 16px;">
                 <input type="password" id="auth-password" placeholder="Passwort..." autocomplete="current-password" style="padding-right: 48px; margin-bottom: 0;">
-                <span onclick="togglePasswordVisibility('auth-password', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 18px;">👁️</span>
+                <span class="material-symbols-outlined" onclick="togglePasswordVisibility('auth-password', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 20px;">visibility</span>
             </div>
 
             <!-- Passwort Bestätigung (Nur bei Registrierung sichtbar) -->
@@ -619,7 +627,7 @@
                 <label for="auth-password-confirm">Passwort bestätigen:</label>
                 <div style="position: relative; margin-bottom: 16px;">
                     <input type="password" id="auth-password-confirm" placeholder="Passwort wiederholen..." autocomplete="new-password" style="padding-right: 48px; margin-bottom: 0;">
-                    <span onclick="togglePasswordVisibility('auth-password-confirm', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 18px;">👁️</span>
+                    <span class="material-symbols-outlined" onclick="togglePasswordVisibility('auth-password-confirm', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 20px;">visibility</span>
                 </div>
             </div>
 
@@ -634,7 +642,9 @@
     <!-- 2. VORLAGEN-, PROMPT- & PASSWORT-EDITOR (Verwaltungsbereich) -->
     <div id="editor-screen" class="card" style="display: none;">
         <div class="title-container">
-            <h2>⚙️ Einstellungen & Verwaltung</h2>
+            <h2>
+                <span class="material-symbols-outlined" style="font-size: 24px; vertical-align: middle; margin-right: 8px;">settings</span>Einstellungen & Verwaltung
+            </h2>
         </div>
         
         <!-- Tab-Auswahl innerhalb des Editors -->
@@ -644,7 +654,9 @@
             <input type="radio" id="tab-edit-prompts" name="editortab" value="prompts" onchange="switchEditorTab()">
             <label for="tab-edit-prompts">KI-Prompts</label>
             <input type="radio" id="tab-edit-password" name="editortab" value="password" onchange="switchEditorTab()">
-            <label for="tab-edit-password">🔑 Profil/PW</label>
+            <label for="tab-edit-password" style="display: inline-flex; align-items: center; gap: 4px;">
+                <span class="material-symbols-outlined" style="font-size: 16px;">person</span> Profil/PW
+            </label>
         </div>
 
         <!-- Sektion für Vorlagen & Prompts -->
@@ -665,10 +677,14 @@
                         <label for="new-gender-n">Neutral</label>
                         
                         <input type="radio" id="new-gender-m" name="newgender" value="m">
-                        <label for="new-gender-m">♂️ M</label>
+                        <label for="new-gender-m" style="display: inline-flex; align-items: center; gap: 4px;">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">male</span> M
+                        </label>
                         
                         <input type="radio" id="new-gender-w" name="newgender" value="w">
-                        <label for="new-gender-w">♀️ W</label>
+                        <label for="new-gender-w" style="display: inline-flex; align-items: center; gap: 4px;">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">female</span> W
+                        </label>
                     </div>
                 </div>
             </div>
@@ -696,13 +712,13 @@
             <label for="new-password">Neues Passwort (optional):</label>
             <div style="position: relative; margin-bottom: 16px;">
                 <input type="password" id="new-password" placeholder="Mindestens 6 Zeichen (leer lassen)..." autocomplete="new-password" style="padding-right: 48px; margin-bottom: 0;">
-                <span onclick="togglePasswordVisibility('new-password', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 18px;">👁️</span>
+                <span class="material-symbols-outlined" onclick="togglePasswordVisibility('new-password', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 20px;">visibility</span>
             </div>
 
             <label for="new-password-confirm">Passwort bestätigen:</label>
             <div style="position: relative; margin-bottom: 16px;">
                 <input type="password" id="new-password-confirm" placeholder="Passwort wiederholen..." autocomplete="new-password" style="padding-right: 48px; margin-bottom: 0;">
-                <span onclick="togglePasswordVisibility('new-password-confirm', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 18px;">👁️</span>
+                <span class="material-symbols-outlined" onclick="togglePasswordVisibility('new-password-confirm', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 20px;">visibility</span>
             </div>
 
             <button type="button" class="btn-ki" style="margin-bottom: 12px;" onclick="fuehreProfilAenderungAus()">💾 Profil aktualisieren</button>
@@ -727,21 +743,29 @@
             </div>
             
             <div style="display: flex; gap: 8px; margin-top: 10px; width: 100%; justify-content: flex-end;">
-                <button type="button" class="secondary" style="width: auto; margin-top: 0; padding: 6px 14px; font-size: 12px;" onclick="zeigeEditor()">⚙️ Vorlagen bearbeiten</button>
-                <button type="button" class="secondary" style="width: auto; margin-top: 0; padding: 6px 14px; font-size: 12px; border-color: var(--md-color-error); color: var(--md-color-error);" onclick="logoffUser()">Abmelden 🚪</button>
+                <button type="button" class="secondary" style="width: auto; margin-top: 0; padding: 6px 14px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;" onclick="zeigeEditor()">
+                    <span class="material-symbols-outlined" style="font-size: 16px;">settings</span> Vorlagen bearbeiten
+                </button>
+                <button type="button" class="secondary" style="width: auto; margin-top: 0; padding: 6px 14px; font-size: 12px; border-color: var(--md-color-error); color: var(--md-color-error); display: inline-flex; align-items: center; gap: 4px;" onclick="logoffUser()">
+                    Abmelden <span class="material-symbols-outlined" style="font-size: 16px;">logout</span>
+                </button>
             </div>
         </div>
-        
+
         <form id="protokoll-form" method="POST" action="/" onsubmit="return handleFormSubmit(event)">
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; margin-bottom: 8px;">
                 <label style="margin: 0;">Vorlagen:</label>
                 <div class="segmented-control" id="gender-filter-container">
                     <input type="radio" id="gender-m" name="gender" value="m" checked>
-                    <label for="gender-m">♂️ männlich</label>
+                    <label for="gender-m" style="display: inline-flex; align-items: center; gap: 4px;">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">male</span> männlich
+                    </label>
                     
                     <input type="radio" id="gender-w" name="gender" value="w">
-                    <label for="gender-w">♀️ weiblich</label>
+                    <label for="gender-w" style="display: inline-flex; align-items: center; gap: 4px;">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">female</span> weiblich
+                    </label>
                 </div>
             </div>
 
@@ -791,7 +815,7 @@
                 <label for="freitext" style="margin-top: 0; margin-bottom: 0; flex: 1 1 auto; min-width: 100px;">Text bearbeiten:</label>
                 <div style="display: flex; gap: 8px; align-items: center; flex-shrink: 0; flex-wrap: nowrap;">
                     <button type="button" id="connect-ble-btn" class="btn-connect" onclick="connectBluetooth()">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="1.4em" viewBox="0 -960 960 960" width="1.4em" fill="currentColor" style="vertical-align:middle; margin-right:4px; display:inline-block;"><path d="M440-80v-304L256-200l-56-56 224-224-224-224 56-56 184 184v-304h40l228 228-172 172 172 172L480-80h-40Zm80-496 76-76-76-74v150Zm0 342 76-74-76-76v150Z"/></svg>
+                        <span class="material-symbols-outlined" id="connect-icon" style="font-size: 18px; margin-right: 4px;">bluetooth</span>
                         <span id="connect-text">Verbinden</span>
                     </button>
                     <button type="button" id="clear-btn" class="secondary" style="margin-top: 0; width: auto; padding: 6px 16px; font-size: 13px; border-radius: 100px;" onclick="zeigeLoeschSlider()">🗑️ Löschen</button>
@@ -950,8 +974,6 @@
             { id: "ekg-brady", label: "Bradykardie" },
             { id: "ekg-tachy", label: "Tachykardie" }
         ];
-
-        const BT_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" height="1.4em" viewBox="0 -960 960 960" width="1.4em" fill="currentColor" style="vertical-align:middle; margin-right:4px; display:inline-block;"><path d="M440-80v-304L256-200l-56-56 224-224-224-224 56-56 184 184v-304h40l228 228-172 172 172 172L480-80h-40Zm80-496 76-76-76-74v150Zm0 342 76-74-76-76v150Z"/></svg>`;
 
         // Helper zur dynamischen und fehlertoleranten Bestimmung des Installationspfads
         function ermittleRessourcenPfad(dateiname) {
@@ -1542,44 +1564,63 @@
         // ==========================================
         // BLUETOOTH & UI SYSTEMLOGIK
         // ==========================================
-        async function connectBluetooth() {
-            if (!navigator.bluetooth) {
-                alert("Web Bluetooth wird von diesem Browser nicht unterstützt.");
-                return;
-            }
-            try {
-                connectBleBtn.innerHTML = BT_ICON_SVG + " ⏳ Suche...";
-                bleDevice = await navigator.bluetooth.requestDevice({
-                    filters: [{ services: [BLE_SERVICE_UUID] }]
-                });
-                connectBleBtn.innerHTML = BT_ICON_SVG + " ⏳ Verbinde...";
-                const server = await bleDevice.gatt.connect();
-                const service = await server.getPrimaryService(BLE_SERVICE_UUID);
-                rxCharacteristic = await service.getCharacteristic(BLE_RX_UUID);
-                txCharacteristic = await service.getCharacteristic(BLE_TX_UUID);
-                await txCharacteristic.startNotifications();
-                txCharacteristic.addEventListener('characteristicvaluechanged', handleBleNotification);
-
-                connectBleBtn.innerHTML = BT_ICON_SVG + " " + (bleDevice.name ? bleDevice.name.substring(0, 10) : "Verbunden");
-                connectBleBtn.style.background = "#2563eb";
-                bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
-                updateSubmitButtonState();
-            } catch (error) {
-                console.error("Bluetooth Fehler: ", error);
-                connectBleBtn.innerHTML = BT_ICON_SVG + " Fehler";
-                connectBleBtn.style.background = "#dc2626";
-                onDisconnected();
-            }
+async function connectBluetooth() {
+    if (!navigator.bluetooth) {
+        alert("Web Bluetooth wird von diesem Browser nicht unterstützt.");
+        return;
+    }
+    const iconEl = document.getElementById("connect-icon");
+    const textEl = document.getElementById("connect-text");
+    try {
+        if (iconEl && textEl) {
+            iconEl.innerText = "bluetooth_searching";
+            textEl.innerText = "Suche...";
         }
-
-        function onDisconnected() {
-            connectBleBtn.innerHTML = BT_ICON_SVG + " Verbinden";
-            connectBleBtn.style.background = "#dc2626";
-            bleDevice = null;
-            rxCharacteristic = null;
-            txCharacteristic = null;
-            updateSubmitButtonState();
+        bleDevice = await navigator.bluetooth.requestDevice({
+            filters: [{ services: [BLE_SERVICE_UUID] }]
+        });
+        if (iconEl && textEl) {
+            iconEl.innerText = "bluetooth_searching";
+            textEl.innerText = "Verbinde...";
         }
+        const server = await bleDevice.gatt.connect();
+        const service = await server.getPrimaryService(BLE_SERVICE_UUID);
+        rxCharacteristic = await service.getCharacteristic(BLE_RX_UUID);
+        txCharacteristic = await service.getCharacteristic(BLE_TX_UUID);
+        await txCharacteristic.startNotifications();
+        txCharacteristic.addEventListener('characteristicvaluechanged', handleBleNotification);
+
+        if (iconEl && textEl) {
+            iconEl.innerText = "bluetooth_connected"; // Das offizielle Verbunden-Symbol mit Punkten
+            textEl.innerText = bleDevice.name ? bleDevice.name.substring(0, 10) : "Verbunden";
+        }
+        connectBleBtn.style.background = "#2563eb";
+        bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
+        updateSubmitButtonState();
+    } catch (error) {
+        console.error("Bluetooth Fehler: ", error);
+        if (iconEl && textEl) {
+            iconEl.innerText = "bluetooth_disabled";
+            textEl.innerText = "Fehler";
+        }
+        connectBleBtn.style.background = "#dc2626";
+        onDisconnected();
+    }
+}
+
+function onDisconnected() {
+    const iconEl = document.getElementById("connect-icon");
+    const textEl = document.getElementById("connect-text");
+    if (iconEl && textEl) {
+        iconEl.innerText = "bluetooth";
+        textEl.innerText = "Verbinden";
+    }
+    connectBleBtn.style.background = "#dc2626";
+    bleDevice = null;
+    rxCharacteristic = null;
+    txCharacteristic = null;
+    updateSubmitButtonState();
+}
 
         function handleBleNotification(event) {
             const decoder = new TextDecoder();
@@ -2108,16 +2149,17 @@
                 event.returnValue = 'Es liegen ungespeicherte Daten vor. Möchten Sie die Seite wirklich verlassen?';
             }
         });
-                // Funktion zum Umschalten der Passwort-Sichtbarkeit (Auge-Icon)
+
+        // Funktion zum Umschalten der Passwort-Sichtbarkeit (Auge-Icon)
         function togglePasswordVisibility(inputId, iconEl) {
             const input = document.getElementById(inputId);
             if (!input) return;
             if (input.type === "password") {
                 input.type = "text";
-                iconEl.innerText = "🚑";
+                iconEl.innerText = "visibility_off"; // Zeigt das durchgestrichene Auge an
             } else {
                 input.type = "password";
-                iconEl.innerText = "👁️";
+                iconEl.innerText = "visibility";     // Zeigt das normale Auge an
             }
         }
 
