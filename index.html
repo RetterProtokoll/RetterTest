@@ -281,16 +281,13 @@
             box-shadow: none !important;  
         }
 
+        /* Vereinfachter, gültiger Slider-Thumb ohne abgeschnittene data-URL */
         .slide-input::-webkit-slider-thumb { 
             -webkit-appearance: none; 
             width: 48px; 
             height: 48px; 
             border-radius: 50%; 
             background-color: var(--md-color-outline); 
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 24px;
             cursor: pointer; 
             box-shadow: var(--md-elevation-1);
         }
@@ -589,15 +586,15 @@
         }
     </style>
 
-    <!-- FIREBASE SDKs -->
+    <!-- FIREBASE SDKS -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-    <div id="update-banner" style="display: none; position: fixed; top: 0; left: 0; width: 100%; background: var(--md-color-primary); color: white; padding: 12px; text-align: center; z-index: 2000; font-size: 14px; font-weight: 500; box-shadow: var(--md-elevation-2);">
-        Eine neue Version ist verfügbar! 
-        <button id="update-btn" style="width: auto; margin: 0 0 0 12px; padding: 6px 16px; background: white; color: var(--md-color-primary); font-weight: bold; font-size: 13px;">Aktualisieren</button>
+    <div id="update-banner" style="display: none; position: fixed; top: 0; left: 0; width: 100%; background: var(--md-color-primary); color: white; padding: 12px; text-align: center; z-index: 2000; font-weight: 600;">
+        Eine neue Version ist verfügbar!
+        <button id="update-btn" style="width: auto; margin: 0 0 0 12px; padding: 6px 16px; background: white; color: var(--md-color-primary); font-weight: bold; font-size: 13px; border-radius: 12px;">Aktualisieren</button>
     </div> 
 
      <!-- 1. LOGIN- & REGISTRIERUNGSSCHIRM -->
