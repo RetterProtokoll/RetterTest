@@ -1334,11 +1334,23 @@
                     genderContainer.style.display = "flex"; // Geschlechtsfilter anzeigen
                     
                     Object.keys(ACTIVE_PROFILE.vorlagen || {}).forEach(key => {
-                        const opt = document.createElement("option");
-                        opt.value = key;
-                        opt.innerText = OPTIONEN_NAMEN[key] || formatiereKey(key);
-                        itemSelect.appendChild(opt);
-                    });
+    const opt = document.createElement("option");
+    opt.value = key;
+    
+    let label = OPTIONEN_NAMEN[key];
+    if (!label) {
+        if (key.endsWith('_m')) {
+            label = formatiereKey(key.slice(0, -2)) + " ♂️";
+        } else if (key.endsWith('_w')) {
+            label = formatiereKey(key.slice(0, -2)) + " ♀️";
+        } else {
+            label = formatiereKey(key);
+        }
+    }
+    
+    opt.innerText = label;
+    itemSelect.appendChild(opt);
+});
                 } else if (selectedTab === "prompts") {
                     selectLabel.innerText = "Prompt wählen:";
                     textLabel.innerText = "Prompt-Text bearbeiten:";
@@ -1649,34 +1661,63 @@ function onDisconnected() {
                 console.error(error);
             }
         }
+        // Generiert den Inhalt für die Vorlagen-Buttons inklusive Material Symbols Icons
+function erzeugeVorlagenButtonInhalt(key) {
+    let baseKey = key;
+    let iconHtml = '';
+    
+    if (key.endsWith('_m')) {
+        baseKey = key.slice(0, -2); // Entfernt das "_m" am Ende
+        iconHtml = '<span class="material-symbols-outlined" style="font-size: 18px; margin-left: 6px; vertical-align: middle;">male</span>';
+    } else if (key.endsWith('_w')) {
+        baseKey = key.slice(0, -2); // Entfernt das "_w" am Ende
+        iconHtml = '<span class="material-symbols-outlined" style="font-size: 18px; margin-left: 6px; vertical-align: middle;">female</span>';
+    }
+    
+    // Holt den Text aus OPTIONEN_NAMEN (falls manuell hinterlegt) oder formatiert den Schlüssel
+    let text = OPTIONEN_NAMEN[key] || OPTIONEN_NAMEN[baseKey] || formatiereKey(baseKey);
+    
+    // Falls im hinterlegten Namen bereits Text-Emojis wie ♂️ oder ♀️ enthalten sind, entfernen wir diese
+    text = text.replace(/[♀️♂️]/g, '').trim();
+    
+    return `<span>${text}</span>${iconHtml}`;
+}
 
         function befuelleVorlagenButtons() {
-            vorlageScrollContainer.innerHTML = '';
-            if (!ACTIVE_PROFILE) return;
+    vorlageScrollContainer.innerHTML = '';
+    if (!ACTIVE_PROFILE) return;
 
-            const selectedGenderElement = document.querySelector('input[name="gender"]:checked');
-            const selectedGender = selectedGenderElement ? selectedGenderElement.value : 'm';
+    const selectedGenderElement = document.querySelector('input[name="gender"]:checked');
+    const selectedGender = selectedGenderElement ? selectedGenderElement.value : 'm';
 
-            const keys = Object.keys(ACTIVE_PROFILE.vorlagen || {});
-            
-            let filteredKeys = [];
-            if (selectedGender === 'm') {
-                filteredKeys = keys.filter(key => !key.endsWith('_w'));
-            } else if (selectedGender === 'w') {
-                filteredKeys = keys.filter(key => !key.endsWith('_m'));
-            } else {
-                filteredKeys = keys;
-            }
+    const keys = Object.keys(ACTIVE_PROFILE.vorlagen || {});
+    
+    let filteredKeys = [];
+    if (selectedGender === 'm') {
+        filteredKeys = keys.filter(key => !key.endsWith('_w'));
+    } else if (selectedGender === 'w') {
+        filteredKeys = keys.filter(key => !key.endsWith('_m'));
+    } else {
+        filteredKeys = keys;
+    }
 
-            filteredKeys.forEach(key => {
-                const btn = document.createElement("button");
-                btn.type = "button";
-                btn.className = "scroll-btn";
-                btn.innerText = OPTIONEN_NAMEN[key] || formatiereKey(key);
-                btn.onclick = () => vorlageEinfuegen(key);
-                vorlageScrollContainer.appendChild(btn);
-            });
-        }
+    filteredKeys.forEach(key => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "scroll-btn";
+        
+        // Sorgt für eine saubere Ausrichtung von Text und Icon nebeneinander
+        btn.style.display = "inline-flex";
+        btn.style.alignItems = "center";
+        btn.style.justifyContent = "center";
+        
+        // Dynamischen HTML-Inhalt mit dem Icon einfügen
+        btn.innerHTML = erzeugeVorlagenButtonInhalt(key);
+        
+        btn.onclick = () => vorlageEinfuegen(key);
+        vorlageScrollContainer.appendChild(btn);
+    });
+}
 
         // Formatierung von DB-Schlüsseln zur Anzeige
         function formatiereKey(key) {
