@@ -1448,7 +1448,7 @@
             }
 
             try {
-                await db.collection("users").doc(currentUser.uid).set(ACTIVE_PROFILE);
+                await db.collection("users").doc(currentUser.uid).set(ACTIVE_PROFILE, { merge: true });
                 alert("Änderungen erfolgreich in der Cloud gespeichert!");
                 befuelleVorlagenButtons();
                 anpassenKiDropdowns();
