@@ -661,6 +661,11 @@
 
         <!-- Sektion für Vorlagen & Prompts -->
         <div id="editor-content-section">
+            <!-- Abgleich-Button für Standardwerte -->
+            <button type="button" class="secondary" style="margin-top: 0; margin-bottom: 16px; border-color: var(--md-color-primary); color: var(--md-color-primary); display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="zeigeImportOverlay()">
+                <span class="material-symbols-outlined">restart_alt</span> Standards abgleichen / wiederherstellen
+            </button>
+
             <!-- Formular zum Hinzufügen neuer Elemente -->
             <div id="new-item-container" style="background: var(--md-color-surface-container); padding: 12px; border-radius: 16px; margin-bottom: 16px; border: 1px solid var(--md-color-outline-variant);">
                 <label id="new-item-label" for="new-item-key" style="margin-top: 0; font-size: 13px;">Neu erstellen:</label>
@@ -865,6 +870,50 @@
         </div>
     </div>
 
+    <!-- MODAL FÜR STANDARD-ABGLEICH -->
+    <div id="global-import-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(14, 20, 20, 0.85); backdrop-filter: blur(4px); z-index: 1500; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; color: var(--md-color-on-surface);">
+        <div class="card" style="max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;">
+            <h3 style="margin-top: 0; display: flex; align-items: center; gap: 8px;">
+                <span class="material-symbols-outlined">restart_alt</span> Standards abgleichen / laden
+            </h3>
+            <p style="font-size: 13px; color: var(--md-color-on-surface-variant); margin-top: -8px;">
+                Vergleiche die globalen Standards mit deinen aktuellen Einstellungen. Nimm Änderungen vor und speichere am Ende ab.
+            </p>
+            
+            <label for="import-type-select">Bereich:</label>
+            <div class="segmented-control" style="width: 100%; height: 34px; margin-bottom: 12px;">
+                <input type="radio" id="import-type-templates" name="importtype" value="templates" checked onchange="switchImportType()">
+                <label for="import-type-templates">Vorlagen</label>
+                <input type="radio" id="import-type-prompts" name="importtype" value="prompts" onchange="switchImportType()">
+                <label for="import-type-prompts">KI-Prompts</label>
+            </div>
+
+            <label for="import-item-select">Verfügbare Standards:</label>
+            <select id="import-item-select" onchange="ladeImportVergleich()" style="margin-bottom: 12px;"></select>
+
+            <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px;">
+                <div>
+                    <label style="margin-top:0; font-size: 12px; font-weight: bold;">Globaler Standard-Inhalt (aus DB):</label>
+                    <textarea id="import-global-preview" readonly style="min-height: 100px; max-height: 150px; background: var(--md-color-surface-container); font-size: 13px; padding: 8px;"></textarea>
+                </div>
+                <div>
+                    <label style="margin-top:0; font-size: 12px; font-weight: bold;">Dein aktueller Inhalt (derzeit aktiv):</label>
+                    <textarea id="import-user-preview" readonly style="min-height: 100px; max-height: 150px; background: var(--md-color-surface-container); font-size: 13px; padding: 8px;" placeholder="(Gelöscht oder nicht im Profil vorhanden)"></textarea>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+                <button type="button" class="btn-ki" style="margin: 0;" onclick="uebernehmeEinzelnenStandard()">Dieses Element temporär übernehmen</button>
+                <button type="button" class="secondary" style="margin: 0; border-color: var(--md-color-primary); color: var(--md-color-primary);" onclick="uebernehmeAlleStandards()">Alle Standard-Elemente übernehmen</button>
+            </div>
+
+            <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 16px; display: flex; gap: 10px;">
+                <button type="button" class="btn-device" style="background: var(--md-color-success); margin: 0; flex: 1;" onclick="speichereImportierteAenderungen()">💾 Alle Änderungen speichern</button>
+                <button type="button" class="secondary" style="margin: 0; flex: 1;" onclick="schliesseImportOverlay()">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ==========================================
         // FIREBASE INITIALISIERUNG
@@ -893,6 +942,10 @@
         let currentUser = null;
         let registrationName = null;
         
+        // Caches für den Standard-Abgleich
+        let globalDefaultsCache = null;
+        let tempImportProfile = null;
+
         // Bluetooth-Spezifische UUIDs
         const BLE_SERVICE_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
         const BLE_RX_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
@@ -1571,6 +1624,167 @@
                 }
                 errorEl.style.display = "block";
             }
+        }
+
+        // ==========================================
+        // SYSTEM ZUM STANDARD-ABGLEICH (IMPORT)
+        // ==========================================
+        async function zeigeImportOverlay() {
+            if (!ACTIVE_PROFILE) return;
+            
+            try {
+                // Lokale Arbeitskopie der Benutzerdaten anlegen (für temporäre Übernahme)
+                tempImportProfile = JSON.parse(JSON.stringify(ACTIVE_PROFILE));
+                
+                // Globale Standard-Templates & Prompts laden
+                const defaultTemplatesDoc = await db.collection("globalSettings").doc("defaultTemplates").get();
+                if (!defaultTemplatesDoc.exists) {
+                    alert("Globale Standards konnten nicht geladen werden.");
+                    return;
+                }
+                
+                globalDefaultsCache = defaultTemplatesDoc.data();
+                
+                // Overlay anzeigen
+                document.getElementById("global-import-overlay").style.display = "flex";
+                document.getElementById("import-type-templates").checked = true;
+                switchImportType();
+            } catch (err) {
+                console.error("Fehler beim Laden der globalen Standards:", err);
+                alert("Fehler beim Laden der Standards: " + err.message);
+            }
+        }
+
+        function switchImportType() {
+            if (!globalDefaultsCache) return;
+            const selectedType = document.querySelector('input[name="importtype"]:checked').value;
+            const importSelect = document.getElementById("import-item-select");
+            importSelect.innerHTML = "";
+            
+            const source = selectedType === "templates" ? (globalDefaultsCache.vorlagen || {}) : (globalDefaultsCache.prompts || {});
+            
+            Object.keys(source).forEach(key => {
+                const opt = document.createElement("option");
+                opt.value = key;
+                
+                let label = OPTIONEN_NAMEN[key];
+                if (!label) {
+                    if (key.endsWith('_m')) {
+                        label = formatiereKey(key.slice(0, -2)) + " ♂️";
+                    } else if (key.endsWith('_w')) {
+                        label = formatiereKey(key.slice(0, -2)) + " ♀️";
+                    } else {
+                        label = formatiereKey(key);
+                    }
+                }
+                opt.innerText = label;
+                importSelect.appendChild(opt);
+            });
+            
+            ladeImportVergleich();
+        }
+
+        function ladeImportVergleich() {
+            if (!globalDefaultsCache || !tempImportProfile) return;
+            const selectedType = document.querySelector('input[name="importtype"]:checked').value;
+            const key = document.getElementById("import-item-select").value;
+            
+            const globalPreview = document.getElementById("import-global-preview");
+            const userPreview = document.getElementById("import-user-preview");
+            
+            if (!key) {
+                globalPreview.value = "";
+                userPreview.value = "";
+                return;
+            }
+            
+            if (selectedType === "templates") {
+                globalPreview.value = globalDefaultsCache.vorlagen[key] || "";
+                userPreview.value = (tempImportProfile.vorlagen && tempImportProfile.vorlagen[key] !== undefined) 
+                    ? tempImportProfile.vorlagen[key] 
+                    : "";
+            } else {
+                globalPreview.value = globalDefaultsCache.prompts[key] || "";
+                userPreview.value = (tempImportProfile.prompts && tempImportProfile.prompts[key] !== undefined) 
+                    ? tempImportProfile.prompts[key] 
+                    : "";
+            }
+        }
+
+        function uebernehmeEinzelnenStandard() {
+            if (!globalDefaultsCache || !tempImportProfile) return;
+            const selectedType = document.querySelector('input[name="importtype"]:checked').value;
+            const key = document.getElementById("import-item-select").value;
+            
+            if (!key) return;
+            
+            if (selectedType === "templates") {
+                if (!tempImportProfile.vorlagen) tempImportProfile.vorlagen = {};
+                tempImportProfile.vorlagen[key] = globalDefaultsCache.vorlagen[key] || "";
+            } else {
+                if (!tempImportProfile.prompts) tempImportProfile.prompts = {};
+                tempImportProfile.prompts[key] = globalDefaultsCache.prompts[key] || "";
+            }
+            
+            ladeImportVergleich();
+            alert(`"${formatiereKey(key)}" wurde temporär übernommen. Klicke am Ende auf "Alle Änderungen speichern", um es dauerhaft zu sichern.`);
+        }
+
+        function uebernehmeAlleStandards() {
+            if (!globalDefaultsCache || !tempImportProfile) return;
+            
+            const confirmAll = confirm("Möchtest du wirklich ALLE globalen Standards temporär übernehmen? Deine vorhandenen Vorlagen/Prompts mit gleichem Namen werden überschrieben, und gelöschte Elemente werden wiederhergestellt.");
+            if (!confirmAll) return;
+            
+            // Vorlagen mergen
+            if (globalDefaultsCache.vorlagen) {
+                if (!tempImportProfile.vorlagen) tempImportProfile.vorlagen = {};
+                Object.keys(globalDefaultsCache.vorlagen).forEach(key => {
+                    tempImportProfile.vorlagen[key] = globalDefaultsCache.vorlagen[key];
+                });
+            }
+            
+            // Prompts mergen
+            if (globalDefaultsCache.prompts) {
+                if (!tempImportProfile.prompts) tempImportProfile.prompts = {};
+                Object.keys(globalDefaultsCache.prompts).forEach(key => {
+                    tempImportProfile.prompts[key] = globalDefaultsCache.prompts[key];
+                });
+            }
+            
+            ladeImportVergleich();
+            alert("Alle globalen Vorlagen und Prompts wurden temporär in die Arbeitskopie geladen. Klicke jetzt auf 'Alle Änderungen speichern', um sie dauerhaft zu sichern!");
+        }
+
+        async function speichereImportierteAenderungen() {
+            if (!tempImportProfile || !currentUser) return;
+            
+            try {
+                // In die Benutzer-Dokument-Cloud von Firestore schreiben
+                await db.collection("users").doc(currentUser.uid).set(tempImportProfile);
+                
+                // Lokales Profil aktualisieren
+                ACTIVE_PROFILE = JSON.parse(JSON.stringify(tempImportProfile));
+                
+                alert("Die übernommenen Standards wurden erfolgreich in deinem Profil gespeichert!");
+                
+                // UI aktualisieren
+                befuelleVorlagenButtons();
+                anpassenKiDropdowns();
+                if (document.getElementById("editor-screen").style.display === "block") {
+                    switchEditorTab();
+                }
+                schliesseImportOverlay();
+            } catch (err) {
+                console.error("Fehler beim Speichern der importierten Standards:", err);
+                alert("Fehler beim Speichern: " + err.message);
+            }
+        }
+
+        function schliesseImportOverlay() {
+            document.getElementById("global-import-overlay").style.display = "none";
+            globalDefaultsCache = null;
+            tempImportProfile = null;
         }
 
         // ==========================================
