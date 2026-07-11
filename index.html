@@ -749,7 +749,7 @@
             
             <div style="display: flex; gap: 8px; margin-top: 10px; width: 100%; justify-content: flex-end;">
                 <button type="button" class="secondary" style="width: auto; margin-top: 0; padding: 6px 14px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;" onclick="zeigeEditor()">
-                    <span class="material-symbols-outlined" style="font-size: 16px;">settings</span> Einstellungen
+                    <span class="material-symbols-outlined" style="font-size: 16px;">settings</span> Einstellung 
                 </button>
                 <button type="button" class="secondary" style="width: auto; margin-top: 0; padding: 6px 14px; font-size: 12px; border-color: var(--md-color-error); color: var(--md-color-error); display: inline-flex; align-items: center; gap: 4px;" onclick="logoffUser()">
                     Abmelden <span class="material-symbols-outlined" style="font-size: 16px;">logout</span>
@@ -769,4 +769,1700 @@
                     
                     <input type="radio" id="gender-w" name="gender" value="w">
                     <label for="gender-w" style="display: inline-flex; align-items: center; gap: 4px;">
-                        <span class="material-symbols-outlined" style="font-size: 18
+                        <span class="material-symbols-outlined" style="font-size: 18px;">female</span> weiblich
+                    </label>
+                </div>
+            </div>
+
+            <div id="vorlage-scroll-container" class="scroll-container">
+                <span style="font-size: 14px; color: var(--md-color-outline); padding: 8px 0;">Lade Vorlagen...</span>
+            </div>
+
+            <div id="ki-selection-container" style="margin-top: 16px; display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px;">
+                    <label id="ki-label" for="ki-select" style="margin: 0; flex: 1;">KI-Unterstützung wählen (optional):</label>
+                    <div class="segmented-control" id="provider-container">
+                        <input type="radio" id="provider-chatgpt" name="provider" value="chatgpt" checked>
+                        <label for="provider-chatgpt">ChatGPT</label>
+                        
+                        <input type="radio" id="provider-gemini" name="provider" value="gemini">
+                        <label for="provider-gemini">Gemini</label>
+                    </div>
+                </div>
+
+                <div>
+                    <select id="ki-select" style="margin-bottom: 16px;">
+                        <option value="keine" selected>Keine KI (Text direkt senden)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="button" id="toggle-messwerte-btn" class="secondary" style="margin-top: 8px; margin-bottom: 8px;" onclick="toggleMesswerte()">📊 Messwerte eingeben</button>
+
+            <div id="messwerte-container" class="messwerte-box" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                    <span style="font-weight: 600; font-size: 14px; color: var(--md-color-on-surface-variant);">Messwerte erfassen:</span>
+                    <button type="button" class="secondary" style="width: auto; padding: 4px 12px; font-size: 12px; border-radius: 100px; margin: 0;" onclick="clearMesswerte()">🗑️ Leeren</button>
+                </div>
+                
+                <div class="messwerte-grid" id="messwerte-grid-container"></div>
+                
+                <div class="messwerte-item" style="margin-top: 14px; width: 100%;">
+                    <div class="status-container" style="justify-content: flex-start; gap: 8px; margin-bottom: 6px;">
+                        <label style="margin-top: 0; margin-bottom: 0;">EKG (Mehrfachauswahl möglich)</label>
+                        <span id="status-ekg" class="status-indicator" onclick="toggleEkgStatus()">❓</span>
+                    </div>
+                    <div class="ekg-checklist" id="ekg-checklist-container"></div>
+                </div>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; margin-bottom: 6px; gap: 8px; flex-wrap: wrap;">
+                <label for="freitext" style="margin-top: 0; margin-bottom: 0; flex: 1 1 auto; min-width: 100px;">Text bearbeiten:</label>
+                <div style="display: flex; gap: 8px; align-items: center; flex-shrink: 0; flex-wrap: nowrap;">
+                    <button type="button" id="connect-ble-btn" class="btn-connect" onclick="connectBluetooth()">
+                        <span class="material-symbols-outlined" id="connect-icon" style="font-size: 18px; margin-right: 4px;">bluetooth</span>
+                        <span id="connect-text">Verbinden</span>
+                    </button>
+                    <button type="button" id="clear-btn" class="secondary" style="margin-top: 0; width: auto; padding: 6px 16px; font-size: 13px; border-radius: 100px;" onclick="zeigeLoeschSlider()">🗑️ Löschen</button>
+                </div>
+            </div>
+
+            <div id="loesch-slider-container" class="slide-container">
+                <span class="slide-text">Zum Löschen schieben</span>
+                <input type="range" id="delete-slider" class="slide-input" min="0" max="100" value="0" oninput="handleSliderInput(this)" onchange="handleSliderChange(this)">
+            </div>
+            
+            <textarea name="t" id="freitext" placeholder="Wähle eine Vorlage oder tippe hier freien Text..." autocomplete="off"></textarea>
+
+            <button type="submit" id="submit-btn" class="btn-disabled" disabled>Text senden</button>
+
+            <div class="restore-subtle">
+                <div class="restore-selector">
+                    <label class="restore-opt" for="restore-source-bt">
+                        <input type="radio" id="restore-source-bt" name="restore-source" value="bt" checked>
+                        <span>Letzter Bluetooth-Text</span>
+                    </label>
+                    <label class="restore-opt" id="restore-opt-ki" for="restore-source-ki">
+                        <input type="radio" id="restore-source-ki" name="restore-source" value="ki">
+                        <span>Letzter KI-Text</span>
+                    </label>
+                </div>
+                <button type="button" class="btn-restore-subtle" onclick="anwendenAusgewaehltenText()">In Textfeld einfügen</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- OVERLAYS -->
+    <div id="overlay">
+        <div class="overlay-content">
+            <div id="overlay-loading" style="text-align: center;">
+                <div class="spinner"></div>
+                <h3 style="margin: 15px 0; color: var(--md-color-primary);">✍️ Daten werden verarbeitet...</h3>
+                <p id="countdown-text" style="color: var(--md-color-primary); font-weight: bold; font-size: 18px; margin: 10px 0;">Bitte warten...</p>
+                <p style="color: var(--md-color-on-surface-variant); font-size: 14px; margin-bottom: 20px;">Bitte trennen Sie die Verbindung nicht.</p>
+                <button type="button" id="stop-ble-btn" class="btn-device" style="background: var(--md-color-error); margin: 10px auto 0 auto; max-width: 200px;" onclick="sendeStopSignal()">🛑 Schreiben abbrechen</button>
+            </div>
+            <div id="overlay-success" style="text-align: center; display: none;">
+                <span style="font-size: 60px;">✅</span>
+                <h3 style="margin: 15px 0;">Text erfolgreich übermittelt!</h3>
+                <button type="button" onclick="resetForm()" style="background: var(--md-color-primary); max-width: 280px; margin: 20px auto 0 auto;">Nächster Text</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FÜR STANDARD-ABGLEICH -->
+    <div id="global-import-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(14, 20, 20, 0.85); backdrop-filter: blur(4px); z-index: 1500; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; color: var(--md-color-on-surface);">
+        <div class="card" style="max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;">
+            <h3 style="margin-top: 0; display: flex; align-items: center; gap: 8px;">
+                <span class="material-symbols-outlined">restart_alt</span> Standards abgleichen / laden
+            </h3>
+            <p style="font-size: 13px; color: var(--md-color-on-surface-variant); margin-top: -8px;">
+                Vergleiche die globalen Standards mit deinen aktuellen Einstellungen. Nimm Änderungen vor und speichere am Ende ab.
+            </p>
+            
+            <label for="import-type-select">Bereich:</label>
+            <div class="segmented-control" style="width: 100%; height: 34px; margin-bottom: 12px;">
+                <input type="radio" id="import-type-templates" name="importtype" value="templates" checked onchange="switchImportType()">
+                <label for="import-type-templates">Vorlagen</label>
+                <input type="radio" id="import-type-prompts" name="importtype" value="prompts" onchange="switchImportType()">
+                <label for="import-type-prompts">KI-Prompts</label>
+            </div>
+
+            <label for="import-item-select">Verfügbare Standards:</label>
+            <select id="import-item-select" onchange="ladeImportVergleich()" style="margin-bottom: 12px;"></select>
+
+            <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px;">
+                <div>
+                    <label style="margin-top:0; font-size: 12px; font-weight: bold;">Globaler Standard-Inhalt (aus DB):</label>
+                    <textarea id="import-global-preview" readonly style="min-height: 100px; max-height: 150px; background: var(--md-color-surface-container); font-size: 13px; padding: 8px;"></textarea>
+                </div>
+                <div>
+                    <label style="margin-top:0; font-size: 12px; font-weight: bold;">Dein aktueller Inhalt (derzeit aktiv):</label>
+                    <textarea id="import-user-preview" readonly style="min-height: 100px; max-height: 150px; background: var(--md-color-surface-container); font-size: 13px; padding: 8px;" placeholder="(Gelöscht oder nicht im Profil vorhanden)"></textarea>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+                <button type="button" class="btn-ki" style="margin: 0;" onclick="uebernehmeEinzelnenStandard()">Dieses Element temporär übernehmen</button>
+                <button type="button" class="secondary" style="margin: 0; border-color: var(--md-color-primary); color: var(--md-color-primary);" onclick="uebernehmeAlleStandards()">Alle Standard-Elemente übernehmen</button>
+            </div>
+
+            <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 16px; display: flex; gap: 10px;">
+                <button type="button" class="btn-device" style="background: var(--md-color-success); margin: 0; flex: 1;" onclick="speichereImportierteAenderungen()">💾 Alle Änderungen speichern</button>
+                <button type="button" class="secondary" style="margin: 0; flex: 1;" onclick="schliesseImportOverlay()">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // FIREBASE INITIALISIERUNG
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqbYce4Rkuk8AwWRWEprjc0lJquD2h1Gg",
+            authDomain: "retter-protokoll.firebaseapp.com",
+            projectId: "retter-protokoll",
+            storageBucket: "retter-protokoll.firebasestorage.app",
+            messagingSenderId: "635653654715",
+            appId: "1:635653654715:web:dc053224fe7b7f4b9d419e"
+        };
+
+        // Firebase starten
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // Offline-Persistence (Datencaching) aktivieren
+        db.enablePersistence().catch((err) => {
+            console.warn("Firestore-Caching nicht möglich:", err.code);
+        });
+
+       // Globale Variablen für das aktive Profil des angemeldeten Benutzers
+        let ACTIVE_PROFILE = null;
+        let currentUser = null;
+        let registrationName = null;
+        
+        // Caches für den Standard-Abgleich
+        let globalDefaultsCache = null;
+        let tempImportProfile = null;
+
+        // Bluetooth-Spezifische UUIDs
+        const BLE_SERVICE_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
+        const BLE_RX_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
+        const BLE_TX_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
+
+        let bleDevice = null;
+        let rxCharacteristic = null;
+        let txCharacteristic = null;
+        
+         function toggleEkgStatus() {
+            const statusEl = document.getElementById("status-ekg");
+            if (!statusEl) return;
+            const checkboxes = document.querySelectorAll(".ekg-checkbox");
+            const hasChecked = Array.from(checkboxes).some(cb => cb.checked);
+
+            if (statusEl.innerText === "✅" || statusEl.innerText === "❓") {
+                statusEl.innerText = "❌";
+                // Bei "nicht geschrieben" (Kreuz) alle ausgewählten Rhythmen wieder abwählen
+                checkboxes.forEach(cb => cb.checked = false);
+            } else if (statusEl.innerText === "❌") {
+                statusEl.innerText = hasChecked ? "✅" : "❓";
+            }
+            updateSubmitButtonState();
+        }
+        const PARAMETER_CONFIG = [
+            { id: "rr-sys", label: "RR Sys", unit: "mmHg", type: "number", maxLen: 3, placeholder: "120", class: "narrow", minPlaus: 50, maxPlaus: 240 },
+            { id: "rr-dia", label: "RR Dia", unit: "mmHg", type: "number", maxLen: 3, placeholder: "80", class: "narrow", minPlaus: 30, maxPlaus: 140 },
+            { id: "hf", label: "HF", unit: "/min", type: "number", maxLen: 4, placeholder: "75", minPlaus: 30, maxPlaus: 200 },
+            { id: "puls", label: "Puls", unit: "/min", type: "number", maxLen: 4, placeholder: "72", minPlaus: 30, maxPlaus: 200 },
+            { id: "bz", label: "BZ", unit: "mg/dl", type: "text", maxLen: 5, placeholder: "HI", minPlaus: 40, maxPlaus: 450, isTextAllowed: true },
+            { id: "af", label: "AF", unit: "/min", type: "number", maxLen: 4, placeholder: "14", minPlaus: 6, maxPlaus: 35 },
+            { id: "temp", label: "Temp", unit: "°C", type: "text", maxLen: 5, placeholder: "36.5", minPlaus: 30.0, maxPlaus: 42.5, isTextAllowed: true },
+            { id: "gcs", label: "GCS", unit: "", type: "number", maxLen: 2, placeholder: "15", minPlaus: 3, maxPlaus: 15 },
+            { id: "nrs", label: "NRS", unit: "/10", type: "number", maxLen: 2, placeholder: "4", minPlaus: 0, maxPlaus: 10 }
+        ];
+
+        const textarea = document.getElementById("freitext");
+        const submitBtn = document.getElementById("submit-btn");
+        const kiSelect = document.getElementById("ki-select");
+        const vorlageScrollContainer = document.getElementById("vorlage-scroll-container");
+        const loeschSliderContainer = document.getElementById("loesch-slider-container");
+        const deleteSlider = document.getElementById("delete-slider");
+        const overlay = document.getElementById("overlay");
+        const loadingDiv = document.getElementById("overlay-loading");
+        const successDiv = document.getElementById("overlay-success");
+        const countdownEl = document.getElementById("countdown-text");
+        const connectBleBtn = document.getElementById("connect-ble-btn");
+
+        const OPTIONEN_NAMEN = {
+            "metamizol_w": "Metamizol ♀️",
+            "metamizol_m": "Metamizol ♂️",
+            "mitfahrt_w": "Transportverweigerung ♀️",
+            "mitfahrt_m": "Transportverweigerung ♂️",
+            "hilfe_w": "Hilfeleistung ♀️",
+            "hilfe_m": "Hilfeleistung ♂️",
+            "abcde": "ABCDE",
+            "abcdesampler": "ABCDE SAMPLER",
+            "sampler": "SAMPLER / OPQRST"
+        };
+
+        const EKG_RYHTMEN = [
+            { id: "ekg-sr", label: "Sinusrhythmus (SR)" },
+            { id: "ekg-vhf", label: "Vorhofflimmern (VHF)" },
+            { id: "ekg-vhflat", label: "Vorhofflattern" },
+            { id: "ekg-svt", label: "Supraventrikuläre Tachykardie (SVT)" },
+            { id: "ekg-vt", label: "Ventrikuläre Tachykardie (VT)" },
+            { id: "ekg-kf", label: "Kammerflimmern (KF)" },
+            { id: "ekg-asystolie", label: "Asystolie" },
+            { id: "ekg-pea", label: "PEA (Pulslose elektrische Aktivität)" },
+            { id: "ekg-brady", label: "Schrittmacherrhythmus" },
+            { id: "ekg-av1", label: "AV-Block I°" },
+            { id: "ekg-av2w", label: "AV-Block II° (Wenckebach)" },
+            { id: "ekg-av2m", label: "AV-Block II° (Mobitz)" },
+            { id: "ekg-av3", label: "AV-Block III°" },
+            { id: "ekg-lsb", label: "Linksschenkelblock (LSB / LBBB)" },
+            { id: "ekg-rsb", label: "Rechtsschenkelblock (RSB / RBBB)" },
+            { id: "ekg-stemi", label: "STEMI (Herzinfarkt)" },
+            { id: "ekg-ves", label: "Extrasystolen (VES)" },
+            { id: "ekg-brady", label: "Bradykardie" },
+            { id: "ekg-tachy", label: "Tachykardie" }
+        ];
+
+        // Helper zur dynamischen und fehlertoleranten Bestimmung des Installationspfads
+        function ermittleRessourcenPfad(dateiname) {
+            let pfad = dateiname;
+            const pathnameLower = window.location.pathname.toLowerCase();
+            if (pathnameLower.includes('/retterprotokoll')) {
+                const segments = window.location.pathname.split('/');
+                const repoIndex = segments.findIndex(seg => seg.toLowerCase() === 'retterprotokoll');
+                if (repoIndex !== -1) {
+                    pfad = '/' + segments.slice(1, repoIndex + 1).join('/') + '/' + dateiname;
+                }
+            }
+            return pfad;
+        }
+
+        // ==========================================
+        // SERVICE WORKER LOGIK
+        // ==========================================
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const swPfad = ermittleRessourcenPfad('sw.js');
+                navigator.serviceWorker.register(swPfad, { updateViaCache: 'none' })
+                .then(reg => {
+                    if (reg.waiting) zeigeUpdateBanner(reg.waiting);
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                zeigeUpdateBanner(newWorker);
+                            }
+                        });
+                    });
+                });
+            });
+
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!refreshing) {
+                    refreshing = true;
+                    window.location.reload();
+                }
+            });
+        }
+
+        function zeigeUpdateBanner(worker) {
+            const banner = document.getElementById('update-banner');
+            const btn = document.getElementById('update-btn');
+            if (banner && btn) {
+                banner.style.display = 'block';
+                btn.onclick = () => worker.postMessage({ action: 'skipWaiting' });
+            }
+        }
+
+        // ==========================================
+        // AUTHENTICATION LOGIK
+        // ==========================================
+        auth.onAuthStateChanged(async (user) => {
+            const loginScreen = document.getElementById("login-screen");
+            const appScreen = document.getElementById("app-screen");
+            const editorScreen = document.getElementById("editor-screen");
+
+            if (user) {
+                currentUser = user;
+                loginScreen.style.display = "none";
+                
+                await ladeBenutzerProfil(user.uid);
+                
+                appScreen.style.display = "block";
+            } else {
+                currentUser = null;
+                ACTIVE_PROFILE = null;
+                appScreen.style.display = "none";
+                editorScreen.style.display = "none";
+                loginScreen.style.display = "block";
+            }
+        });
+
+         function toggleAuthFields() {
+            const isRegister = document.getElementById("tab-register").checked;
+            document.getElementById("reg-name-field").style.display = isRegister ? "block" : "none";
+            document.getElementById("reg-password-confirm-field").style.display = isRegister ? "block" : "none";
+            document.getElementById("auth-submit-btn").innerText = isRegister ? "Registrieren & starten" : "Anmelden";
+            document.getElementById("forgot-password-link").style.display = isRegister ? "none" : "block";
+        }
+
+          async function fuehreAuthAus() {
+            const isRegister = document.getElementById("tab-register").checked;
+            const email = document.getElementById("auth-email").value.trim();
+            const password = document.getElementById("auth-password").value;
+            const passwordConfirm = document.getElementById("auth-password-confirm").value;
+            const name = document.getElementById("auth-name").value.trim();
+            const errorEl = document.getElementById("auth-error-msg");
+
+            errorEl.style.display = "none";
+
+            if (!email || !password) {
+                zegeAuthFehler("Bitte füllen Sie alle Pflichtfelder aus.");
+                return;
+            }
+
+            try {
+                if (isRegister) {
+                    if (!name) {
+                        zegeAuthFehler("Bitte tragen Sie Ihren Namen ein.");
+                        return;
+                    }
+                    if (password !== passwordConfirm) {
+                        zegeAuthFehler("Die Passwörter stimmen nicht überein.");
+                        return;
+                    }
+                    // Temporär den Namen für den asynchronen Ablauf zwischenspeichern
+                    registrationName = name; 
+                
+                    // Registrierung durchführen (löst onAuthStateChanged aus)
+                    await auth.createUserWithEmailAndPassword(email, password);
+                } else {
+                    await auth.signInWithEmailAndPassword(email, password);
+                }
+            } catch (err) {
+                console.error(err);
+                zegeAuthFehler(uebersetzeFehlermeldung(err.code));
+            }
+        }
+
+        function logoffUser() {
+            // 1. Prüfen, ob ungespeicherter Text im Feld steht
+            if (textarea && textarea.value.trim() !== "") {
+                const abmeldungBestaetigen = confirm("Möchten Sie sich wirklich abmelden? Ihr aktueller Entwurf geht verloren.");
+                
+                // Wenn der Nutzer auf "Abbrechen" klickt, die Funktion sofort abbrechen
+                if (!abmeldungBestaetigen) {
+                    return; 
+                }
+            }
+
+            // 2. Falls der Nutzer abmelden möchte (oder kein Text da war):
+            // Textfeld leeren, damit die Browser-Sicherheitsabfrage nicht doppelt anspringt
+            if (textarea) {
+                textarea.value = "";
+            }
+            localStorage.removeItem("aktueller_entwurf");
+
+            // 3. Erst jetzt die eigentliche Abmeldung durchführen
+            auth.signOut().then(() => {
+                location.reload();
+            });
+        }
+        
+        function zegeAuthFehler(text) {
+            const errorEl = document.getElementById("auth-error-msg");
+            errorEl.innerText = text;
+            errorEl.style.display = "block";
+        }
+
+        function uebersetzeFehlermeldung(code) {
+            switch(code) {
+                case "auth/invalid-email": return "Ungültige E-Mail-Adresse.";
+                case "auth/user-not-found": return "Benutzer wurde nicht gefunden.";
+                case "auth/wrong-password": return "Falsches Passwort.";
+                case "auth/email-already-in-use": return "Diese E-Mail-Adresse wird bereits verwendet.";
+                case "auth/weak-password": return "Das Passwort muss mindestens 6 Zeichen lang sein.";
+                default: return "Fehler bei der Anmeldung. Bitte Eingaben prüfen.";
+            }
+        }
+        function zeigePasswortVergessen(show) {
+            const mainAuthView = document.getElementById("main-auth-view");
+            const forgotPasswordView = document.getElementById("forgot-password-view");
+            const loginTitle = document.getElementById("login-title");
+            const errorEl = document.getElementById("auth-error-msg");
+
+            errorEl.style.display = "none";
+
+            if (show) {
+                mainAuthView.style.display = "none";
+                forgotPasswordView.style.display = "block";
+                loginTitle.innerText = "Passwort zurücksetzen";
+            } else {
+                forgotPasswordView.style.display = "none";
+                mainAuthView.style.display = "block";
+                loginTitle.innerText = "RetterProtokoll Login";
+            }
+        }
+
+        async function sendePasswortZuruecksetzen() {
+            const email = document.getElementById("reset-email").value.trim();
+            const errorEl = document.getElementById("auth-error-msg");
+            errorEl.style.display = "none";
+
+            if (!email) {
+                zegeAuthFehler("Bitte geben Sie Ihre E-Mail-Adresse ein.");
+                return;
+            }
+
+            try {
+                await auth.sendPasswordResetEmail(email);
+                alert("Eine E-Mail zum Zurücksetzen des Passworts wurde an " + email + " versendet.");
+                zeigePasswortVergessen(false);
+            } catch (err) {
+                console.error(err);
+                zegeAuthFehler(uebersetzeFehlermeldung(err.code));
+            }
+        }
+        
+        // ==========================================
+        // FIRESTORE DATENBANK-OPERATIONEN
+        // ==========================================
+        async function ladeBenutzerProfil(userId) {
+          try {
+            const docRef = db.collection("users").doc(userId);
+            let doc = await docRef.get();
+
+            // Falls das Benutzerdokument nicht existiert, wird es initialisiert
+            if (!doc.exists) {
+                console.log("Profil nicht gefunden. Initialisiere mit Standardvorlagen...");
+            
+                // Bevorzuge den Registrierungsnamen, sonst Fallback auf E-Mail-Teil
+                const standardName = registrationName || ((currentUser && currentUser.email) ? currentUser.email.split('@')[0] : "Benutzer");
+            
+                await initialisiereNeuesProfil(userId, standardName);
+            
+                // Speicher wieder freigeben
+                registrationName = null;
+            
+                doc = await docRef.get();
+            }
+
+            if (doc.exists) {
+                ACTIVE_PROFILE = doc.data();
+                document.getElementById("app-title").innerText = `RetterProtokoll ${ACTIVE_PROFILE.name}`;
+                befuelleVorlagenButtons();
+                anpassenKiDropdowns();
+            } else {
+                console.error("Profil konnte nach Initialisierung nicht geladen werden.");
+            }
+        } catch (err) {
+            console.error("Fehler beim Laden des Profils:", err);
+        }
+    }
+
+        async function initialisiereNeuesProfil(userId, name) {
+            try {
+                console.log("Kopiere globale Standard-Vorlagen aus globalSettings/defaultTemplates...");
+                
+                // Standardkonfiguration aus globalSettings abrufen
+                const defaultTemplatesDoc = await db.collection("globalSettings").doc("defaultTemplates").get();
+                
+                if (!defaultTemplatesDoc.exists) {
+                    throw new Error("Das Standardvorlagen-Dokument (globalSettings/defaultTemplates) existiert nicht.");
+                }
+
+                const defaultData = defaultTemplatesDoc.data();
+
+                // Profil für den Benutzer erstellen
+                const neuesProfil = {
+                    id: userId,
+                    name: name,
+                    vorlagen: defaultData.vorlagen || {},
+                    prompts: defaultData.prompts || {}
+                };
+
+                // In der Collection "users" speichern
+                await db.collection("users").doc(userId).set(neuesProfil);
+                console.log("Neues Benutzerprofil erfolgreich erstellt.");
+            } catch (err) {
+                console.error("Fehler beim Erstellen des neuen Profils:", err);
+                alert("Fehler beim Erstellen des Profils: " + err.message + "\nEin leeres Profil wurde angelegt.");
+                
+                // Fallback im Fehlerfall
+                const leeresProfil = {
+                    id: userId,
+                    name: name,
+                    vorlagen: {},
+                    prompts: {}
+                };
+                await db.collection("users").doc(userId).set(leeresProfil);
+            }
+        }
+
+        function anpassenKiDropdowns() {
+            const kiContainer = document.getElementById("ki-selection-container");
+            const restoreOptKi = document.getElementById("restore-opt-ki");
+            const restoreSourceBt = document.getElementById("restore-source-bt");
+            const restoreSourceKi = document.getElementById("restore-source-ki");
+
+            if (!ACTIVE_PROFILE) return;
+
+            const prompts = ACTIVE_PROFILE.prompts || {};
+            const hatPrompts = Object.keys(prompts).length > 0;
+
+            if (hatPrompts) {
+                kiContainer.style.display = "block";
+                
+                kiSelect.innerHTML = '<option value="keine" selected>Keine KI (Text direkt senden)</option>';
+                Object.keys(prompts).forEach(key => {
+                    const opt = document.createElement("option");
+                    opt.value = key;
+                    opt.innerText = formatiereKey(key);
+                    kiSelect.appendChild(opt);
+                });
+
+                if (restoreOptKi) restoreOptKi.style.display = "flex";
+            } else {
+                kiContainer.style.display = "none";
+                kiSelect.value = "keine";
+                if (restoreOptKi) restoreOptKi.style.display = "none";
+                if (restoreSourceKi && restoreSourceKi.checked) {
+                    if (restoreSourceBt) restoreSourceBt.checked = true;
+                }
+            }
+        }
+
+         // ==========================================
+        // ERWEITERTE EDITOR-, PROMPT- & EINSTELLUNGSLOGIK
+        // ==========================================
+        function zeigeEditor() {
+            if (!ACTIVE_PROFILE) return;
+            document.getElementById("app-screen").style.display = "none";
+            document.getElementById("editor-screen").style.display = "block";
+
+            document.getElementById("tab-edit-templates").checked = true;
+            switchEditorTab();
+        }
+
+        function switchEditorTab() {
+            const selectedTab = document.querySelector('input[name="editortab"]:checked').value;
+            const contentSection = document.getElementById("editor-content-section");
+            const passwordSection = document.getElementById("editor-password-section");
+            const itemSelect = document.getElementById("editor-item-select");
+            const selectLabel = document.getElementById("editor-select-label");
+            const textLabel = document.getElementById("editor-text-label");
+            const newLabel = document.getElementById("new-item-label");
+            const newInput = document.getElementById("new-item-key");
+            const genderContainer = document.getElementById("new-item-gender-container");
+
+            // Zurücksetzen
+            document.getElementById("pw-error-msg").style.display = "none";
+            document.getElementById("new-password").value = "";
+            document.getElementById("new-password-confirm").value = "";
+            newInput.value = "";
+            document.getElementById("new-gender-n").checked = true;
+
+        if (selectedTab === "password") {
+            contentSection.style.display = "none";
+            passwordSection.style.display = "block";
+            if (ACTIVE_PROFILE) {
+                document.getElementById("edit-display-name").value = ACTIVE_PROFILE.name || "";
+            }
+        } else {
+                passwordSection.style.display = "none";
+                contentSection.style.display = "block";
+                itemSelect.innerHTML = "";
+
+                if (selectedTab === "templates") {
+                    selectLabel.innerText = "Vorlage wählen:";
+                    textLabel.innerText = "Inhalt bearbeiten:";
+                    newLabel.innerText = "Neue Vorlage erstellen:";
+                    newInput.placeholder = "Name der Vorlage (z.B. ABCDE)...";
+                    genderContainer.style.display = "flex"; // Geschlechtsfilter anzeigen
+                    
+                    Object.keys(ACTIVE_PROFILE.vorlagen || {}).forEach(key => {
+    const opt = document.createElement("option");
+    opt.value = key;
+    
+    let label = OPTIONEN_NAMEN[key];
+    if (!label) {
+        if (key.endsWith('_m')) {
+            label = formatiereKey(key.slice(0, -2)) + " ♂️";
+        } else if (key.endsWith('_w')) {
+            label = formatiereKey(key.slice(0, -2)) + " ♀️";
+        } else {
+            label = formatiereKey(key);
+        }
+    }
+    
+    opt.innerText = label;
+    itemSelect.appendChild(opt);
+});
+                } else if (selectedTab === "prompts") {
+                    selectLabel.innerText = "Prompt wählen:";
+                    textLabel.innerText = "Prompt-Text bearbeiten:";
+                    newLabel.innerText = "Neuen Prompt erstellen:";
+                    newInput.placeholder = "Name des Prompts (z.B. rechtschreibung)...";
+                    genderContainer.style.display = "none"; // Geschlechtsfilter ausblenden
+                    
+                    Object.keys(ACTIVE_PROFILE.prompts || {}).forEach(key => {
+                        const opt = document.createElement("option");
+                        opt.value = key;
+                        opt.innerText = formatiereKey(key);
+                        itemSelect.appendChild(opt);
+                    });
+                }
+                ladeEditorInhalt();
+            }
+        }
+
+        function ladeEditorInhalt() {
+            const selectedTab = document.querySelector('input[name="editortab"]:checked').value;
+            const key = document.getElementById("editor-item-select").value;
+            const textarea = document.getElementById("editor-item-text");
+
+            if (!ACTIVE_PROFILE || !key) {
+                textarea.value = "";
+                return;
+            }
+
+            if (selectedTab === "templates") {
+                textarea.value = ACTIVE_PROFILE.vorlagen[key] || "";
+            } else if (selectedTab === "prompts") {
+                textarea.value = ACTIVE_PROFILE.prompts[key] || "";
+            }
+        }
+
+        function erstelleNeuesElement() {
+            const selectedTab = document.querySelector('input[name="editortab"]:checked').value;
+            const inputEl = document.getElementById("new-item-key");
+            const nameRaw = inputEl.value.trim();
+
+            if (!nameRaw) {
+                alert("Bitte geben Sie einen Namen ein.");
+                return;
+            }
+
+            // Normalisierung der Eingabe für die Datenbank
+            let dbKey = nameRaw.toLowerCase()
+                .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+                .replace(/[^a-z0-9_]/g, '_')
+                .replace(/_+/g, '_');
+
+            if (dbKey.startsWith('_')) dbKey = dbKey.substring(1);
+            if (dbKey.endsWith('_')) dbKey = dbKey.slice(0, -1);
+
+            if (!dbKey) {
+                alert("Ungültiger Name.");
+                return;
+            }
+
+            if (selectedTab === "templates") {
+                const gender = document.querySelector('input[name="newgender"]:checked').value;
+                
+                // Eventuell bereits eingetippte Endungen entfernen, um Doppelungen zu vermeiden
+                dbKey = dbKey.replace(/_m$/, '').replace(/_w$/, '');
+
+                if (gender === "m") {
+                    dbKey += "_m";
+                } else if (gender === "w") {
+                    dbKey += "_w";
+                }
+
+                if (!ACTIVE_PROFILE.vorlagen) ACTIVE_PROFILE.vorlagen = {};
+                if (ACTIVE_PROFILE.vorlagen[dbKey] !== undefined) {
+                    alert("Diese Vorlage existiert bereits.");
+                    return;
+                }
+                ACTIVE_PROFILE.vorlagen[dbKey] = "";
+            } else if (selectedTab === "prompts") {
+                if (!ACTIVE_PROFILE.prompts) ACTIVE_PROFILE.prompts = {};
+                if (ACTIVE_PROFILE.prompts[dbKey] !== undefined) {
+                    alert("Dieser Prompt existiert bereits.");
+                    return;
+                }
+                ACTIVE_PROFILE.prompts[dbKey] = "";
+            }
+
+            inputEl.value = "";
+            
+            // Editor neu laden und das neue Element direkt auswählen
+            switchEditorTab();
+            document.getElementById("editor-item-select").value = dbKey;
+            ladeEditorInhalt();
+            document.getElementById("editor-item-text").focus();
+        }
+
+        async function speichereEditorAenderung() {
+            const selectedTab = document.querySelector('input[name="editortab"]:checked').value;
+            const key = document.getElementById("editor-item-select").value;
+            const text = document.getElementById("editor-item-text").value;
+
+            if (!ACTIVE_PROFILE || !key || !currentUser) return;
+
+            if (selectedTab === "templates") {
+                ACTIVE_PROFILE.vorlagen[key] = text;
+            } else if (selectedTab === "prompts") {
+                ACTIVE_PROFILE.prompts[key] = text;
+            }
+
+            try {
+                await db.collection("users").doc(currentUser.uid).set(ACTIVE_PROFILE, { merge: true });
+                alert("Änderungen erfolgreich in der Cloud gespeichert!");
+                befuelleVorlagenButtons();
+                anpassenKiDropdowns();
+            } catch (err) {
+                console.error("Firestore-Fehler beim Speichern:", err);
+                alert("Speichern fehlgeschlagen. Keine Berechtigung oder offline.");
+            }
+        }
+
+        async function loescheEditorElement() {
+            const selectedTab = document.querySelector('input[name="editortab"]:checked').value;
+            const key = document.getElementById("editor-item-select").value;
+
+            if (!ACTIVE_PROFILE || !key || !currentUser) {
+                alert("Kein Element zum Löschen ausgewählt.");
+                return;
+            }
+
+            const anzeigenName = OPTIONEN_NAMEN[key] || formatiereKey(key);
+            if (!confirm(`Möchten Sie das Element "${anzeigenName}" wirklich unwiderruflich löschen?`)) {
+                return;
+            }
+
+            if (selectedTab === "templates") {
+                if (ACTIVE_PROFILE.vorlagen && ACTIVE_PROFILE.vorlagen[key] !== undefined) {
+                    delete ACTIVE_PROFILE.vorlagen[key];
+                }
+            } else if (selectedTab === "prompts") {
+                if (ACTIVE_PROFILE.prompts && ACTIVE_PROFILE.prompts[key] !== undefined) {
+                    delete ACTIVE_PROFILE.prompts[key];
+                }
+            }
+
+            try {
+                await db.collection("users").doc(currentUser.uid).set(ACTIVE_PROFILE);
+                alert("Element erfolgreich gelöscht!");
+                
+                befuelleVorlagenButtons();
+                anpassenKiDropdowns();
+                switchEditorTab();
+            } catch (err) {
+                console.error("Firestore-Fehler beim Löschen:", err);
+                alert("Löschen fehlgeschlagen. Keine Berechtigung oder offline.");
+            }
+        }
+
+        async function fuehreProfilAenderungAus() {
+            const newDisplayName = document.getElementById("edit-display-name").value.trim();
+            const newPassword = document.getElementById("new-password").value;
+            const confirmPassword = document.getElementById("new-password-confirm").value;
+            const errorEl = document.getElementById("pw-error-msg");
+
+            errorEl.style.display = "none";
+
+            if (!newDisplayName) {
+                errorEl.innerText = "Bitte geben Sie einen Anzeigenamen ein.";
+                errorEl.style.display = "block";
+                return;
+            }
+
+            const user = auth.currentUser;
+            if (!user || !ACTIVE_PROFILE) {
+                errorEl.innerText = "Kein angemeldeter Benutzer gefunden.";
+                errorEl.style.display = "block";
+                return;
+            }
+
+            try {
+                let profilGeaendert = false;
+
+                // 1. Anzeigename in Firestore aktualisieren, falls geändert
+                if (newDisplayName !== ACTIVE_PROFILE.name) {
+                    ACTIVE_PROFILE.name = newDisplayName;
+                    await db.collection("users").doc(user.uid).set(ACTIVE_PROFILE);
+                    document.getElementById("app-title").innerText = `RetterProtokoll ${ACTIVE_PROFILE.name}`;
+                    profilGeaendert = true;
+                }
+
+                // 2. Passwort aktualisieren, falls Felder ausgefüllt sind
+                if (newPassword || confirmPassword) {
+                    if (newPassword.length < 6) {
+                        errorEl.innerText = "Das neue Passwort muss mindestens 6 Zeichen lang sein.";
+                        errorEl.style.display = "block";
+                        return;
+                    }
+                    if (newPassword !== confirmPassword) {
+                        errorEl.innerText = "Die Passwörter stimmen nicht überein.";
+                        errorEl.style.display = "block";
+                        return;
+                    }
+                    await user.updatePassword(newPassword);
+                    document.getElementById("new-password").value = "";
+                    document.getElementById("new-password-confirm").value = "";
+                    profilGeaendert = true;
+                }
+
+                if (profilGeaendert) {
+                    alert("Änderungen erfolgreich gespeichert!");
+                } else {
+                    alert("Keine Änderungen vorgenommen.");
+                }
+            } catch (err) {
+                console.error("Fehler beim Aktualisieren des Profils:", err);
+                if (err.code === "auth/requires-recent-login") {
+                    errorEl.innerText = "Aus Sicherheitsgründen müssen Sie sich neu anmelden, um sensible Profildaten oder Passwörter zu ändern.";
+                } else {
+                    errorEl.innerText = "Fehler: " + err.message;
+                }
+                errorEl.style.display = "block";
+            }
+        }
+
+        // ==========================================
+        // SYSTEM ZUM STANDARD-ABGLEICH (IMPORT)
+        // ==========================================
+        async function zeigeImportOverlay() {
+            if (!ACTIVE_PROFILE) return;
+            
+            try {
+                // Lokale Arbeitskopie der Benutzerdaten anlegen (für temporäre Übernahme)
+                tempImportProfile = JSON.parse(JSON.stringify(ACTIVE_PROFILE));
+                
+                // Globale Standard-Templates & Prompts laden
+                const defaultTemplatesDoc = await db.collection("globalSettings").doc("defaultTemplates").get();
+                if (!defaultTemplatesDoc.exists) {
+                    alert("Globale Standards konnten nicht geladen werden.");
+                    return;
+                }
+                
+                globalDefaultsCache = defaultTemplatesDoc.data();
+                
+                // Overlay anzeigen
+                document.getElementById("global-import-overlay").style.display = "flex";
+                document.getElementById("import-type-templates").checked = true;
+                switchImportType();
+            } catch (err) {
+                console.error("Fehler beim Laden der globalen Standards:", err);
+                alert("Fehler beim Laden der Standards: " + err.message);
+            }
+        }
+
+        function switchImportType() {
+            if (!globalDefaultsCache) return;
+            const selectedType = document.querySelector('input[name="importtype"]:checked').value;
+            const importSelect = document.getElementById("import-item-select");
+            importSelect.innerHTML = "";
+            
+            const source = selectedType === "templates" ? (globalDefaultsCache.vorlagen || {}) : (globalDefaultsCache.prompts || {});
+            
+            Object.keys(source).forEach(key => {
+                const opt = document.createElement("option");
+                opt.value = key;
+                
+                let label = OPTIONEN_NAMEN[key];
+                if (!label) {
+                    if (key.endsWith('_m')) {
+                        label = formatiereKey(key.slice(0, -2)) + " ♂️";
+                    } else if (key.endsWith('_w')) {
+                        label = formatiereKey(key.slice(0, -2)) + " ♀️";
+                    } else {
+                        label = formatiereKey(key);
+                    }
+                }
+                opt.innerText = label;
+                importSelect.appendChild(opt);
+            });
+            
+            ladeImportVergleich();
+        }
+
+        function ladeImportVergleich() {
+            if (!globalDefaultsCache || !tempImportProfile) return;
+            const selectedType = document.querySelector('input[name="importtype"]:checked').value;
+            const key = document.getElementById("import-item-select").value;
+            
+            const globalPreview = document.getElementById("import-global-preview");
+            const userPreview = document.getElementById("import-user-preview");
+            
+            if (!key) {
+                globalPreview.value = "";
+                userPreview.value = "";
+                return;
+            }
+            
+            if (selectedType === "templates") {
+                globalPreview.value = globalDefaultsCache.vorlagen[key] || "";
+                userPreview.value = (tempImportProfile.vorlagen && tempImportProfile.vorlagen[key] !== undefined) 
+                    ? tempImportProfile.vorlagen[key] 
+                    : "";
+            } else {
+                globalPreview.value = globalDefaultsCache.prompts[key] || "";
+                userPreview.value = (tempImportProfile.prompts && tempImportProfile.prompts[key] !== undefined) 
+                    ? tempImportProfile.prompts[key] 
+                    : "";
+            }
+        }
+
+        function uebernehmeEinzelnenStandard() {
+            if (!globalDefaultsCache || !tempImportProfile) return;
+            const selectedType = document.querySelector('input[name="importtype"]:checked').value;
+            const key = document.getElementById("import-item-select").value;
+            
+            if (!key) return;
+            
+            if (selectedType === "templates") {
+                if (!tempImportProfile.vorlagen) tempImportProfile.vorlagen = {};
+                tempImportProfile.vorlagen[key] = globalDefaultsCache.vorlagen[key] || "";
+            } else {
+                if (!tempImportProfile.prompts) tempImportProfile.prompts = {};
+                tempImportProfile.prompts[key] = globalDefaultsCache.prompts[key] || "";
+            }
+            
+            ladeImportVergleich();
+            alert(`"${formatiereKey(key)}" wurde temporär übernommen. Klicke am Ende auf "Alle Änderungen speichern", um es dauerhaft zu sichern.`);
+        }
+
+        function uebernehmeAlleStandards() {
+            if (!globalDefaultsCache || !tempImportProfile) return;
+            
+            const confirmAll = confirm("Möchtest du wirklich ALLE globalen Standards temporär übernehmen? Deine vorhandenen Vorlagen/Prompts mit gleichem Namen werden überschrieben, und gelöschte Elemente werden wiederhergestellt.");
+            if (!confirmAll) return;
+            
+            // Vorlagen mergen
+            if (globalDefaultsCache.vorlagen) {
+                if (!tempImportProfile.vorlagen) tempImportProfile.vorlagen = {};
+                Object.keys(globalDefaultsCache.vorlagen).forEach(key => {
+                    tempImportProfile.vorlagen[key] = globalDefaultsCache.vorlagen[key];
+                });
+            }
+            
+            // Prompts mergen
+            if (globalDefaultsCache.prompts) {
+                if (!tempImportProfile.prompts) tempImportProfile.prompts = {};
+                Object.keys(globalDefaultsCache.prompts).forEach(key => {
+                    tempImportProfile.prompts[key] = globalDefaultsCache.prompts[key];
+                });
+            }
+            
+            ladeImportVergleich();
+            alert("Alle globalen Vorlagen und Prompts wurden temporär in die Arbeitskopie geladen. Klicke jetzt auf 'Alle Änderungen speichern', um sie dauerhaft zu sichern!");
+        }
+
+        async function speichereImportierteAenderungen() {
+            if (!tempImportProfile || !currentUser) return;
+            
+            try {
+                // In die Benutzer-Dokument-Cloud von Firestore schreiben
+                await db.collection("users").doc(currentUser.uid).set(tempImportProfile);
+                
+                // Lokales Profil aktualisieren
+                ACTIVE_PROFILE = JSON.parse(JSON.stringify(tempImportProfile));
+                
+                alert("Die übernommenen Standards wurden erfolgreich in deinem Profil gespeichert!");
+                
+                // UI aktualisieren
+                befuelleVorlagenButtons();
+                anpassenKiDropdowns();
+                if (document.getElementById("editor-screen").style.display === "block") {
+                    switchEditorTab();
+                }
+                schliesseImportOverlay();
+            } catch (err) {
+                console.error("Fehler beim Speichern der importierten Standards:", err);
+                alert("Fehler beim Speichern: " + err.message);
+            }
+        }
+
+        function schliesseImportOverlay() {
+            document.getElementById("global-import-overlay").style.display = "none";
+            globalDefaultsCache = null;
+            tempImportProfile = null;
+        }
+
+        // ==========================================
+        // BLUETOOTH & UI SYSTEMLOGIK
+        // ==========================================
+async function connectBluetooth() {
+    if (!navigator.bluetooth) {
+        alert("Web Bluetooth wird von diesem Browser nicht unterstützt.");
+        return;
+    }
+    const iconEl = document.getElementById("connect-icon");
+    const textEl = document.getElementById("connect-text");
+    try {
+        if (iconEl && textEl) {
+            iconEl.innerText = "bluetooth_searching";
+            textEl.innerText = "Suche...";
+        }
+        bleDevice = await navigator.bluetooth.requestDevice({
+            filters: [{ services: [BLE_SERVICE_UUID] }]
+        });
+        if (iconEl && textEl) {
+            iconEl.innerText = "bluetooth_searching";
+            textEl.innerText = "Verbinde...";
+        }
+        const server = await bleDevice.gatt.connect();
+        const service = await server.getPrimaryService(BLE_SERVICE_UUID);
+        rxCharacteristic = await service.getCharacteristic(BLE_RX_UUID);
+        txCharacteristic = await service.getCharacteristic(BLE_TX_UUID);
+        await txCharacteristic.startNotifications();
+        txCharacteristic.addEventListener('characteristicvaluechanged', handleBleNotification);
+
+        if (iconEl && textEl) {
+            iconEl.innerText = "bluetooth_connected"; // Das offizielle Verbunden-Symbol mit Punkten
+            textEl.innerText = bleDevice.name ? bleDevice.name.substring(0, 10) : "Verbunden";
+        }
+        connectBleBtn.style.background = "#2563eb";
+        bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
+        updateSubmitButtonState();
+    } catch (error) {
+        console.error("Bluetooth Fehler: ", error);
+        if (iconEl && textEl) {
+            iconEl.innerText = "bluetooth_disabled";
+            textEl.innerText = "Fehler";
+        }
+        connectBleBtn.style.background = "#dc2626";
+        onDisconnected();
+    }
+}
+
+function onDisconnected() {
+    const iconEl = document.getElementById("connect-icon");
+    const textEl = document.getElementById("connect-text");
+    if (iconEl && textEl) {
+        iconEl.innerText = "bluetooth";
+        textEl.innerText = "Verbinden";
+    }
+    connectBleBtn.style.background = "#dc2626";
+    bleDevice = null;
+    rxCharacteristic = null;
+    txCharacteristic = null;
+    updateSubmitButtonState();
+}
+
+        function handleBleNotification(event) {
+            const decoder = new TextDecoder();
+            const value = decoder.decode(event.target.value).trim();
+            if (value === "DONE") {
+                loadingDiv.style.display = "none";
+                successDiv.style.display = "block";
+                localStorage.removeItem("aktueller_entwurf");
+                clearMesswerte();
+            } else if (value === "STOPPED") {
+                alert("Der Tippvorgang wurde erfolgreich abgebrochen.");
+                resetForm();
+            } else if (value === "BUSY") {
+                alert("Das Gerät ist beschäftigt.");
+                resetForm();
+            }
+        }
+
+        async function sendeStopSignal() {
+            if (!rxCharacteristic) return;
+            try {
+                countdownEl.innerText = "Abbruchsignal wird gesendet...";
+                const encoder = new TextEncoder();
+                await rxCharacteristic.writeValueWithResponse(encoder.encode("STOP"));
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        // Generiert den Inhalt für die Vorlagen-Buttons inklusive Material Symbols Icons
+function erzeugeVorlagenButtonInhalt(key) {
+    let baseKey = key;
+    let iconHtml = '';
+    
+    if (key.endsWith('_m')) {
+        baseKey = key.slice(0, -2); // Entfernt das "_m" am Ende
+        iconHtml = '<span class="material-symbols-outlined" style="font-size: 18px; margin-left: 6px; vertical-align: middle;">male</span>';
+    } else if (key.endsWith('_w')) {
+        baseKey = key.slice(0, -2); // Entfernt das "_w" am Ende
+        iconHtml = '<span class="material-symbols-outlined" style="font-size: 18px; margin-left: 6px; vertical-align: middle;">female</span>';
+    }
+    
+    // Holt den Text aus OPTIONEN_NAMEN (falls manuell hinterlegt) oder formatiert den Schlüssel
+    let text = OPTIONEN_NAMEN[key] || OPTIONEN_NAMEN[baseKey] || formatiereKey(baseKey);
+    
+    // Falls im hinterlegten Namen bereits Text-Emojis wie ♂️ oder ♀️ enthalten sind, entfernen wir diese
+    text = text.replace(/[♀️♂️]/g, '').trim();
+    
+    return `<span>${text}</span>${iconHtml}`;
+}
+
+        function befuelleVorlagenButtons() {
+    vorlageScrollContainer.innerHTML = '';
+    if (!ACTIVE_PROFILE) return;
+
+    const selectedGenderElement = document.querySelector('input[name="gender"]:checked');
+    const selectedGender = selectedGenderElement ? selectedGenderElement.value : 'm';
+
+    const keys = Object.keys(ACTIVE_PROFILE.vorlagen || {});
+    
+    let filteredKeys = [];
+    if (selectedGender === 'm') {
+        filteredKeys = keys.filter(key => !key.endsWith('_w'));
+    } else if (selectedGender === 'w') {
+        filteredKeys = keys.filter(key => !key.endsWith('_m'));
+    } else {
+        filteredKeys = keys;
+    }
+
+    filteredKeys.forEach(key => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "scroll-btn";
+        
+        // Sorgt für eine saubere Ausrichtung von Text und Icon nebeneinander
+        btn.style.display = "inline-flex";
+        btn.style.alignItems = "center";
+        btn.style.justifyContent = "center";
+        
+        // Dynamischen HTML-Inhalt mit dem Icon einfügen
+        btn.innerHTML = erzeugeVorlagenButtonInhalt(key);
+        
+        btn.onclick = () => vorlageEinfuegen(key);
+        vorlageScrollContainer.appendChild(btn);
+    });
+}
+
+        // Formatierung von DB-Schlüsseln zur Anzeige
+        function formatiereKey(key) {
+            return key.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+        }
+
+        function zeigeLoeschSlider() {
+            const text = textarea.value.trim();
+            if (!text) {
+                alert("Das Textfeld ist bereits leer.");
+                return;
+            }
+            loeschSliderContainer.classList.toggle("show");
+            resetSliderStyles();
+        }
+
+        function resetSliderStyles() {
+            loeschSliderContainer.style.backgroundColor = "";
+            loeschSliderContainer.style.borderColor = "";
+            deleteSlider.value = 0;
+            const textSpan = document.querySelector(".slide-text");
+            if (textSpan) {
+                textSpan.style.opacity = 1;
+                textSpan.style.transform = "translateX(0)";
+            }
+        }
+
+        function handleSliderInput(slider) {
+            const textSpan = document.querySelector(".slide-text");
+            const val = slider.value;
+            if (textSpan) {
+                textSpan.style.opacity = (100 - val) / 100;
+                textSpan.style.transform = `translateX(-${val * 0.2}px)`;
+            }
+            loeschSliderContainer.style.backgroundColor = `color-mix(in srgb, var(--md-color-error-container) ${val}%, var(--md-color-surface-container))`;
+            loeschSliderContainer.style.borderColor = `color-mix(in srgb, var(--md-color-error) ${val}%, var(--md-color-outline-variant))`;
+        }
+
+        function handleSliderChange(slider) {
+            if (slider.value == 100) {
+                textarea.value = "";
+                localStorage.removeItem("aktueller_entwurf");
+                autoResize();
+                updateSubmitButtonState();
+                loeschSliderContainer.classList.remove("show");
+                setTimeout(resetSliderStyles, 300);
+            } else {
+                resetSliderStyles();
+            }
+        }
+
+        function inZwischenablageKopieren(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                return navigator.clipboard.writeText(text);
+            } else {
+                const tempTextArea = document.createElement("textarea");
+                tempTextArea.value = text;
+                tempTextArea.style.position = "fixed"; 
+                document.body.appendChild(tempTextArea);
+                tempTextArea.focus();
+                tempTextArea.select();
+                try { document.execCommand("copy"); } catch (err) {}
+                document.body.removeChild(tempTextArea);
+                return Promise.resolve();
+            }
+        }
+
+        function updateSubmitButtonState() {
+            const text = textarea.value.trim();
+            const kiAuswahl = kiSelect ? kiSelect.value : 'keine';
+
+            if (text === "") {
+                submitBtn.disabled = true;
+                submitBtn.className = "btn-disabled";
+                submitBtn.innerText = "Text senden";
+            } else {
+                submitBtn.disabled = false;
+                if (kiAuswahl !== "keine") {
+                    submitBtn.className = "btn-ki";
+                    submitBtn.innerText = "An KI senden";
+                } else {
+                    if (rxCharacteristic) {
+                        submitBtn.className = "btn-device";
+                        submitBtn.innerText = "Über Bluetooth senden";
+                    } else {
+                        submitBtn.className = "btn-disabled";
+                        submitBtn.innerText = "Bitte erst Bluetooth verbinden";
+                        submitBtn.disabled = true;
+                    }
+                }
+            }
+        }
+
+        // Back-Button-Routing
+        function zurueckZurHauptseite() {
+            document.getElementById("editor-screen").style.display = "none";
+            document.getElementById("app-screen").style.display = "block";
+            autoResize();
+            updateSubmitButtonState();
+        }
+
+        function anwendenAusgewaehltenText() {
+            const selectedSource = document.querySelector('input[name="restore-source"]:checked').value;
+            let gespeicherterText = "";
+            if (selectedSource === "bt") {
+                gespeicherterText = localStorage.getItem("letzter_gesendeter_text");
+            } else if (selectedSource === "ki") {
+                gespeicherterText = localStorage.getItem("letzter_ki_gesendeter_text");
+            }
+
+            if (gespeicherterText) {
+                textarea.value = gespeicherterText;
+                localStorage.setItem("aktueller_entwurf", gespeicherterText);
+                autoResize();
+                updateSubmitButtonState();
+            } else {
+                alert("Kein entsprechender Text im Speicher gefunden.");
+            }
+        }
+
+        function toggleMesswerte() {
+            const container = document.getElementById("messwerte-container");
+            const btn = document.getElementById("toggle-messwerte-btn");
+            if (container.style.display === "none") {
+                container.style.display = "block";
+                btn.innerText = "📊 Messwerte ausblenden";
+            } else {
+                container.style.display = "none";
+                btn.innerText = "📊 Messwerte eingeben";
+            }
+        }
+
+        function renderEkgChecklist() {
+            const container = document.getElementById("ekg-checklist-container");
+            container.innerHTML = "";
+            EKG_RYHTMEN.forEach(item => {
+                const label = document.createElement("label");
+                label.className = "ekg-item-row";
+                label.htmlFor = item.id;
+                
+                const cb = document.createElement("input");
+                cb.type = "checkbox";
+                cb.value = item.label;
+                cb.id = item.id;
+                cb.className = "ekg-checkbox";
+                
+                // Event-Listener hinzufügen
+                cb.addEventListener("change", handleEkgCheckboxChange);
+                
+                const span = document.createElement("span");
+                span.innerText = item.label;
+                
+                label.appendChild(cb);
+                label.appendChild(span);
+                container.appendChild(label);
+          });
+        }
+        function handleEkgCheckboxChange() {
+            const statusEl = document.getElementById("status-ekg");
+            if (!statusEl) return;
+            const checkboxes = document.querySelectorAll(".ekg-checkbox");
+            const hasChecked = Array.from(checkboxes).some(cb => cb.checked);
+
+            if (hasChecked) {
+                if (statusEl.innerText === "❓" || statusEl.innerText === "❌") {
+                    statusEl.innerText = "✅";
+                }
+            } else {
+                if (statusEl.innerText === "✅") {
+                    statusEl.innerText = "❓";
+                }
+            }
+            updateSubmitButtonState();
+        }
+        function limitLength(el, max) {
+            if (el.value.length > max) el.value = el.value.slice(0, max);
+        }
+
+        function renderMesswerteInput() {
+            const container = document.getElementById("messwerte-grid-container");
+            container.innerHTML = "";
+            PARAMETER_CONFIG.forEach(cfg => {
+                const div = document.createElement("div");
+                div.className = `messwerte-item ${cfg.class || ""}`;
+                
+                div.innerHTML = `
+                    <div class="status-container">
+                        <label for="mw-${cfg.id}">${cfg.label}</label>
+                        <span id="status-${cfg.id}" class="status-indicator" onclick="toggleStatus('${cfg.id}')">❓</span>
+                    </div>
+                    <input type="${cfg.type === 'number' ? 'number' : 'text'}" id="mw-${cfg.id}" placeholder="${cfg.placeholder}" autocomplete="off">
+                `;
+                
+                const inputEl = div.querySelector("input");
+                inputEl.addEventListener("input", () => {
+                    limitLength(inputEl, cfg.maxLen);
+                    handleValueInput(inputEl, `status-${cfg.id}`);
+                    checkPlausibility(inputEl, cfg);
+                });
+                container.appendChild(div);
+            });
+        }
+
+        function checkPlausibility(inputEl, config) {
+            const valStr = inputEl.value.trim().toLowerCase();
+            if (!valStr) {
+                inputEl.style.backgroundColor = "";
+                inputEl.style.borderColor = "";
+                return;
+            }
+            if (config.isTextAllowed && (valStr === "hi" || valStr === "low")) {
+                inputEl.style.backgroundColor = "";
+                inputEl.style.borderColor = "";
+                return;
+            }
+            const val = parseFloat(valStr.replace(',', '.'));
+            if (isNaN(val)) return;
+
+            if (val < config.minPlaus || val > config.maxPlaus) {
+                inputEl.style.borderColor = "var(--md-color-error)";
+                inputEl.style.backgroundColor = "rgba(186, 26, 26, 0.12)";
+            } else {
+                inputEl.style.backgroundColor = "";
+                inputEl.style.borderColor = "";
+            }
+        }
+
+        function handleValueInput(inputEl, statusId) {
+            const val = inputEl.value.trim();
+            const statusEl = document.getElementById(statusId);
+            if (val.length > 0) {
+                if (statusEl.innerText === "❓") {
+                    statusEl.innerText = "✅";
+                }
+            } else {
+                if (statusEl.innerText === "✅") {
+                    statusEl.innerText = "❓";
+                }
+            }
+            updateSubmitButtonState();
+        }
+
+        function toggleStatus(id) {
+            const statusEl = document.getElementById(`status-${id}`);
+            const inputEl = document.getElementById(`mw-${id}`);
+            if (!statusEl || !inputEl) return;
+            const hasValue = inputEl.value.trim().length > 0;
+
+            if (statusEl.innerText === "✅" || statusEl.innerText === "❓") {
+                statusEl.innerText = "❌";
+            } else if (statusEl.innerText === "❌") {
+                statusEl.innerText = hasValue ? "✅" : "❓";
+            }
+        }
+
+        function clearMesswerte() {
+            PARAMETER_CONFIG.forEach(cfg => {
+                const inputEl = document.getElementById(`mw-${cfg.id}`);
+                if (inputEl) {
+                    inputEl.value = "";
+                    inputEl.style.backgroundColor = "";
+                    inputEl.style.borderColor = "";
+                }
+            });
+            document.querySelectorAll(".ekg-checkbox").forEach(cb => cb.checked = false);
+            document.querySelectorAll(".status-indicator").forEach(ind => {
+                ind.innerText = "❓";
+            });
+        }
+
+        function formatMesswerteFuerAusgabe() {
+            let eintraege = [];
+            const getStatusOf = (id) => {
+                const el = document.getElementById(`status-${id}`);
+                return el ? el.innerText : null;
+            };
+
+            const sysStatus = getStatusOf("rr-sys");
+            const diaStatus = getStatusOf("rr-dia");
+            const sysVal = document.getElementById("mw-rr-sys").value.trim();
+            const diaVal = document.getElementById("mw-rr-dia").value.trim();
+
+            if (sysStatus !== "❓" || diaStatus !== "❓") {
+                if (sysStatus === "❌" || diaStatus === "❌") {
+                    eintraege.push("RR nicht gemessen");
+                } else {
+                    eintraege.push(`RR: ${sysVal || '??'}/${diaVal || '??'} mmHg`);
+                }
+            }
+
+            PARAMETER_CONFIG.forEach(cfg => {
+                if (cfg.id === "rr-sys" || cfg.id === "rr-dia") return;
+                const status = getStatusOf(cfg.id);
+                if (status !== "❓" && status !== null) {
+                    if (status === "❌") {
+                        eintraege.push(`${cfg.label} nicht gemessen`);
+                    } else {
+                        const rawVal = document.getElementById(`mw-${cfg.id}`).value.trim();
+                        eintraege.push(`${cfg.label}: ${rawVal}${cfg.unit ? ' ' + cfg.unit : ''}`);
+                    }
+                }
+            });
+
+           const ekgStatus = getStatusOf("ekg");
+            if (ekgStatus !== "❓" && ekgStatus !== null) {
+                if (ekgStatus === "❌") {
+                    eintraege.push("EKG nicht geschrieben");
+                } else {
+                    const ausgewaehlteEkg = [];
+                    document.querySelectorAll(".ekg-checkbox:checked").forEach(cb => ausgewaehlteEkg.push(cb.value));
+                    if (ausgewaehlteEkg.length > 0) {
+                        eintraege.push(`EKG: ${ausgewaehlteEkg.join(", ")}`);
+                    } else {
+                        eintraege.push("EKG gemessen");
+                    }
+                }
+            }
+
+            return eintraege.length > 0 ? "\n\nMesswerte: " + eintraege.join(" | ") : "";
+        }
+
+        function autoResize() {
+            textarea.style.height = 'auto';
+            const maxHeight = 350;
+            const newHeight = textarea.scrollHeight;
+            if (newHeight > maxHeight) {
+                textarea.style.height = maxHeight + 'px';
+                textarea.style.overflowY = 'auto';
+            } else {
+                textarea.style.height = (newHeight > 180 ? newHeight : 180) + 'px';
+                textarea.style.overflowY = 'hidden';
+            }
+        }
+
+        function vorlageEinfuegen(key) {
+            if (!ACTIVE_PROFILE) return;
+            const textEinfuegen = ACTIVE_PROFILE.vorlagen[key];
+            if (!textEinfuegen) return;
+
+            const aktuellerText = textarea.value.trim();
+            textarea.value = aktuellerText === "" ? textEinfuegen : aktuellerText + "\n\n" + textEinfuegen;
+            localStorage.setItem("aktueller_entwurf", textarea.value); 
+            autoResize();
+            updateSubmitButtonState();
+        }
+
+        function resetForm() {
+            textarea.value = "";
+            kiSelect.value = "keine";
+            loeschSliderContainer.classList.remove("show");
+            localStorage.removeItem("aktueller_entwurf"); 
+            clearMesswerte();
+            autoResize();
+            updateSubmitButtonState();
+            overlay.style.display = "none";
+        }
+
+        async function sendBleData(text) {
+            const fullText = text + "\x04";
+            const encoder = new TextEncoder();
+            const dataBytes = encoder.encode(fullText);
+            const chunkSize = 128;
+            for (let offset = 0; offset < dataBytes.length; offset += chunkSize) {
+                const chunk = dataBytes.slice(offset, offset + chunkSize);
+                await rxCharacteristic.writeValueWithResponse(chunk);
+                const prozent = Math.round(((offset + chunk.length) / dataBytes.length) * 100);
+                countdownEl.innerText = `Übertrage: ${prozent}%`;
+            }
+        }
+
+        async function handleFormSubmit(event) {
+            if (event) event.preventDefault();
+            if (!ACTIVE_PROFILE) return false;
+
+            const selectedProvider = document.querySelector('input[name="provider"]:checked');
+            const selectedProviderVal = selectedProvider ? selectedProvider.value : 'chatgpt';
+            const kiAuswahl = kiSelect.value;
+            
+            const basisText = textarea.value;
+            const messwerteText = formatMesswerteFuerAusgabe();
+            const textMitMesswerten = basisText + messwerteText;
+
+            if (kiAuswahl !== "keine") {
+                if (!basisText.trim()) {
+                    alert("Bitte schreiben oder wählen Sie zuerst einen Text.");
+                    return false;
+                }
+
+                const basisPrompt = ACTIVE_PROFILE.prompts[kiAuswahl] || "";
+                const promptString = basisPrompt + textMitMesswerten;
+
+                localStorage.setItem("letzter_ki_gesendeter_text", basisText);
+                
+                inZwischenablageKopieren(promptString);
+
+                let targetUrl = selectedProviderVal === 'chatgpt' 
+                    ? "https://chatgpt.com/?q=" + encodeURIComponent(promptString)
+                    : "https://gemini.google.com/";
+
+                window.open(targetUrl, "_blank");
+                
+                resetForm();
+                return false; 
+            }
+
+            if (!rxCharacteristic) {
+                alert("Bitte verbinden Sie zuerst das Bluetooth-Gerät.");
+                return false;
+            }
+
+            localStorage.setItem("letzter_gesendeter_text", basisText);
+            overlay.style.display = "flex";
+            loadingDiv.style.display = "block";
+            successDiv.style.display = "none";
+            countdownEl.innerText = "Übertragung startet...";
+
+            try {
+                await sendBleData(textMitMesswerten);
+                countdownEl.innerText = "Übertragen. Gerät schreibt...";
+            } catch (error) {
+                alert("Übertragungsfehler: " + error.message);
+                overlay.style.display = "none";
+            }
+            return false;
+        }
+
+        // Event-Listener
+        textarea.addEventListener("input", () => {
+            autoResize();
+            updateSubmitButtonState();
+            localStorage.setItem("aktueller_entwurf", textarea.value);
+        });
+
+        kiSelect.addEventListener("change", updateSubmitButtonState);
+
+        document.querySelectorAll('input[name="gender"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                befuelleVorlagenButtons();
+                updateSubmitButtonState();
+            });
+        });
+
+        document.querySelectorAll('input[name="provider"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const val = e.target.value;
+                localStorage.setItem("saved_provider", val);
+                updateSubmitButtonState();
+            });
+        });
+
+        window.addEventListener("DOMContentLoaded", () => {
+            renderMesswerteInput();
+            renderEkgChecklist();
+            
+            const gespeicherterEntwurf = localStorage.getItem("aktueller_entwurf");
+            if (gespeicherterEntwurf) textarea.value = gespeicherterEntwurf;
+
+            const savedProvider = localStorage.getItem("saved_provider") || "chatgpt";
+            const radio = document.getElementById(`provider-${savedProvider}`);
+            if (radio) {
+                radio.checked = true;
+            }
+        });
+               
+        window.addEventListener('beforeunload', (event) => {
+            // Nur warnen, wenn tatsächlich Text im Eingabefeld steht
+            if (textarea && textarea.value.trim() !== "") {
+                event.preventDefault();
+                // Standardkonformität für moderne Browser
+                event.returnValue = 'Es liegen ungespeicherte Daten vor. Möchten Sie die Seite wirklich verlassen?';
+            }
+        });
+
+        // Funktion zum Umschalten der Passwort-Sichtbarkeit (Auge-Icon)
+        function togglePasswordVisibility(inputId, iconEl) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            if (input.type === "password") {
+                input.type = "text";
+                iconEl.innerText = "visibility_off"; // Zeigt das durchgestrichene Auge an
+            } else {
+                input.type = "password";
+                iconEl.innerText = "visibility";     // Zeigt das normale Auge an
+            }
+        }
+
+        // Funktion zur dauerhaften Löschung des Benutzerkontos und der Profildaten
+        async function loescheBenutzerKonto() {
+            const user = auth.currentUser;
+            if (!user) {
+                alert("Kein angemeldeter Benutzer gefunden.");
+                return;
+            }
+
+            const ersteBestaetigung = confirm("Möchten Sie Ihr Benutzerkonto wirklich dauerhaft löschen? Alle Ihre gespeicherten Vorlagen und Prompts gehen unwiderruflich verloren.");
+            if (!ersteBestaetigung) return;
+
+            const zweiteBestaetigung = confirm("Sind Sie absolut sicher? Diese Aktion kann NICHT rückgängig gemacht werden!");
+            if (!zweiteBestaetigung) return;
+
+            const errorEl = document.getElementById("pw-error-msg");
+            if (errorEl) errorEl.style.display = "none";
+
+            try {
+                // 1. Daten aus der Firestore-Datenbank löschen
+                await db.collection("users").doc(user.uid).delete();
+                console.log("Profildaten in Firestore gelöscht.");
+
+                // 2. Account aus der Firebase Authentifizierung löschen
+                await user.delete();
+                alert("Ihr Account wurde erfolgreich gelöscht.");
+                location.reload();
+            } catch (err) {
+                console.error("Fehler beim Löschen des Kontos:", err);
+                if (err.code === "auth/requires-recent-login") {
+                    if (errorEl) {
+                        errorEl.innerText = "Aus Sicherheitsgründen müssen Sie sich neu anmelden (abmelden und neu einloggen), um Ihr Konto zu löschen.";
+                        errorEl.style.display = "block";
+                    } else {
+                        alert("Aus Sicherheitsgründen müssen Sie sich neu anmelden (abmelden und neu einloggen), um Ihr Konto zu löschen.");
+                    }
+                } else {
+                    if (errorEl) {
+                        errorEl.innerText = "Fehler beim Löschen: " + err.message;
+                        errorEl.style.display = "block";
+                    } else {
+                        alert("Fehler beim Löschen: " + err.message);
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
