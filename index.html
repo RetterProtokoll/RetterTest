@@ -852,8 +852,8 @@
                         <input type="text" id="tia-sehstoerung" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
                     </div>
                     <div>
-                        <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-blickwendung">Blickwendung:</label>
-                        <input type="text" id="tia-blickwendung" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                        <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-herdblick">Herdblick:</label>
+                        <input type="text" id="tia-herdblick" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
                     </div>
                     
                     <!-- Symptombeginn -->
@@ -2087,7 +2087,7 @@
             const hasTiaContent = (() => {
                 const container = document.getElementById("tia-container");
                 if (!container || container.style.display === "none") return false;
-                const tiaIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-blickwendung", "tia-zeit", "tia-zeit-status"];
+                const tiaIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit", "tia-zeit-status"];
                 return tiaIds.some(id => {
                     const el = document.getElementById(id);
                     return el && el.value && el.value.trim() !== "";
@@ -2237,6 +2237,7 @@
             if (el.value.length > max) el.value = el.value.slice(0, max);
         }
 
+        // Generiert die UI-Eingabefelder für Messwerte
         function renderMesswerteInput() {
             const container = document.getElementById("messwerte-grid-container");
             container.innerHTML = "";
@@ -2301,6 +2302,7 @@
             updateSubmitButtonState();
         }
 
+        // Steuert die Statussymbole für Messwerte
         function toggleStatus(id) {
             const statusEl = document.getElementById(`status-${id}`);
             const inputEl = document.getElementById(`mw-${id}`);
@@ -2341,7 +2343,7 @@
             document.getElementById("tia-bewusstsein").value = "";
             document.getElementById("tia-kopfschmerz").value = "";
             document.getElementById("tia-sehstoerung").value = "";
-            document.getElementById("tia-blickwendung").value = "";
+            document.getElementById("tia-herdblick").value = "";
             document.getElementById("tia-zeit").value = "";
             document.getElementById("tia-zeit-status").value = "";
             updateSubmitButtonState();
@@ -2403,7 +2405,7 @@
             return eintraege.length > 0 ? "\n\nMesswerte: " + eintraege.join(" | ") : "";
         }
 
-        // TIA/APOPLEX FORMATIERUNG FÜR AUSGABE - Nur anfügen wenn das Feld ausgeklappt ist
+        // TIA/APOPLEX FORMATIERUNG FÜR AUSGABE - Alle Felder werden ausgegeben, leere als o.p.B.
         function formatTiaFuerAusgabe() {
             const container = document.getElementById("tia-container");
             if (!container || container.style.display === "none") {
@@ -2419,36 +2421,27 @@
             const bewVal = document.getElementById("tia-bewusstsein").value.trim();
             const kopfVal = document.getElementById("tia-kopfschmerz").value.trim();
             const sehVal = document.getElementById("tia-sehstoerung").value.trim();
-            const blickVal = document.getElementById("tia-blickwendung").value.trim();
+            const herdblickVal = document.getElementById("tia-herdblick").value.trim();
             const zeitVal = document.getElementById("tia-zeit").value.trim();
             const statusVal = document.getElementById("tia-zeit-status").value;
 
-            const hasBefast = bVal || eVal || fVal || aVal || sVal;
-            const hasOthers = bewVal || kopfVal || sehVal || blickVal || zeitVal || statusVal;
-
-            if (!hasBefast && !hasOthers) {
-                return "\n\nV.a. TIA/Apoplex: o.p.B";
-            }
+            let befastParts = [];
+            befastParts.push(`Balance: ${bVal || 'o.p.B.'}`);
+            befastParts.push(`Eyes: ${eVal || 'o.p.B.'}`);
+            befastParts.push(`Face: ${fVal || 'o.p.B.'}`);
+            befastParts.push(`Arms: ${aVal || 'o.p.B.'}`);
+            befastParts.push(`Speech: ${sVal || 'o.p.B.'}`);
 
             let parts = [];
+            parts.push(`BEFAST (${befastParts.join(", ")})`);
             
-            if (hasBefast) {
-                let befastParts = [];
-                if (bVal) befastParts.push(`Balance: ${bVal}`);
-                if (eVal) befastParts.push(`Eyes: ${eVal}`);
-                if (fVal) befastParts.push(`Face: ${fVal}`);
-                if (aVal) befastParts.push(`Arms: ${aVal}`);
-                if (sVal) befastParts.push(`Speech: ${sVal}`);
-                parts.push(`BEFAST (${befastParts.join(", ")})`);
-            }
-
-            if (bewVal) parts.push(`Bewusstseinsstörungen: ${bewVal}`);
-            if (kopfVal) parts.push(`Kopfschmerz: ${kopfVal}`);
-            if (sehVal) parts.push(`Sehstörung: ${sehVal}`);
-            if (blickVal) parts.push(`Blickwendung: ${blickVal}`);
+            parts.push(`Bewusstseinsstörungen: ${bewVal || 'o.p.B.'}`);
+            parts.push(`Kopfschmerz: ${kopfVal || 'o.p.B.'}`);
+            parts.push(`Sehstörung: ${sehVal || 'o.p.B.'}`);
+            parts.push(`Herdblick: ${herdblickVal || 'o.p.B.'}`);
             
+            let zeitStr = "Symptombeginn: ";
             if (zeitVal || statusVal) {
-                let zeitStr = "Symptombeginn: ";
                 if (zeitVal && statusVal) {
                     zeitStr += `${zeitVal} Uhr (${statusVal})`;
                 } else if (zeitVal) {
@@ -2456,8 +2449,10 @@
                 } else if (statusVal) {
                     zeitStr += `${statusVal}`;
                 }
-                parts.push(zeitStr);
+            } else {
+                zeitStr += "k.A.";
             }
+            parts.push(zeitStr);
 
             return "\n\nV.a. TIA/Apoplex: " + parts.join(" | ");
         }
@@ -2598,7 +2593,7 @@
             renderEkgChecklist();
             
             // Event-Listener für TIA-Felder hinzufügen, um Senden-Button-Status zu aktualisieren
-            const tiaFieldIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-blickwendung", "tia-zeit", "tia-zeit-status"];
+            const tiaFieldIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit", "tia-zeit-status"];
             tiaFieldIds.forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
