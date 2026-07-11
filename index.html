@@ -514,12 +514,21 @@
             padding: 4px;
         }
 
-        .messwerte-item input {
+        .messwerte-item input, .messwerte-item select {
             margin-bottom: 0;
             padding: 8px;
             border-radius: 8px;
             font-size: 14px;
             text-align: center;
+            height: 38px;
+            box-sizing: border-box;
+            background: var(--md-color-surface);
+            color: var(--md-color-on-surface);
+            border: 1px solid var(--md-color-outline);
+        }
+        .messwerte-item select {
+            text-align-last: center;
+            cursor: pointer;
         }
 
         .ekg-checklist {
@@ -834,11 +843,33 @@
                             <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-befast-s">Speech:</label>
                             <input type="text" id="tia-befast-s" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
                         </div>
+
+                        <!-- Symptombeginn Klickstruktur (verschoben unter Speech) -->
+                        <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="width: 100%;">
+                                <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);">Bestimmung Symptombeginn:</label>
+                                <div class="segmented-control" style="width: 100%; height: 36px;">
+                                    <input type="radio" id="tia-status-sicher" name="tia-symptom-status" value="sicher" checked>
+                                    <label for="tia-status-sicher">Sicher</label>
+                                    
+                                    <input type="radio" id="tia-status-unsicher" name="tia-symptom-status" value="unsicher">
+                                    <label for="tia-status-unsicher">Unsicher</label>
+                                </div>
+                            </div>
+                            <div id="tia-zeit-wrapper" style="width: 100%;">
+                                <label id="tia-zeit-label" style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-zeit">Symptombeginn (Uhrzeit):</label>
+                                <input type="time" id="tia-zeit" style="margin: 0; padding: 10px; font-size: 14px; width: 100%;">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Weitere TIA Felder -->
                 <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 12px; display: grid; grid-template-columns: 1fr; gap: 8px;">
+                    <div>
+                        <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-schwindel">Akuter Schwindel:</label>
+                        <input type="text" id="tia-schwindel" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                    </div>
                     <div>
                         <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-bewusstsein">Bewusstseinsstörungen:</label>
                         <input type="text" id="tia-bewusstsein" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
@@ -900,24 +931,6 @@
                                 <input type="checkbox" value="Warfarin (z. B. Coumadin)" class="oak-checkbox">
                                 <span>Warfarin (z. B. Coumadin)</span>
                             </label>
-                        </div>
-                    </div>
-
-                    <!-- Symptombeginn Klickstruktur -->
-                    <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 10px; display: flex; flex-direction: column; gap: 8px;">
-                        <div style="width: 100%;">
-                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);">Bestimmung Symptombeginn:</label>
-                            <div class="segmented-control" style="width: 100%; height: 36px;">
-                                <input type="radio" id="tia-status-sicher" name="tia-symptom-status" value="sicher" checked>
-                                <label for="tia-status-sicher">Sicher</label>
-                                
-                                <input type="radio" id="tia-status-unsicher" name="tia-symptom-status" value="unsicher">
-                                <label for="tia-status-unsicher">Unsicher</label>
-                            </div>
-                        </div>
-                        <div id="tia-zeit-wrapper" style="width: 100%;">
-                            <label id="tia-zeit-label" style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-zeit">Symptombeginn (Uhrzeit):</label>
-                            <input type="time" id="tia-zeit" style="margin: 0; padding: 10px; font-size: 14px; width: 100%;">
                         </div>
                     </div>
                 </div>
@@ -1105,7 +1118,8 @@
             { id: "af", label: "AF", unit: "/min", type: "number", maxLen: 4, placeholder: "14", minPlaus: 6, maxPlaus: 35 },
             { id: "temp", label: "Temp", unit: "°C", type: "text", maxLen: 5, placeholder: "36.5", minPlaus: 30.0, maxPlaus: 42.5, isTextAllowed: true },
             { id: "gcs", label: "GCS", unit: "", type: "number", maxLen: 2, placeholder: "15", minPlaus: 3, maxPlaus: 15 },
-            { id: "nrs", label: "NRS", unit: "/10", type: "number", maxLen: 2, placeholder: "4", minPlaus: 0, maxPlaus: 10 }
+            { id: "nrs", label: "NRS", unit: "/10", type: "number", maxLen: 2, placeholder: "4", minPlaus: 0, maxPlaus: 10 },
+            { id: "rekap", label: "Rekap", type: "select", options: ["", "< 2s", "> 2s"] }
         ];
 
         const textarea = document.getElementById("freitext");
@@ -2138,7 +2152,7 @@
             const hasTiaContent = (() => {
                 const container = document.getElementById("tia-container");
                 if (!container || container.style.display === "none") return false;
-                const tiaIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit"];
+                const tiaIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-schwindel", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit"];
                 const hasText = tiaIds.some(id => {
                     const el = document.getElementById(id);
                     return el && el.value && el.value.trim() !== "";
@@ -2303,20 +2317,38 @@
                 const div = document.createElement("div");
                 div.className = `messwerte-item ${cfg.class || ""}`;
                 
+                let inputHtml = '';
+                if (cfg.type === 'select') {
+                    inputHtml = `<select id="mw-${cfg.id}">`;
+                    cfg.options.forEach(opt => {
+                        inputHtml += `<option value="${opt}">${opt || "---"}</option>`;
+                    });
+                    inputHtml += `</select>`;
+                } else {
+                    inputHtml = `<input type="${cfg.type === 'number' ? 'number' : 'text'}" id="mw-${cfg.id}" placeholder="${cfg.placeholder}" autocomplete="off">`;
+                }
+
                 div.innerHTML = `
                     <div class="status-container">
                         <label for="mw-${cfg.id}">${cfg.label}</label>
                         <span id="status-${cfg.id}" class="status-indicator" onclick="toggleStatus('${cfg.id}')">❓</span>
                     </div>
-                    <input type="${cfg.type === 'number' ? 'number' : 'text'}" id="mw-${cfg.id}" placeholder="${cfg.placeholder}" autocomplete="off">
+                    ${inputHtml}
                 `;
                 
-                const inputEl = div.querySelector("input");
-                inputEl.addEventListener("input", () => {
-                    limitLength(inputEl, cfg.maxLen);
-                    handleValueInput(inputEl, `status-${cfg.id}`);
-                    checkPlausibility(inputEl, cfg);
-                });
+                if (cfg.type !== 'select') {
+                    const inputEl = div.querySelector("input");
+                    inputEl.addEventListener("input", () => {
+                        limitLength(inputEl, cfg.maxLen);
+                        handleValueInput(inputEl, `status-${cfg.id}`);
+                        checkPlausibility(inputEl, cfg);
+                    });
+                } else {
+                    const selectEl = div.querySelector("select");
+                    selectEl.addEventListener("change", () => {
+                        handleValueInput(selectEl, `status-${cfg.id}`);
+                    });
+                }
                 container.appendChild(div);
             });
         }
@@ -2380,8 +2412,10 @@
                 const inputEl = document.getElementById(`mw-${cfg.id}`);
                 if (inputEl) {
                     inputEl.value = "";
-                    inputEl.style.backgroundColor = "";
-                    inputEl.style.borderColor = "";
+                    if (cfg.type !== "select") {
+                        inputEl.style.backgroundColor = "";
+                        inputEl.style.borderColor = "";
+                    }
                 }
             });
             document.querySelectorAll(".ekg-checkbox").forEach(cb => cb.checked = false);
@@ -2398,6 +2432,7 @@
             document.getElementById("tia-befast-f").value = "";
             document.getElementById("tia-befast-a").value = "";
             document.getElementById("tia-befast-s").value = "";
+            document.getElementById("tia-schwindel").value = "";
             document.getElementById("tia-bewusstsein").value = "";
             document.getElementById("tia-kopfschmerz").value = "";
             document.getElementById("tia-sehstoerung").value = "";
@@ -2443,11 +2478,20 @@
                 if (cfg.id === "rr-sys" || cfg.id === "rr-dia") return;
                 const status = getStatusOf(cfg.id);
                 if (status !== "❓" && status !== null) {
+                    const labelName = cfg.id === "rekap" ? "Rekap-Zeit" : cfg.label;
                     if (status === "❌") {
-                        eintraege.push(`${cfg.label} nicht gemessen`);
+                        eintraege.push(`${labelName} nicht gemessen`);
                     } else {
                         const rawVal = document.getElementById(`mw-${cfg.id}`).value.trim();
-                        eintraege.push(`${cfg.label}: ${rawVal}${cfg.unit ? ' ' + cfg.unit : ''}`);
+                        if (cfg.type === "select") {
+                            if (rawVal) {
+                                eintraege.push(`${labelName}: ${rawVal}`);
+                            } else {
+                                eintraege.push(`${labelName} gemessen`);
+                            }
+                        } else {
+                            eintraege.push(`${labelName}: ${rawVal}${cfg.unit ? ' ' + cfg.unit : ''}`);
+                        }
                     }
                 }
             });
@@ -2483,6 +2527,7 @@
             const aVal = document.getElementById("tia-befast-a").value.trim();
             const sVal = document.getElementById("tia-befast-s").value.trim();
             
+            const schwindelVal = document.getElementById("tia-schwindel").value.trim();
             const bewVal = document.getElementById("tia-bewusstsein").value.trim();
             const kopfVal = document.getElementById("tia-kopfschmerz").value.trim();
             const sehVal = document.getElementById("tia-sehstoerung").value.trim();
@@ -2507,6 +2552,7 @@
             let parts = [];
             parts.push(`BEFAST (${befastParts.join(", ")})`);
             
+            parts.push(`Akuter Schwindel: ${schwindelVal || 'o.p.B.'}`);
             parts.push(`Bewusstseinsstörungen: ${bewVal || 'o.p.B.'}`);
             parts.push(`Kopfschmerz: ${kopfVal || 'o.p.B.'}`);
             parts.push(`Sehstörung: ${sehVal || 'o.p.B.'}`);
@@ -2674,7 +2720,7 @@
             renderEkgChecklist();
             
             // Event-Listener für TIA-Textfelder hinzufügen
-            const tiaFieldIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit"];
+            const tiaFieldIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-schwindel", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit"];
             tiaFieldIds.forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
