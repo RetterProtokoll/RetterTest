@@ -749,7 +749,7 @@
             
             <div style="display: flex; gap: 8px; margin-top: 10px; width: 100%; justify-content: flex-end;">
                 <button type="button" class="secondary" style="width: auto; margin-top: 0; padding: 6px 14px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;" onclick="zeigeEditor()">
-                    <span class="material-symbols-outlined" style="font-size: 16px;">settings</span> Einstellung 
+                    <span class="material-symbols-outlined" style="font-size: 16px;">settings</span> Einstellungen
                 </button>
                 <button type="button" class="secondary" style="width: auto; margin-top: 0; padding: 6px 14px; font-size: 12px; border-color: var(--md-color-error); color: var(--md-color-error); display: inline-flex; align-items: center; gap: 4px;" onclick="logoffUser()">
                     Abmelden <span class="material-symbols-outlined" style="font-size: 16px;">logout</span>
@@ -797,8 +797,85 @@
                 </div>
             </div>
 
-            <button type="button" id="toggle-messwerte-btn" class="secondary" style="margin-top: 8px; margin-bottom: 8px;" onclick="toggleMesswerte()">📊 Messwerte eingeben</button>
+            <!-- BUTTONS AUF GLEICHER HÖHE -->
+            <div style="display: flex; gap: 8px; margin-top: 8px; margin-bottom: 8px;">
+                <button type="button" id="toggle-tia-btn" class="secondary" style="margin: 0; flex: 1;" onclick="toggleTiaApoplex()">🧠 V.a. TIA/Apoplex</button>
+                <button type="button" id="toggle-messwerte-btn" class="secondary" style="margin: 0; flex: 1;" onclick="toggleMesswerte()">📊 Messwerte eingeben</button>
+            </div>
 
+            <!-- TIA/APOPLEX CONTAINER -->
+            <div id="tia-container" class="messwerte-box" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                    <span style="font-weight: 600; font-size: 14px; color: var(--md-color-on-surface-variant);">🧠 V.a. TIA / Apoplex:</span>
+                    <button type="button" class="secondary" style="width: auto; padding: 4px 12px; font-size: 12px; border-radius: 100px; margin: 0;" onclick="clearTiaFields()">🗑️ Leeren</button>
+                </div>
+                
+                <!-- BEFAST Sektion -->
+                <div style="margin-bottom: 14px;">
+                    <span style="font-weight: 600; font-size: 13px; color: var(--md-color-primary); display: block; margin-bottom: 8px;">BEFAST</span>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
+                        <div>
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-befast-b">Balance:</label>
+                            <input type="text" id="tia-befast-b" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                        </div>
+                        <div>
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-befast-e">Eyes:</label>
+                            <input type="text" id="tia-befast-e" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                        </div>
+                        <div>
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-befast-f">Face:</label>
+                            <input type="text" id="tia-befast-f" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                        </div>
+                        <div>
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-befast-a">Arms:</label>
+                            <input type="text" id="tia-befast-a" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                        </div>
+                        <div>
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-befast-s">Speech:</label>
+                            <input type="text" id="tia-befast-s" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weitere TIA Felder -->
+                <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 12px; display: grid; grid-template-columns: 1fr; gap: 8px;">
+                    <div>
+                        <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-bewusstsein">Bewusstseinsstörungen:</label>
+                        <input type="text" id="tia-bewusstsein" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                    </div>
+                    <div>
+                        <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-kopfschmerz">Kopfschmerz:</label>
+                        <input type="text" id="tia-kopfschmerz" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                    </div>
+                    <div>
+                        <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-sehstoerung">Sehstörung:</label>
+                        <input type="text" id="tia-sehstoerung" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                    </div>
+                    <div>
+                        <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-blickwendung">Blickwendung:</label>
+                        <input type="text" id="tia-blickwendung" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                    </div>
+                    
+                    <!-- Symptombeginn -->
+                    <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 10px; display: flex; flex-wrap: wrap; gap: 8px;">
+                        <div style="flex: 1; min-width: 120px;">
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-zeit">Symptombeginn:</label>
+                            <input type="time" id="tia-zeit" style="margin: 0; padding: 10px; font-size: 14px; width: 100%;">
+                        </div>
+                        <div style="flex: 1.2; min-width: 150px;">
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-zeit-status">Bestimmung:</label>
+                            <select id="tia-zeit-status" style="margin: 0; padding: 10px; font-size: 14px; width: 100%;">
+                                <option value="" disabled selected>Bitte wählen...</option>
+                                <option value="sicher">sicher</option>
+                                <option value="unklar">unklar</option>
+                                <option value="zuletzt symptomfrei">zuletzt symptomfrei</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MESSWERTE CONTAINER -->
             <div id="messwerte-container" class="messwerte-box" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
                     <span style="font-weight: 600; font-size: 14px; color: var(--md-color-on-surface-variant);">Messwerte erfassen:</span>
@@ -955,7 +1032,7 @@
         let rxCharacteristic = null;
         let txCharacteristic = null;
         
-         function toggleEkgStatus() {
+        function toggleEkgStatus() {
             const statusEl = document.getElementById("status-ekg");
             if (!statusEl) return;
             const checkboxes = document.querySelectorAll(".ekg-checkbox");
@@ -970,6 +1047,7 @@
             }
             updateSubmitButtonState();
         }
+
         const PARAMETER_CONFIG = [
             { id: "rr-sys", label: "RR Sys", unit: "mmHg", type: "number", maxLen: 3, placeholder: "120", class: "narrow", minPlaus: 50, maxPlaus: 240 },
             { id: "rr-dia", label: "RR Dia", unit: "mmHg", type: "number", maxLen: 3, placeholder: "80", class: "narrow", minPlaus: 30, maxPlaus: 140 },
@@ -1015,7 +1093,7 @@
             { id: "ekg-kf", label: "Kammerflimmern (KF)" },
             { id: "ekg-asystolie", label: "Asystolie" },
             { id: "ekg-pea", label: "PEA (Pulslose elektrische Aktivität)" },
-            { id: "ekg-brady", label: "Schrittmacherrhythmus" },
+            { id: "ekg-pacemaker", label: "Schrittmacherrhythmus" },
             { id: "ekg-av1", label: "AV-Block I°" },
             { id: "ekg-av2w", label: "AV-Block II° (Wenckebach)" },
             { id: "ekg-av2m", label: "AV-Block II° (Mobitz)" },
@@ -1368,13 +1446,13 @@
             newInput.value = "";
             document.getElementById("new-gender-n").checked = true;
 
-        if (selectedTab === "password") {
-            contentSection.style.display = "none";
-            passwordSection.style.display = "block";
-            if (ACTIVE_PROFILE) {
-                document.getElementById("edit-display-name").value = ACTIVE_PROFILE.name || "";
-            }
-        } else {
+            if (selectedTab === "password") {
+                contentSection.style.display = "none";
+                passwordSection.style.display = "block";
+                if (ACTIVE_PROFILE) {
+                    document.getElementById("edit-display-name").value = ACTIVE_PROFILE.name || "";
+                }
+            } else {
                 passwordSection.style.display = "none";
                 contentSection.style.display = "block";
                 itemSelect.innerHTML = "";
@@ -1387,23 +1465,23 @@
                     genderContainer.style.display = "flex"; // Geschlechtsfilter anzeigen
                     
                     Object.keys(ACTIVE_PROFILE.vorlagen || {}).forEach(key => {
-    const opt = document.createElement("option");
-    opt.value = key;
-    
-    let label = OPTIONEN_NAMEN[key];
-    if (!label) {
-        if (key.endsWith('_m')) {
-            label = formatiereKey(key.slice(0, -2)) + " ♂️";
-        } else if (key.endsWith('_w')) {
-            label = formatiereKey(key.slice(0, -2)) + " ♀️";
-        } else {
-            label = formatiereKey(key);
-        }
-    }
-    
-    opt.innerText = label;
-    itemSelect.appendChild(opt);
-});
+                        const opt = document.createElement("option");
+                        opt.value = key;
+                        
+                        let label = OPTIONEN_NAMEN[key];
+                        if (!label) {
+                            if (key.endsWith('_m')) {
+                                label = formatiereKey(key.slice(0, -2)) + " ♂️";
+                            } else if (key.endsWith('_w')) {
+                                label = formatiereKey(key.slice(0, -2)) + " ♀️";
+                            } else {
+                                label = formatiereKey(key);
+                            }
+                        }
+                        
+                        opt.innerText = label;
+                        itemSelect.appendChild(opt);
+                    });
                 } else if (selectedTab === "prompts") {
                     selectLabel.innerText = "Prompt wählen:";
                     textLabel.innerText = "Prompt-Text bearbeiten:";
@@ -1790,63 +1868,63 @@
         // ==========================================
         // BLUETOOTH & UI SYSTEMLOGIK
         // ==========================================
-async function connectBluetooth() {
-    if (!navigator.bluetooth) {
-        alert("Web Bluetooth wird von diesem Browser nicht unterstützt.");
-        return;
-    }
-    const iconEl = document.getElementById("connect-icon");
-    const textEl = document.getElementById("connect-text");
-    try {
-        if (iconEl && textEl) {
-            iconEl.innerText = "bluetooth_searching";
-            textEl.innerText = "Suche...";
-        }
-        bleDevice = await navigator.bluetooth.requestDevice({
-            filters: [{ services: [BLE_SERVICE_UUID] }]
-        });
-        if (iconEl && textEl) {
-            iconEl.innerText = "bluetooth_searching";
-            textEl.innerText = "Verbinde...";
-        }
-        const server = await bleDevice.gatt.connect();
-        const service = await server.getPrimaryService(BLE_SERVICE_UUID);
-        rxCharacteristic = await service.getCharacteristic(BLE_RX_UUID);
-        txCharacteristic = await service.getCharacteristic(BLE_TX_UUID);
-        await txCharacteristic.startNotifications();
-        txCharacteristic.addEventListener('characteristicvaluechanged', handleBleNotification);
+        async function connectBluetooth() {
+            if (!navigator.bluetooth) {
+                alert("Web Bluetooth wird von diesem Browser nicht unterstützt.");
+                return;
+            }
+            const iconEl = document.getElementById("connect-icon");
+            const textEl = document.getElementById("connect-text");
+            try {
+                if (iconEl && textEl) {
+                    iconEl.innerText = "bluetooth_searching";
+                    textEl.innerText = "Suche...";
+                }
+                bleDevice = await navigator.bluetooth.requestDevice({
+                    filters: [{ services: [BLE_SERVICE_UUID] }]
+                });
+                if (iconEl && textEl) {
+                    iconEl.innerText = "bluetooth_searching";
+                    textEl.innerText = "Verbinde...";
+                }
+                const server = await bleDevice.gatt.connect();
+                const service = await server.getPrimaryService(BLE_SERVICE_UUID);
+                rxCharacteristic = await service.getCharacteristic(BLE_RX_UUID);
+                txCharacteristic = await service.getCharacteristic(BLE_TX_UUID);
+                await txCharacteristic.startNotifications();
+                txCharacteristic.addEventListener('characteristicvaluechanged', handleBleNotification);
 
-        if (iconEl && textEl) {
-            iconEl.innerText = "bluetooth_connected"; // Das offizielle Verbunden-Symbol mit Punkten
-            textEl.innerText = bleDevice.name ? bleDevice.name.substring(0, 10) : "Verbunden";
+                if (iconEl && textEl) {
+                    iconEl.innerText = "bluetooth_connected"; // Das offizielle Verbunden-Symbol mit Punkten
+                    textEl.innerText = bleDevice.name ? bleDevice.name.substring(0, 10) : "Verbunden";
+                }
+                connectBleBtn.style.background = "#2563eb";
+                bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
+                updateSubmitButtonState();
+            } catch (error) {
+                console.error("Bluetooth Fehler: ", error);
+                if (iconEl && textEl) {
+                    iconEl.innerText = "bluetooth_disabled";
+                    textEl.innerText = "Fehler";
+                }
+                connectBleBtn.style.background = "#dc2626";
+                onDisconnected();
+            }
         }
-        connectBleBtn.style.background = "#2563eb";
-        bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
-        updateSubmitButtonState();
-    } catch (error) {
-        console.error("Bluetooth Fehler: ", error);
-        if (iconEl && textEl) {
-            iconEl.innerText = "bluetooth_disabled";
-            textEl.innerText = "Fehler";
-        }
-        connectBleBtn.style.background = "#dc2626";
-        onDisconnected();
-    }
-}
 
-function onDisconnected() {
-    const iconEl = document.getElementById("connect-icon");
-    const textEl = document.getElementById("connect-text");
-    if (iconEl && textEl) {
-        iconEl.innerText = "bluetooth";
-        textEl.innerText = "Verbinden";
-    }
-    connectBleBtn.style.background = "#dc2626";
-    bleDevice = null;
-    rxCharacteristic = null;
-    txCharacteristic = null;
-    updateSubmitButtonState();
-}
+        function onDisconnected() {
+            const iconEl = document.getElementById("connect-icon");
+            const textEl = document.getElementById("connect-text");
+            if (iconEl && textEl) {
+                iconEl.innerText = "bluetooth";
+                textEl.innerText = "Verbinden";
+            }
+            connectBleBtn.style.background = "#dc2626";
+            bleDevice = null;
+            rxCharacteristic = null;
+            txCharacteristic = null;
+            updateSubmitButtonState();
+        }
 
         function handleBleNotification(event) {
             const decoder = new TextDecoder();
@@ -1856,6 +1934,7 @@ function onDisconnected() {
                 successDiv.style.display = "block";
                 localStorage.removeItem("aktueller_entwurf");
                 clearMesswerte();
+                clearTiaFields();
             } else if (value === "STOPPED") {
                 alert("Der Tippvorgang wurde erfolgreich abgebrochen.");
                 resetForm();
@@ -1875,63 +1954,64 @@ function onDisconnected() {
                 console.error(error);
             }
         }
+
         // Generiert den Inhalt für die Vorlagen-Buttons inklusive Material Symbols Icons
-function erzeugeVorlagenButtonInhalt(key) {
-    let baseKey = key;
-    let iconHtml = '';
-    
-    if (key.endsWith('_m')) {
-        baseKey = key.slice(0, -2); // Entfernt das "_m" am Ende
-        iconHtml = '<span class="material-symbols-outlined" style="font-size: 18px; margin-left: 6px; vertical-align: middle;">male</span>';
-    } else if (key.endsWith('_w')) {
-        baseKey = key.slice(0, -2); // Entfernt das "_w" am Ende
-        iconHtml = '<span class="material-symbols-outlined" style="font-size: 18px; margin-left: 6px; vertical-align: middle;">female</span>';
-    }
-    
-    // Holt den Text aus OPTIONEN_NAMEN (falls manuell hinterlegt) oder formatiert den Schlüssel
-    let text = OPTIONEN_NAMEN[key] || OPTIONEN_NAMEN[baseKey] || formatiereKey(baseKey);
-    
-    // Falls im hinterlegten Namen bereits Text-Emojis wie ♂️ oder ♀️ enthalten sind, entfernen wir diese
-    text = text.replace(/[♀️♂️]/g, '').trim();
-    
-    return `<span>${text}</span>${iconHtml}`;
-}
+        function erzeugeVorlagenButtonInhalt(key) {
+            let baseKey = key;
+            let iconHtml = '';
+            
+            if (key.endsWith('_m')) {
+                baseKey = key.slice(0, -2); // Entfernt das "_m" am Ende
+                iconHtml = '<span class="material-symbols-outlined" style="font-size: 18px; margin-left: 6px; vertical-align: middle;">male</span>';
+            } else if (key.endsWith('_w')) {
+                baseKey = key.slice(0, -2); // Entfernt das "_w" am Ende
+                iconHtml = '<span class="material-symbols-outlined" style="font-size: 18px; margin-left: 6px; vertical-align: middle;">female</span>';
+            }
+            
+            // Holt den Text aus OPTIONEN_NAMEN (falls manuell hinterlegt) oder formatiert den Schlüssel
+            let text = OPTIONEN_NAMEN[key] || OPTIONEN_NAMEN[baseKey] || formatiereKey(baseKey);
+            
+            // Falls im hinterlegten Namen bereits Text-Emojis wie ♂️ oder ♀️ enthalten sind, entfernen wir diese
+            text = text.replace(/[♀️♂️]/g, '').trim();
+            
+            return `<span>${text}</span>${iconHtml}`;
+        }
 
         function befuelleVorlagenButtons() {
-    vorlageScrollContainer.innerHTML = '';
-    if (!ACTIVE_PROFILE) return;
+            vorlageScrollContainer.innerHTML = '';
+            if (!ACTIVE_PROFILE) return;
 
-    const selectedGenderElement = document.querySelector('input[name="gender"]:checked');
-    const selectedGender = selectedGenderElement ? selectedGenderElement.value : 'm';
+            const selectedGenderElement = document.querySelector('input[name="gender"]:checked');
+            const selectedGender = selectedGenderElement ? selectedGenderElement.value : 'm';
 
-    const keys = Object.keys(ACTIVE_PROFILE.vorlagen || {});
-    
-    let filteredKeys = [];
-    if (selectedGender === 'm') {
-        filteredKeys = keys.filter(key => !key.endsWith('_w'));
-    } else if (selectedGender === 'w') {
-        filteredKeys = keys.filter(key => !key.endsWith('_m'));
-    } else {
-        filteredKeys = keys;
-    }
+            const keys = Object.keys(ACTIVE_PROFILE.vorlagen || {});
+            
+            let filteredKeys = [];
+            if (selectedGender === 'm') {
+                filteredKeys = keys.filter(key => !key.endsWith('_w'));
+            } else if (selectedGender === 'w') {
+                filteredKeys = keys.filter(key => !key.endsWith('_m'));
+            } else {
+                filteredKeys = keys;
+            }
 
-    filteredKeys.forEach(key => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "scroll-btn";
-        
-        // Sorgt für eine saubere Ausrichtung von Text und Icon nebeneinander
-        btn.style.display = "inline-flex";
-        btn.style.alignItems = "center";
-        btn.style.justifyContent = "center";
-        
-        // Dynamischen HTML-Inhalt mit dem Icon einfügen
-        btn.innerHTML = erzeugeVorlagenButtonInhalt(key);
-        
-        btn.onclick = () => vorlageEinfuegen(key);
-        vorlageScrollContainer.appendChild(btn);
-    });
-}
+            filteredKeys.forEach(key => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "scroll-btn";
+                
+                // Sorgt für eine saubere Ausrichtung von Text und Icon nebeneinander
+                btn.style.display = "inline-flex";
+                btn.style.alignItems = "center";
+                btn.style.justifyContent = "center";
+                
+                // Dynamischen HTML-Inhalt mit dem Icon einfügen
+                btn.innerHTML = erzeugeVorlagenButtonInhalt(key);
+                
+                btn.onclick = () => vorlageEinfuegen(key);
+                vorlageScrollContainer.appendChild(btn);
+            });
+        }
 
         // Formatierung von DB-Schlüsseln zur Anzeige
         function formatiereKey(key) {
@@ -2003,7 +2083,39 @@ function erzeugeVorlagenButtonInhalt(key) {
             const text = textarea.value.trim();
             const kiAuswahl = kiSelect ? kiSelect.value : 'keine';
 
-            if (text === "") {
+            // Überprüfen, ob Eingaben im TIA- oder Messwerte-Bereich vorliegen
+            const hasTiaContent = (() => {
+                const container = document.getElementById("tia-container");
+                if (!container || container.style.display === "none") return false;
+                const tiaIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-blickwendung", "tia-zeit", "tia-zeit-status"];
+                return tiaIds.some(id => {
+                    const el = document.getElementById(id);
+                    return el && el.value && el.value.trim() !== "";
+                });
+            })();
+
+            const hasMesswerteContent = (() => {
+                const container = document.getElementById("messwerte-container");
+                if (!container || container.style.display === "none") return false;
+                
+                const hasParam = PARAMETER_CONFIG.some(cfg => {
+                    const el = document.getElementById(`mw-${cfg.id}`);
+                    return el && el.value && el.value.trim() !== "";
+                });
+                if (hasParam) return true;
+
+                const hasEkg = Array.from(document.querySelectorAll(".ekg-checkbox")).some(cb => cb.checked);
+                if (hasEkg) return true;
+
+                const hasCrossed = Array.from(document.querySelectorAll(".status-indicator")).some(ind => ind.innerText === "❌");
+                if (hasCrossed) return true;
+
+                return false;
+            })();
+
+            const hasAnyContent = text !== "" || hasTiaContent || hasMesswerteContent;
+
+            if (!hasAnyContent) {
                 submitBtn.disabled = true;
                 submitBtn.className = "btn-disabled";
                 submitBtn.innerText = "Text senden";
@@ -2062,6 +2174,21 @@ function erzeugeVorlagenButtonInhalt(key) {
                 container.style.display = "none";
                 btn.innerText = "📊 Messwerte eingeben";
             }
+            updateSubmitButtonState();
+        }
+
+        // TIA/APOPLEX EINBLENDEN ODER AUSBLENDEN
+        function toggleTiaApoplex() {
+            const container = document.getElementById("tia-container");
+            const btn = document.getElementById("toggle-tia-btn");
+            if (container.style.display === "none") {
+                container.style.display = "block";
+                btn.innerText = "🧠 TIA/Apoplex ausblenden";
+            } else {
+                container.style.display = "none";
+                btn.innerText = "🧠 V.a. TIA/Apoplex";
+            }
+            updateSubmitButtonState();
         }
 
         function renderEkgChecklist() {
@@ -2185,6 +2312,7 @@ function erzeugeVorlagenButtonInhalt(key) {
             } else if (statusEl.innerText === "❌") {
                 statusEl.innerText = hasValue ? "✅" : "❓";
             }
+            updateSubmitButtonState();
         }
 
         function clearMesswerte() {
@@ -2200,9 +2328,31 @@ function erzeugeVorlagenButtonInhalt(key) {
             document.querySelectorAll(".status-indicator").forEach(ind => {
                 ind.innerText = "❓";
             });
+            updateSubmitButtonState();
+        }
+
+        // TIA/APOPLEX FELDER LEEREN
+        function clearTiaFields() {
+            document.getElementById("tia-befast-b").value = "";
+            document.getElementById("tia-befast-e").value = "";
+            document.getElementById("tia-befast-f").value = "";
+            document.getElementById("tia-befast-a").value = "";
+            document.getElementById("tia-befast-s").value = "";
+            document.getElementById("tia-bewusstsein").value = "";
+            document.getElementById("tia-kopfschmerz").value = "";
+            document.getElementById("tia-sehstoerung").value = "";
+            document.getElementById("tia-blickwendung").value = "";
+            document.getElementById("tia-zeit").value = "";
+            document.getElementById("tia-zeit-status").value = "";
+            updateSubmitButtonState();
         }
 
         function formatMesswerteFuerAusgabe() {
+            const container = document.getElementById("messwerte-container");
+            if (!container || container.style.display === "none") {
+                return "";
+            }
+
             let eintraege = [];
             const getStatusOf = (id) => {
                 const el = document.getElementById(`status-${id}`);
@@ -2235,7 +2385,7 @@ function erzeugeVorlagenButtonInhalt(key) {
                 }
             });
 
-           const ekgStatus = getStatusOf("ekg");
+            const ekgStatus = getStatusOf("ekg");
             if (ekgStatus !== "❓" && ekgStatus !== null) {
                 if (ekgStatus === "❌") {
                     eintraege.push("EKG nicht geschrieben");
@@ -2251,6 +2401,65 @@ function erzeugeVorlagenButtonInhalt(key) {
             }
 
             return eintraege.length > 0 ? "\n\nMesswerte: " + eintraege.join(" | ") : "";
+        }
+
+        // TIA/APOPLEX FORMATIERUNG FÜR AUSGABE - Nur anfügen wenn das Feld ausgeklappt ist
+        function formatTiaFuerAusgabe() {
+            const container = document.getElementById("tia-container");
+            if (!container || container.style.display === "none") {
+                return "";
+            }
+
+            const bVal = document.getElementById("tia-befast-b").value.trim();
+            const eVal = document.getElementById("tia-befast-e").value.trim();
+            const fVal = document.getElementById("tia-befast-f").value.trim();
+            const aVal = document.getElementById("tia-befast-a").value.trim();
+            const sVal = document.getElementById("tia-befast-s").value.trim();
+            
+            const bewVal = document.getElementById("tia-bewusstsein").value.trim();
+            const kopfVal = document.getElementById("tia-kopfschmerz").value.trim();
+            const sehVal = document.getElementById("tia-sehstoerung").value.trim();
+            const blickVal = document.getElementById("tia-blickwendung").value.trim();
+            const zeitVal = document.getElementById("tia-zeit").value.trim();
+            const statusVal = document.getElementById("tia-zeit-status").value;
+
+            const hasBefast = bVal || eVal || fVal || aVal || sVal;
+            const hasOthers = bewVal || kopfVal || sehVal || blickVal || zeitVal || statusVal;
+
+            if (!hasBefast && !hasOthers) {
+                return "\n\nV.a. TIA/Apoplex: o.p.B";
+            }
+
+            let parts = [];
+            
+            if (hasBefast) {
+                let befastParts = [];
+                if (bVal) befastParts.push(`Balance: ${bVal}`);
+                if (eVal) befastParts.push(`Eyes: ${eVal}`);
+                if (fVal) befastParts.push(`Face: ${fVal}`);
+                if (aVal) befastParts.push(`Arms: ${aVal}`);
+                if (sVal) befastParts.push(`Speech: ${sVal}`);
+                parts.push(`BEFAST (${befastParts.join(", ")})`);
+            }
+
+            if (bewVal) parts.push(`Bewusstseinsstörungen: ${bewVal}`);
+            if (kopfVal) parts.push(`Kopfschmerz: ${kopfVal}`);
+            if (sehVal) parts.push(`Sehstörung: ${sehVal}`);
+            if (blickVal) parts.push(`Blickwendung: ${blickVal}`);
+            
+            if (zeitVal || statusVal) {
+                let zeitStr = "Symptombeginn: ";
+                if (zeitVal && statusVal) {
+                    zeitStr += `${zeitVal} Uhr (${statusVal})`;
+                } else if (zeitVal) {
+                    zeitStr += `${zeitVal} Uhr`;
+                } else if (statusVal) {
+                    zeitStr += `${statusVal}`;
+                }
+                parts.push(zeitStr);
+            }
+
+            return "\n\nV.a. TIA/Apoplex: " + parts.join(" | ");
         }
 
         function autoResize() {
@@ -2284,6 +2493,7 @@ function erzeugeVorlagenButtonInhalt(key) {
             loeschSliderContainer.classList.remove("show");
             localStorage.removeItem("aktueller_entwurf"); 
             clearMesswerte();
+            clearTiaFields();
             autoResize();
             updateSubmitButtonState();
             overlay.style.display = "none";
@@ -2311,12 +2521,13 @@ function erzeugeVorlagenButtonInhalt(key) {
             const kiAuswahl = kiSelect.value;
             
             const basisText = textarea.value;
+            const tiaText = formatTiaFuerAusgabe();
             const messwerteText = formatMesswerteFuerAusgabe();
-            const textMitMesswerten = basisText + messwerteText;
+            const textMitMesswerten = basisText + tiaText + messwerteText;
 
             if (kiAuswahl !== "keine") {
-                if (!basisText.trim()) {
-                    alert("Bitte schreiben oder wählen Sie zuerst einen Text.");
+                if (!textMitMesswerten.trim()) {
+                    alert("Bitte schreiben Sie einen Text oder erfassen Sie Messwerte/TIA-Daten.");
                     return false;
                 }
 
@@ -2386,6 +2597,16 @@ function erzeugeVorlagenButtonInhalt(key) {
             renderMesswerteInput();
             renderEkgChecklist();
             
+            // Event-Listener für TIA-Felder hinzufügen, um Senden-Button-Status zu aktualisieren
+            const tiaFieldIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-blickwendung", "tia-zeit", "tia-zeit-status"];
+            tiaFieldIds.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener("input", updateSubmitButtonState);
+                    element.addEventListener("change", updateSubmitButtonState);
+                }
+            });
+            
             const gespeicherterEntwurf = localStorage.getItem("aktueller_entwurf");
             if (gespeicherterEntwurf) textarea.value = gespeicherterEntwurf;
 
@@ -2397,10 +2618,8 @@ function erzeugeVorlagenButtonInhalt(key) {
         });
                
         window.addEventListener('beforeunload', (event) => {
-            // Nur warnen, wenn tatsächlich Text im Eingabefeld steht
             if (textarea && textarea.value.trim() !== "") {
                 event.preventDefault();
-                // Standardkonformität für moderne Browser
                 event.returnValue = 'Es liegen ungespeicherte Daten vor. Möchten Sie die Seite wirklich verlassen?';
             }
         });
@@ -2411,10 +2630,10 @@ function erzeugeVorlagenButtonInhalt(key) {
             if (!input) return;
             if (input.type === "password") {
                 input.type = "text";
-                iconEl.innerText = "visibility_off"; // Zeigt das durchgestrichene Auge an
+                iconEl.innerText = "visibility_off";
             } else {
                 input.type = "password";
-                iconEl.innerText = "visibility";     // Zeigt das normale Auge an
+                iconEl.innerText = "visibility";
             }
         }
 
