@@ -856,20 +856,36 @@
                         <input type="text" id="tia-herdblick" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
                     </div>
                     
-                    <!-- Symptombeginn -->
-                    <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 10px; display: flex; flex-wrap: wrap; gap: 8px;">
-                        <div style="flex: 1; min-width: 120px;">
-                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-zeit">Symptombeginn:</label>
-                            <input type="time" id="tia-zeit" style="margin: 0; padding: 10px; font-size: 14px; width: 100%;">
+                    <!-- Orale Antikoagulanzien -->
+                    <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 10px; margin-bottom: 8px;">
+                        <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-antikoagulanzien">Orale Antikoagulanzien:</label>
+                        <select id="tia-antikoagulanzien" style="margin: 0; padding: 10px; font-size: 14px; width: 100%;">
+                            <option value="keine">keine</option>
+                            <option value="Acetylsalicylsäure (Thrombozytenaggregationshemmer)">Acetylsalicylsäure (Thrombozytenaggregationshemmer)</option>
+                            <option value="Apixaban (z. B. Eliquis)">Apixaban (z. B. Eliquis)</option>
+                            <option value="Rivaroxaban (z. B. Xarelto)">Rivaroxaban (z. B. Xarelto)</option>
+                            <option value="Edoxaban (z. B. Lixiana)">Edoxaban (z. B. Lixiana)</option>
+                            <option value="Dabigatran (z. B. Pradaxa - direkter Thrombinhemmer)">Dabigatran (z. B. Pradaxa - direkter Thrombinhemmer)</option>
+                            <option value="Phenprocoumon (z. B. Marcumar)">Phenprocoumon (z. B. Marcumar)</option>
+                            <option value="Warfarin (z. B. Coumadin)">Warfarin (z. B. Coumadin)</option>
+                        </select>
+                    </div>
+
+                    <!-- Symptombeginn Klickstruktur -->
+                    <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="width: 100%;">
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);">Bestimmung Symptombeginn:</label>
+                            <div class="segmented-control" style="width: 100%; height: 36px;">
+                                <input type="radio" id="tia-status-sicher" name="tia-symptom-status" value="sicher" checked>
+                                <label for="tia-status-sicher">Sicher</label>
+                                
+                                <input type="radio" id="tia-status-unsicher" name="tia-symptom-status" value="unsicher">
+                                <label for="tia-status-unsicher">Unsicher</label>
+                            </div>
                         </div>
-                        <div style="flex: 1.2; min-width: 150px;">
-                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-zeit-status">Bestimmung:</label>
-                            <select id="tia-zeit-status" style="margin: 0; padding: 10px; font-size: 14px; width: 100%;">
-                                <option value="" disabled selected>Bitte wählen...</option>
-                                <option value="sicher">sicher</option>
-                                <option value="unklar">unklar</option>
-                                <option value="zuletzt symptomfrei">zuletzt symptomfrei</option>
-                            </select>
+                        <div id="tia-zeit-wrapper" style="width: 100%;">
+                            <label id="tia-zeit-label" style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-zeit">Symptombeginn (Uhrzeit):</label>
+                            <input type="time" id="tia-zeit" style="margin: 0; padding: 10px; font-size: 14px; width: 100%;">
                         </div>
                     </div>
                 </div>
@@ -2087,10 +2103,14 @@
             const hasTiaContent = (() => {
                 const container = document.getElementById("tia-container");
                 if (!container || container.style.display === "none") return false;
-                const tiaIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit", "tia-zeit-status"];
+                const tiaIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit", "tia-antikoagulanzien"];
                 return tiaIds.some(id => {
                     const el = document.getElementById(id);
-                    return el && el.value && el.value.trim() !== "";
+                    if (!el) return false;
+                    if (id === "tia-antikoagulanzien") {
+                        return el.value !== "keine";
+                    }
+                    return el.value && el.value.trim() !== "";
                 });
             })();
 
@@ -2345,7 +2365,14 @@
             document.getElementById("tia-sehstoerung").value = "";
             document.getElementById("tia-herdblick").value = "";
             document.getElementById("tia-zeit").value = "";
-            document.getElementById("tia-zeit-status").value = "";
+            
+            const antiEl = document.getElementById("tia-antikoagulanzien");
+            if (antiEl) antiEl.value = "keine";
+
+            const statusSicher = document.getElementById("tia-status-sicher");
+            if (statusSicher) statusSicher.checked = true;
+            updateSymptomTimeUI();
+
             updateSubmitButtonState();
         }
 
@@ -2423,7 +2450,12 @@
             const sehVal = document.getElementById("tia-sehstoerung").value.trim();
             const herdblickVal = document.getElementById("tia-herdblick").value.trim();
             const zeitVal = document.getElementById("tia-zeit").value.trim();
-            const statusVal = document.getElementById("tia-zeit-status").value;
+
+            const statusEl = document.querySelector('input[name="tia-symptom-status"]:checked');
+            const statusVal = statusEl ? statusEl.value : "sicher";
+
+            const antiEl = document.getElementById("tia-antikoagulanzien");
+            const antiVal = antiEl ? antiEl.value : "keine";
 
             let befastParts = [];
             befastParts.push(`Balance: ${bVal || 'o.p.B.'}`);
@@ -2439,18 +2471,13 @@
             parts.push(`Kopfschmerz: ${kopfVal || 'o.p.B.'}`);
             parts.push(`Sehstörung: ${sehVal || 'o.p.B.'}`);
             parts.push(`Herdblick: ${herdblickVal || 'o.p.B.'}`);
+            parts.push(`Orale Antikoagulanzien: ${antiVal}`);
             
-            let zeitStr = "Symptombeginn: ";
-            if (zeitVal || statusVal) {
-                if (zeitVal && statusVal) {
-                    zeitStr += `${zeitVal} Uhr (${statusVal})`;
-                } else if (zeitVal) {
-                    zeitStr += `${zeitVal} Uhr`;
-                } else if (statusVal) {
-                    zeitStr += `${statusVal}`;
-                }
+            let zeitStr = "";
+            if (statusVal === "sicher") {
+                zeitStr = `Symptombeginn: ${zeitVal ? zeitVal + ' Uhr (sicher)' : 'k.A.'}`;
             } else {
-                zeitStr += "k.A.";
+                zeitStr = `Zuletzt symptomfrei: ${zeitVal ? zeitVal + ' Uhr' : 'k.A.'} (Symptombeginn unsicher)`;
             }
             parts.push(zeitStr);
 
@@ -2564,6 +2591,20 @@
             return false;
         }
 
+        // Steuert das dynamische Label basierend auf "Sicher" / "Unsicher"
+        function updateSymptomTimeUI() {
+            const isSicher = document.getElementById("tia-status-sicher") && document.getElementById("tia-status-sicher").checked;
+            const label = document.getElementById("tia-zeit-label");
+            if (label) {
+                if (isSicher) {
+                    label.innerText = "Symptombeginn (Uhrzeit):";
+                } else {
+                    label.innerText = "Zuletzt symptomfrei (Uhrzeit):";
+                }
+            }
+            updateSubmitButtonState();
+        }
+
         // Event-Listener
         textarea.addEventListener("input", () => {
             autoResize();
@@ -2593,7 +2634,7 @@
             renderEkgChecklist();
             
             // Event-Listener für TIA-Felder hinzufügen, um Senden-Button-Status zu aktualisieren
-            const tiaFieldIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit", "tia-zeit-status"];
+            const tiaFieldIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit", "tia-antikoagulanzien"];
             tiaFieldIds.forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
@@ -2601,6 +2642,16 @@
                     element.addEventListener("change", updateSubmitButtonState);
                 }
             });
+
+            // Event-Listener für Status-Radiobuttons
+            document.querySelectorAll('input[name="tia-symptom-status"]').forEach(radio => {
+                radio.addEventListener("change", () => {
+                    updateSymptomTimeUI();
+                    updateSubmitButtonState();
+                });
+            });
+
+            updateSymptomTimeUI();
             
             const gespeicherterEntwurf = localStorage.getItem("aktueller_entwurf");
             if (gespeicherterEntwurf) textarea.value = gespeicherterEntwurf;
