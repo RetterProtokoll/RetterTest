@@ -856,19 +856,51 @@
                         <input type="text" id="tia-herdblick" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
                     </div>
                     
-                    <!-- Orale Antikoagulanzien -->
+                    <!-- Orale Antikoagulation / Thrombozytenaggregationshemmer -->
                     <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 10px; margin-bottom: 8px;">
-                        <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-antikoagulanzien">Orale Antikoagulanzien:</label>
-                        <select id="tia-antikoagulanzien" style="margin: 0; padding: 10px; font-size: 14px; width: 100%;">
-                            <option value="keine">keine</option>
-                            <option value="Acetylsalicylsäure (Thrombozytenaggregationshemmer)">Acetylsalicylsäure (Thrombozytenaggregationshemmer)</option>
-                            <option value="Apixaban (z. B. Eliquis)">Apixaban (z. B. Eliquis)</option>
-                            <option value="Rivaroxaban (z. B. Xarelto)">Rivaroxaban (z. B. Xarelto)</option>
-                            <option value="Edoxaban (z. B. Lixiana)">Edoxaban (z. B. Lixiana)</option>
-                            <option value="Dabigatran (z. B. Pradaxa - direkter Thrombinhemmer)">Dabigatran (z. B. Pradaxa - direkter Thrombinhemmer)</option>
-                            <option value="Phenprocoumon (z. B. Marcumar)">Phenprocoumon (z. B. Marcumar)</option>
-                            <option value="Warfarin (z. B. Coumadin)">Warfarin (z. B. Coumadin)</option>
-                        </select>
+                        <label style="margin: 0 0 8px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);">orale Antikoagulation / Thrombozytenaggregationshemmer:</label>
+                        <div class="ekg-checklist" id="oak-checklist-container" style="max-height: 160px;">
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="ASS (z. B. Aspirin)" class="oak-checkbox">
+                                <span>ASS (z. B. Aspirin)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Clopidogrel (z. B. Plavix)" class="oak-checkbox">
+                                <span>Clopidogrel (z. B. Plavix)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Prasugrel (z. B. Efient)" class="oak-checkbox">
+                                <span>Prasugrel (z. B. Efient)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Ticagrelor (z. B. Brilique)" class="oak-checkbox">
+                                <span>Ticagrelor (z. B. Brilique)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Apixaban (z. B. Eliquis)" class="oak-checkbox">
+                                <span>Apixaban (z. B. Eliquis)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Rivaroxaban (z. B. Xarelto)" class="oak-checkbox">
+                                <span>Rivaroxaban (z. B. Xarelto)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Edoxaban (z. B. Lixiana)" class="oak-checkbox">
+                                <span>Edoxaban (z. B. Lixiana)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Dabigatran (z. B. Pradaxa)" class="oak-checkbox">
+                                <span>Dabigatran (z. B. Pradaxa)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Phenprocoumon (z. B. Marcumar)" class="oak-checkbox">
+                                <span>Phenprocoumon (z. B. Marcumar)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Warfarin (z. B. Coumadin)" class="oak-checkbox">
+                                <span>Warfarin (z. B. Coumadin)</span>
+                            </label>
+                        </div>
                     </div>
 
                     <!-- Symptombeginn Klickstruktur -->
@@ -1502,7 +1534,7 @@
                     selectLabel.innerText = "Prompt wählen:";
                     textLabel.innerText = "Prompt-Text bearbeiten:";
                     newLabel.innerText = "Neuen Prompt erstellen:";
-                    newInput.placeholder = "Name des Prompts (z.B. rechtschreibung)...";
+                    newInput.placeholder = "Name des Prompts (z.B. Rechtschreibung)...";
                     genderContainer.style.display = "none"; // Geschlechtsfilter ausblenden
                     
                     Object.keys(ACTIVE_PROFILE.prompts || {}).forEach(key => {
@@ -1543,10 +1575,13 @@
                 return;
             }
 
-            // Normalisierung der Eingabe für die Datenbank
-            let dbKey = nameRaw.toLowerCase()
-                .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
-                .replace(/[^a-z0-9_]/g, '_')
+            // Normalisierung der Eingabe für die Datenbank (Groß- und Kleinschreibung beibehalten)
+            let dbKey = nameRaw
+                .replace(/ä/g, 'ae').replace(/Ä/g, 'Ae')
+                .replace(/ö/g, 'oe').replace(/Ö/g, 'Oe')
+                .replace(/ü/g, 'ue').replace(/Ü/g, 'Ue')
+                .replace(/ß/g, 'ss')
+                .replace(/[^a-zA-Z0-9_]/g, '_')
                 .replace(/_+/g, '_');
 
             if (dbKey.startsWith('_')) dbKey = dbKey.substring(1);
@@ -1560,8 +1595,8 @@
             if (selectedTab === "templates") {
                 const gender = document.querySelector('input[name="newgender"]:checked').value;
                 
-                // Eventuell bereits eingetippte Endungen entfernen, um Doppelungen zu vermeiden
-                dbKey = dbKey.replace(/_m$/, '').replace(/_w$/, '');
+                // Eventuell bereits eingetippte Endungen case-insensitiv entfernen, um Doppelungen zu vermeiden
+                dbKey = dbKey.replace(/_m$/i, '').replace(/_w$/i, '');
 
                 if (gender === "m") {
                     dbKey += "_m";
@@ -2103,15 +2138,18 @@
             const hasTiaContent = (() => {
                 const container = document.getElementById("tia-container");
                 if (!container || container.style.display === "none") return false;
-                const tiaIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit", "tia-antikoagulanzien"];
-                return tiaIds.some(id => {
+                const tiaIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit"];
+                const hasText = tiaIds.some(id => {
                     const el = document.getElementById(id);
-                    if (!el) return false;
-                    if (id === "tia-antikoagulanzien") {
-                        return el.value !== "keine";
-                    }
-                    return el.value && el.value.trim() !== "";
+                    return el && el.value && el.value.trim() !== "";
                 });
+                if (hasText) return true;
+
+                // Prüfen ob mindestens eine OAK-Checkbox gewählt wurde
+                const hasOak = Array.from(document.querySelectorAll(".oak-checkbox")).some(cb => cb.checked);
+                if (hasOak) return true;
+
+                return false;
             })();
 
             const hasMesswerteContent = (() => {
@@ -2366,8 +2404,8 @@
             document.getElementById("tia-herdblick").value = "";
             document.getElementById("tia-zeit").value = "";
             
-            const antiEl = document.getElementById("tia-antikoagulanzien");
-            if (antiEl) antiEl.value = "keine";
+            // Alle OAK-Checkboxen demarkieren
+            document.querySelectorAll(".oak-checkbox").forEach(cb => cb.checked = false);
 
             const statusSicher = document.getElementById("tia-status-sicher");
             if (statusSicher) statusSicher.checked = true;
@@ -2454,8 +2492,10 @@
             const statusEl = document.querySelector('input[name="tia-symptom-status"]:checked');
             const statusVal = statusEl ? statusEl.value : "sicher";
 
-            const antiEl = document.getElementById("tia-antikoagulanzien");
-            const antiVal = antiEl ? antiEl.value : "keine";
+            // Ausgewählte OAK sammeln
+            const ausgewaehlteOak = [];
+            document.querySelectorAll(".oak-checkbox:checked").forEach(cb => ausgewaehlteOak.push(cb.value));
+            const antiVal = ausgewaehlteOak.length > 0 ? ausgewaehlteOak.join(", ") : "keine";
 
             let befastParts = [];
             befastParts.push(`Balance: ${bVal || 'o.p.B.'}`);
@@ -2471,11 +2511,11 @@
             parts.push(`Kopfschmerz: ${kopfVal || 'o.p.B.'}`);
             parts.push(`Sehstörung: ${sehVal || 'o.p.B.'}`);
             parts.push(`Herdblick: ${herdblickVal || 'o.p.B.'}`);
-            parts.push(`Orale Antikoagulanzien: ${antiVal}`);
+            parts.push(`Orale Antikoagulation / Thrombozytenaggregationshemmer: ${antiVal}`);
             
             let zeitStr = "";
             if (statusVal === "sicher") {
-                zeitStr = `Symptombeginn: ${zeitVal ? zeitVal + ' Uhr (sicher)' : 'k.A.'}`;
+                zeitStr = `Symptombeginn: ${zeitVal ? zeitVal + ' Uhr' : 'k.A.'} (sicher)`;
             } else {
                 zeitStr = `Zuletzt symptomfrei: ${zeitVal ? zeitVal + ' Uhr' : 'k.A.'} (Symptombeginn unsicher)`;
             }
@@ -2633,14 +2673,19 @@
             renderMesswerteInput();
             renderEkgChecklist();
             
-            // Event-Listener für TIA-Felder hinzufügen, um Senden-Button-Status zu aktualisieren
-            const tiaFieldIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit", "tia-antikoagulanzien"];
+            // Event-Listener für TIA-Textfelder hinzufügen
+            const tiaFieldIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit"];
             tiaFieldIds.forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
                     element.addEventListener("input", updateSubmitButtonState);
                     element.addEventListener("change", updateSubmitButtonState);
                 }
+            });
+
+            // Event-Listener für die OAK-Mehrfachauswahl-Checkboxen
+            document.querySelectorAll(".oak-checkbox").forEach(cb => {
+                cb.addEventListener("change", updateSubmitButtonState);
             });
 
             // Event-Listener für Status-Radiobuttons
