@@ -809,7 +809,7 @@
             <!-- BUTTONS AUF GLEICHER HÖHE -->
             <div style="display: flex; gap: 8px; margin-top: 8px; margin-bottom: 8px;">
                 <button type="button" id="toggle-tia-btn" class="secondary" style="margin: 0; flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px;" onclick="toggleTiaApoplex()">
-                    <span class="material-symbols-outlined" style="font-size: 20px;">cognition</span>
+                    <span class="material-symbols-outlined" style="font-size: 20px;">cognition2</span>
                     V.a. TIA/Apoplex
                 </button>
                 <button type="button" id="toggle-messwerte-btn" class="secondary" style="margin: 0; flex: 1;" onclick="toggleMesswerte()">📊 Messwerte eingeben</button>
@@ -819,7 +819,7 @@
             <div id="tia-container" class="messwerte-box" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
                     <span style="font-weight: 600; font-size: 14px; color: var(--md-color-on-surface-variant); display: inline-flex; align-items: center; gap: 6px;">
-                        <span class="material-symbols-outlined" style="font-size: 20px;">cognition</span>
+                        <span class="material-symbols-outlined" style="font-size: 20px;">cognition2</span>
                         V.a. TIA / Apoplex:
                     </span>
                     <button type="button" class="secondary" style="width: auto; padding: 4px 12px; font-size: 12px; border-radius: 100px; margin: 0;" onclick="clearTiaFields()">🗑️ Leeren</button>
@@ -2247,7 +2247,7 @@
         function toggleTiaApoplex() {
             const container = document.getElementById("tia-container");
             const btn = document.getElementById("toggle-tia-btn");
-            const iconHtml = '<span class="material-symbols-outlined" style="font-size: 20px;">cognition</span>';
+            const iconHtml = '<span class="material-symbols-outlined" style="font-size: 20px;">cognition2</span>';
             
             if (container.style.display === "none") {
                 container.style.display = "block";
