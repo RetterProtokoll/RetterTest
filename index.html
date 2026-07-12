@@ -819,35 +819,43 @@
                     <button type="button" class="secondary" style="width: auto; padding: 4px 12px; font-size: 12px; border-radius: 100px; margin: 0;" onclick="clearTiaFields()">🗑️ Leeren</button>
                 </div>
                 
-                <!-- BEFAST Sektion -->
+                <!-- FAST4D Sektion -->
                 <div style="margin-bottom: 14px;">
-                    <span style="font-weight: 600; font-size: 13px; color: var(--md-color-primary); display: block; margin-bottom: 8px;">BEFAST</span>
+                    <span style="font-weight: 600; font-size: 13px; color: var(--md-color-primary); display: block; margin-bottom: 8px;">FAST4D</span>
                     <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
                         <div>
-                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-befast-b">Balance:</label>
-                            <input type="text" id="tia-befast-b" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-f">Face (Faziale Parese):</label>
+                            <input type="text" id="tia-fast4d-f" placeholder="Faziale Parese..." style="margin: 0; padding: 10px; font-size: 14px;">
                         </div>
                         <div>
-                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-befast-e">Eyes:</label>
-                            <input type="text" id="tia-befast-e" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-a">Arm (Arm-/Beinparese):</label>
+                            <input type="text" id="tia-fast4d-a" placeholder="Arm-/Beinparese..." style="margin: 0; padding: 10px; font-size: 14px;">
                         </div>
                         <div>
-                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-befast-f">Face:</label>
-                            <input type="text" id="tia-befast-f" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-s">Speech (Sprach-/Sprechstörung):</label>
+                            <input type="text" id="tia-fast4d-s" placeholder="Sprach-/Sprechstörung..." style="margin: 0; padding: 10px; font-size: 14px;">
                         </div>
                         <div>
-                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-befast-a">Arms:</label>
-                            <input type="text" id="tia-befast-a" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-d1">Diplopic images (Doppelbilder):</label>
+                            <input type="text" id="tia-fast4d-d1" placeholder="Doppelbilder..." style="margin: 0; padding: 10px; font-size: 14px;">
                         </div>
                         <div>
-                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-befast-s">Speech:</label>
-                            <input type="text" id="tia-befast-s" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-d2">Deficit in field of view (GesichtsfeldDefekt):</label>
+                            <input type="text" id="tia-fast4d-d2" placeholder="GesichtsfeldDefekt..." style="margin: 0; padding: 10px; font-size: 14px;">
+                        </div>
+                        <div>
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-d3">Dizziness/vertigo (Dreh-/Schwankschwindel):</label>
+                            <input type="text" id="tia-fast4d-d3" placeholder="Dreh-/Schwankschwindel..." style="margin: 0; padding: 10px; font-size: 14px;">
+                        </div>
+                        <div>
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-d4">Dysmetria/ataxia (Dysmetrie/Ataxie):</label>
+                            <input type="text" id="tia-fast4d-d4" placeholder="Dysmetrie/Ataxie..." style="margin: 0; padding: 10px; font-size: 14px;">
                         </div>
 
-                        <!-- Symptombeginn Klickstruktur (verschoben unter Speech) -->
+                        <!-- Symptombeginn Klickstruktur (verschoben unter Dysmetria/Ataxie) -->
                         <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 10px; display: flex; flex-direction: column; gap: 8px;">
                             <div style="width: 100%;">
-                                <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);">Bestimmung Symptombeginn:</label>
+                                <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);">Bestimmung Symptombeginn (Time):</label>
                                 <div class="segmented-control" style="width: 100%; height: 36px;">
                                     <input type="radio" id="tia-status-sicher" name="tia-symptom-status" value="sicher" checked>
                                     <label for="tia-status-sicher">Sicher</label>
@@ -864,31 +872,10 @@
                     </div>
                 </div>
 
-                <!-- Weitere TIA Felder -->
-                <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 12px; display: grid; grid-template-columns: 1fr; gap: 8px;">
-                    <div>
-                        <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-schwindel">Akuter Schwindel:</label>
-                        <input type="text" id="tia-schwindel" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
-                    </div>
-                    <div>
-                        <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-bewusstsein">Bewusstseinsstörungen:</label>
-                        <input type="text" id="tia-bewusstsein" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
-                    </div>
-                    <div>
-                        <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-kopfschmerz">Kopfschmerz:</label>
-                        <input type="text" id="tia-kopfschmerz" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
-                    </div>
-                    <div>
-                        <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-sehstoerung">Sehstörung:</label>
-                        <input type="text" id="tia-sehstoerung" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
-                    </div>
-                    <div>
-                        <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-herdblick">Herdblick:</label>
-                        <input type="text" id="tia-herdblick" placeholder="Symptomatik eintragen..." style="margin: 0; padding: 10px; font-size: 14px;">
-                    </div>
-                    
+                <!-- Weitere TIA Felder (orale Antikoagulation bleibt bestehen) -->
+                <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 12px;">
                     <!-- Orale Antikoagulation / Thrombozytenaggregationshemmer -->
-                    <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 10px; margin-bottom: 8px;">
+                    <div style="padding-top: 2px; margin-bottom: 8px;">
                         <label style="margin: 0 0 8px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);">orale Antikoagulation / Thrombozytenaggregationshemmer:</label>
                         <div class="ekg-checklist" id="oak-checklist-container" style="max-height: 160px;">
                             <label class="ekg-item-row">
@@ -2152,7 +2139,7 @@
             const hasTiaContent = (() => {
                 const container = document.getElementById("tia-container");
                 if (!container || container.style.display === "none") return false;
-                const tiaIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-schwindel", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit"];
+                const tiaIds = ["tia-fast4d-f", "tia-fast4d-a", "tia-fast4d-s", "tia-fast4d-d1", "tia-fast4d-d2", "tia-fast4d-d3", "tia-fast4d-d4", "tia-zeit"];
                 const hasText = tiaIds.some(id => {
                     const el = document.getElementById(id);
                     return el && el.value && el.value.trim() !== "";
@@ -2425,18 +2412,15 @@
             updateSubmitButtonState();
         }
 
-        // TIA/APOPLEX FELDER LEEREN
+        // TIA/APOPLEX FELDER LEEREN (Aktualisiert auf FAST4D)
         function clearTiaFields() {
-            document.getElementById("tia-befast-b").value = "";
-            document.getElementById("tia-befast-e").value = "";
-            document.getElementById("tia-befast-f").value = "";
-            document.getElementById("tia-befast-a").value = "";
-            document.getElementById("tia-befast-s").value = "";
-            document.getElementById("tia-schwindel").value = "";
-            document.getElementById("tia-bewusstsein").value = "";
-            document.getElementById("tia-kopfschmerz").value = "";
-            document.getElementById("tia-sehstoerung").value = "";
-            document.getElementById("tia-herdblick").value = "";
+            document.getElementById("tia-fast4d-f").value = "";
+            document.getElementById("tia-fast4d-a").value = "";
+            document.getElementById("tia-fast4d-s").value = "";
+            document.getElementById("tia-fast4d-d1").value = "";
+            document.getElementById("tia-fast4d-d2").value = "";
+            document.getElementById("tia-fast4d-d3").value = "";
+            document.getElementById("tia-fast4d-d4").value = "";
             document.getElementById("tia-zeit").value = "";
             
             // Alle OAK-Checkboxen demarkieren
@@ -2514,24 +2498,20 @@
             return eintraege.length > 0 ? "\n\nMesswerte: " + eintraege.join(" | ") : "";
         }
 
-        // TIA/APOPLEX FORMATIERUNG FÜR AUSGABE - Alle Felder werden ausgegeben, leere als o.p.B.
+        // TIA/APOPLEX FORMATIERUNG FÜR AUSGABE - Auf FAST4D aktualisiert
         function formatTiaFuerAusgabe() {
             const container = document.getElementById("tia-container");
             if (!container || container.style.display === "none") {
                 return "";
             }
 
-            const bVal = document.getElementById("tia-befast-b").value.trim();
-            const eVal = document.getElementById("tia-befast-e").value.trim();
-            const fVal = document.getElementById("tia-befast-f").value.trim();
-            const aVal = document.getElementById("tia-befast-a").value.trim();
-            const sVal = document.getElementById("tia-befast-s").value.trim();
-            
-            const schwindelVal = document.getElementById("tia-schwindel").value.trim();
-            const bewVal = document.getElementById("tia-bewusstsein").value.trim();
-            const kopfVal = document.getElementById("tia-kopfschmerz").value.trim();
-            const sehVal = document.getElementById("tia-sehstoerung").value.trim();
-            const herdblickVal = document.getElementById("tia-herdblick").value.trim();
+            const fVal = document.getElementById("tia-fast4d-f").value.trim();
+            const aVal = document.getElementById("tia-fast4d-a").value.trim();
+            const sVal = document.getElementById("tia-fast4d-s").value.trim();
+            const d1Val = document.getElementById("tia-fast4d-d1").value.trim();
+            const d2Val = document.getElementById("tia-fast4d-d2").value.trim();
+            const d3Val = document.getElementById("tia-fast4d-d3").value.trim();
+            const d4Val = document.getElementById("tia-fast4d-d4").value.trim();
             const zeitVal = document.getElementById("tia-zeit").value.trim();
 
             const statusEl = document.querySelector('input[name="tia-symptom-status"]:checked');
@@ -2542,21 +2522,17 @@
             document.querySelectorAll(".oak-checkbox:checked").forEach(cb => ausgewaehlteOak.push(cb.value));
             const antiVal = ausgewaehlteOak.length > 0 ? ausgewaehlteOak.join(", ") : "keine";
 
-            let befastParts = [];
-            befastParts.push(`Balance: ${bVal || 'o.p.B.'}`);
-            befastParts.push(`Eyes: ${eVal || 'o.p.B.'}`);
-            befastParts.push(`Face: ${fVal || 'o.p.B.'}`);
-            befastParts.push(`Arms: ${aVal || 'o.p.B.'}`);
-            befastParts.push(`Speech: ${sVal || 'o.p.B.'}`);
+            let fast4DParts = [];
+            fast4DParts.push(`Face: ${fVal || 'o.p.B.'}`);
+            fast4DParts.push(`Arm: ${aVal || 'o.p.B.'}`);
+            fast4DParts.push(`Speech: ${sVal || 'o.p.B.'}`);
+            fast4DParts.push(`Diplopic images: ${d1Val || 'o.p.B.'}`);
+            fast4DParts.push(`Deficit in field of view: ${d2Val || 'o.p.B.'}`);
+            fast4DParts.push(`Dizziness/vertigo: ${d3Val || 'o.p.B.'}`);
+            fast4DParts.push(`Dysmetria/ataxia: ${d4Val || 'o.p.B.'}`);
 
             let parts = [];
-            parts.push(`BEFAST (${befastParts.join(", ")})`);
-            
-            parts.push(`Akuter Schwindel: ${schwindelVal || 'o.p.B.'}`);
-            parts.push(`Bewusstseinsstörungen: ${bewVal || 'o.p.B.'}`);
-            parts.push(`Kopfschmerz: ${kopfVal || 'o.p.B.'}`);
-            parts.push(`Sehstörung: ${sehVal || 'o.p.B.'}`);
-            parts.push(`Herdblick: ${herdblickVal || 'o.p.B.'}`);
+            parts.push(`FAST4D (${fast4DParts.join(", ")})`);
             parts.push(`Orale Antikoagulation / Thrombozytenaggregationshemmer: ${antiVal}`);
             
             let zeitStr = "";
@@ -2719,8 +2695,8 @@
             renderMesswerteInput();
             renderEkgChecklist();
             
-            // Event-Listener für TIA-Textfelder hinzufügen
-            const tiaFieldIds = ["tia-befast-b", "tia-befast-e", "tia-befast-f", "tia-befast-a", "tia-befast-s", "tia-schwindel", "tia-bewusstsein", "tia-kopfschmerz", "tia-sehstoerung", "tia-herdblick", "tia-zeit"];
+            // Event-Listener für TIA-Textfelder (auf FAST4D aktualisiert)
+            const tiaFieldIds = ["tia-fast4d-f", "tia-fast4d-a", "tia-fast4d-s", "tia-fast4d-d1", "tia-fast4d-d2", "tia-fast4d-d3", "tia-fast4d-d4", "tia-zeit"];
             tiaFieldIds.forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
