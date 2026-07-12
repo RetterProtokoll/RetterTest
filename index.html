@@ -812,7 +812,7 @@
                     <span class="material-symbols-outlined" style="font-size: 20px;">cognition_2</span>
                     V.a. TIA/Apoplex
                 </button>
-                <button type="button" id="toggle-messwerte-btn" class="secondary" style="margin: 0; flex: 1;" onclick="toggleMesswerte()">📊 Messwerte eingeben</button>
+                <button type="button" id="toggle-messwerte-btn" class="secondary" style="margin: 0; flex: 1;" onclick="toggleMesswerte()"> <span class="material-symbols-outlined" style="font-size: 20px;">monitor_heart</span> Messwerte eingeben</button>
             </div>
 
             <!-- TIA/APOPLEX CONTAINER -->
@@ -2233,12 +2233,13 @@
         function toggleMesswerte() {
             const container = document.getElementById("messwerte-container");
             const btn = document.getElementById("toggle-messwerte-btn");
+            const iconHtml = '<span class="material-symbols-outlined" style="font-size: 20px;">monitor_heart</span>';
             if (container.style.display === "none") {
                 container.style.display = "block";
-                btn.innerText = "📊 Messwerte ausblenden";
+                 btn.innerHTML = `${iconHtml} Messwerte ausblenden";
             } else {
                 container.style.display = "none";
-                btn.innerText = "📊 Messwerte eingeben";
+                 btn.innerHTML = `${iconHtml} Messwerte eingeben";
             }
             updateSubmitButtonState();
         }
