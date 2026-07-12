@@ -1257,18 +1257,18 @@
             errorEl.style.display = "none";
 
             if (!email || !password) {
-                zegeAuthFehler("Bitte füllen Sie alle Pflichtfelder aus.");
+                zeigeAuthFehler("Bitte füllen Sie alle Pflichtfelder aus.");
                 return;
             }
 
             try {
                 if (isRegister) {
                     if (!name) {
-                        zegeAuthFehler("Bitte tragen Sie Ihren Namen ein.");
+                        zeigeAuthFehler("Bitte tragen Sie Ihren Namen ein.");
                         return;
                     }
                     if (password !== passwordConfirm) {
-                        zegeAuthFehler("Die Passwörter stimmen nicht überein.");
+                        zeigeAuthFehler("Die Passwörter stimmen nicht überein.");
                         return;
                     }
                     // Temporär den Namen für den asynchronen Ablauf zwischenspeichern
@@ -1281,7 +1281,7 @@
                 }
             } catch (err) {
                 console.error(err);
-                zegeAuthFehler(uebersetzeFehlermeldung(err.code));
+                zeigeAuthFehler(uebersetzeFehlermeldung(err.code));
             }
         }
 
@@ -1309,7 +1309,7 @@
             });
         }
         
-        function zegeAuthFehler(text) {
+        function zeigeAuthFehler(text) {
             const errorEl = document.getElementById("auth-error-msg");
             errorEl.innerText = text;
             errorEl.style.display = "block";
@@ -1350,7 +1350,7 @@
             errorEl.style.display = "none";
 
             if (!email) {
-                zegeAuthFehler("Bitte geben Sie Ihre E-Mail-Adresse ein.");
+                zeigeAuthFehler("Bitte geben Sie Ihre E-Mail-Adresse ein.");
                 return;
             }
 
@@ -1360,7 +1360,7 @@
                 zeigePasswortVergessen(false);
             } catch (err) {
                 console.error(err);
-                zegeAuthFehler(uebersetzeFehlermeldung(err.code));
+                zeigeAuthFehler(uebersetzeFehlermeldung(err.code));
             }
         }
         
@@ -2236,10 +2236,10 @@
             const iconHtml = '<span class="material-symbols-outlined" style="font-size: 20px;">monitor_heart</span>';
             if (container.style.display === "none") {
                 container.style.display = "block";
-                 btn.innerHTML = `${iconHtml} Messwerte ausblenden";
+                btn.innerHTML = `${iconHtml} Messwerte ausblenden`;
             } else {
                 container.style.display = "none";
-                 btn.innerHTML = `${iconHtml} Messwerte eingeben";
+                btn.innerHTML = `${iconHtml} Messwerte eingeben`;
             }
             updateSubmitButtonState();
         }
