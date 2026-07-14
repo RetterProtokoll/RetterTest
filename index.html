@@ -575,7 +575,7 @@
             display: inline-block;
         }
 
-        /* Desktop-Optimierungen & Zweispaltiges Layout */
+        /* Responsive Layout-Container für Desktop */
         .main-layout-container {
             display: flex;
             flex-direction: column;
@@ -584,23 +584,31 @@
 
         @media (min-width: 900px) {
             #app-screen.card {
-                max-width: 1050px !important;
+                max-width: 95% !important; /* Nutzt fast die vollständige Bildschirmbreite */
+                width: 100%;
             }
             .main-layout-container {
                 display: grid;
-                grid-template-columns: 1.1fr 0.9fr;
-                gap: 28px;
-                align-items: start;
+                grid-template-columns: 1.15fr 0.85fr; /* Optimal balanciertes Seitenverhältnis */
+                gap: 32px;
+                align-items: stretch; /* Bringt beide Spalten auf identische Höhe */
             }
             #editor-screen.card {
-                max-width: 700px !important;
-            }
-            textarea {
-                min-height: 260px;
+                max-width: 800px !important;
             }
             .left-column {
                 border-right: 1px solid var(--md-color-outline-variant);
-                padding-right: 24px;
+                padding-right: 32px;
+            }
+            .right-column {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+            textarea#freitext {
+                flex-grow: 1; /* Dehnt das Textfeld dynamisch in die Höhe */
+                min-height: 380px;
+                max-height: 65vh;
             }
         }
     </style>
@@ -798,7 +806,7 @@
         <form id="protokoll-form" method="POST" action="/" onsubmit="return handleFormSubmit(event)">
             <div class="main-layout-container">
                 
-                <!-- Linker Bereich (Vorlagen und physikalische Eingaben) -->
+                <!-- Linke Spalte: Konfiguration und Datenerfassung -->
                 <div class="left-column">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; margin-bottom: 8px;">
                         <label style="margin: 0;">Vorlagen:</label>
@@ -980,7 +988,7 @@
                     </div>
                 </div>
 
-                <!-- Rechter Bereich (Textausgabe und Gerätesteuerung) -->
+                <!-- Rechte Spalte: Editor und Auswertung -->
                 <div class="right-column">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; margin-bottom: 6px; gap: 8px; flex-wrap: wrap;">
                         <label for="freitext" style="margin-top: 0; margin-bottom: 0; flex: 1 1 auto; min-width: 100px;">Text bearbeiten:</label>
@@ -2595,6 +2603,11 @@
         }
 
         function autoResize() {
+            // Bei Desktop-Layout übernimmt flex-grow die Größenanpassung
+            if (window.innerWidth >= 900) {
+                textarea.style.height = 'auto';
+                return;
+            }
             textarea.style.height = 'auto';
             const maxHeight = 350;
             const newHeight = textarea.scrollHeight;
@@ -2776,7 +2789,10 @@
             if (radio) {
                 radio.checked = true;
             }
+            autoResize();
         });
+
+        window.addEventListener("resize", autoResize);
                
         window.addEventListener('beforeunload', (event) => {
             if (textarea && textarea.value.trim() !== "") {
