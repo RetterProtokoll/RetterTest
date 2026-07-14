@@ -80,7 +80,7 @@
             margin: auto; 
             box-sizing: border-box; 
             text-align: left;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease, max-width 0.3s ease;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .title-container { 
@@ -574,43 +574,6 @@
             line-height: 1;
             display: inline-block;
         }
-
-        /* Responsive Layout-Container für Desktop */
-        .main-layout-container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        @media (min-width: 900px) {
-            #app-screen.card {
-                max-width: 95% !important; /* Nutzt fast die vollständige Bildschirmbreite */
-                width: 100%;
-            }
-            .main-layout-container {
-                display: grid;
-                grid-template-columns: 1.15fr 0.85fr; /* Optimal balanciertes Seitenverhältnis */
-                gap: 32px;
-                align-items: stretch; /* Bringt beide Spalten auf identische Höhe */
-            }
-            #editor-screen.card {
-                max-width: 800px !important;
-            }
-            .left-column {
-                border-right: 1px solid var(--md-color-outline-variant);
-                padding-right: 32px;
-            }
-            .right-column {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-            }
-            textarea#freitext {
-                flex-grow: 1; /* Dehnt das Textfeld dynamisch in die Höhe */
-                min-height: 380px;
-                max-height: 65vh;
-            }
-        }
     </style>
 
     <!-- FIREBASE SDKs -->
@@ -804,227 +767,218 @@
         </div>
 
         <form id="protokoll-form" method="POST" action="/" onsubmit="return handleFormSubmit(event)">
-            <div class="main-layout-container">
-                
-                <!-- Linke Spalte: Konfiguration und Datenerfassung -->
-                <div class="left-column">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; margin-bottom: 8px;">
-                        <label style="margin: 0;">Vorlagen:</label>
-                        <div class="segmented-control" id="gender-filter-container">
-                            <input type="radio" id="gender-m" name="gender" value="m" checked>
-                            <label for="gender-m" style="display: inline-flex; align-items: center; gap: 4px;">
-                                <span class="material-symbols-outlined" style="font-size: 18px;">male</span> männlich
-                            </label>
-                            
-                            <input type="radio" id="gender-w" name="gender" value="w">
-                            <label for="gender-w" style="display: inline-flex; align-items: center; gap: 4px;">
-                                <span class="material-symbols-outlined" style="font-size: 18px;">female</span> weiblich
-                            </label>
-                        </div>
-                    </div>
-
-                    <div id="vorlage-scroll-container" class="scroll-container">
-                        <span style="font-size: 14px; color: var(--md-color-outline); padding: 8px 0;">Lade Vorlagen...</span>
-                    </div>
-
-                    <div id="ki-selection-container" style="margin-top: 16px; display: none;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px;">
-                            <label id="ki-label" for="ki-select" style="margin: 0; flex: 1;">KI-Unterstützung wählen (optional):</label>
-                            <div class="segmented-control" id="provider-container">
-                                <input type="radio" id="provider-chatgpt" name="provider" value="chatgpt" checked>
-                                <label for="provider-chatgpt">ChatGPT</label>
-                                
-                                <input type="radio" id="provider-gemini" name="provider" value="gemini">
-                                <label for="provider-gemini">Gemini</label>
-                            </div>
-                        </div>
-
-                        <div>
-                            <select id="ki-select" style="margin-bottom: 16px;">
-                                <option value="keine" selected>Keine KI (Text direkt senden)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- BUTTONS AUF GLEICHER HÖHE -->
-                    <div style="display: flex; gap: 8px; margin-top: 8px; margin-bottom: 8px;">
-                        <button type="button" id="toggle-tia-btn" class="secondary" style="margin: 0; flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px;" onclick="toggleTiaApoplex()">
-                            <span class="material-symbols-outlined" style="font-size: 20px;">cognition_2</span>
-                            V.a. TIA/Apoplex
-                        </button>
-                        <button type="button" id="toggle-messwerte-btn" class="secondary" style="margin: 0; flex: 1;" onclick="toggleMesswerte()"> <span class="material-symbols-outlined" style="font-size: 20px;">monitor_heart</span> Messwerte eingeben</button>
-                    </div>
-
-                    <!-- TIA/APOPLEX CONTAINER -->
-                    <div id="tia-container" class="messwerte-box" style="display: none;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-                            <span style="font-weight: 600; font-size: 14px; color: var(--md-color-on-surface-variant); display: inline-flex; align-items: center; gap: 6px;">
-                                <span class="material-symbols-outlined" style="font-size: 20px;">cognition_2</span>
-                                V.a. TIA / Apoplex:
-                            </span>
-                            <button type="button" class="secondary" style="width: auto; padding: 4px 12px; font-size: 12px; border-radius: 100px; margin: 0;" onclick="clearTiaFields()">🗑️ Leeren</button>
-                        </div>
-                        
-                        <!-- FAST4D Sektion -->
-                        <div style="margin-bottom: 14px;">
-                            <span style="font-weight: 600; font-size: 13px; color: var(--md-color-primary); display: block; margin-bottom: 8px;">FAST4D</span>
-                            <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
-                                <div>
-                                    <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-f">Face:</label>
-                                    <input type="text" id="tia-fast4d-f" placeholder="Faziale Parese..." style="margin: 0; padding: 10px; font-size: 14px;">
-                                </div>
-                                <div>
-                                    <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-a">Arm:</label>
-                                    <input type="text" id="tia-fast4d-a" placeholder="Arm-/Beinparese..." style="margin: 0; padding: 10px; font-size: 14px;">
-                                </div>
-                                <div>
-                                    <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-s">Speech:</label>
-                                    <input type="text" id="tia-fast4d-s" placeholder="Sprach-/Sprechstörung..." style="margin: 0; padding: 10px; font-size: 14px;">
-                                </div>
-                                <div>
-                                    <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-d1">Diplopic images:</label>
-                                    <input type="text" id="tia-fast4d-d1" placeholder="Doppelbilder..." style="margin: 0; padding: 10px; font-size: 14px;">
-                                </div>
-                                <div>
-                                    <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-d2">Deficit in field of view:</label>
-                                    <input type="text" id="tia-fast4d-d2" placeholder="GesichtsfeldDefekt..." style="margin: 0; padding: 10px; font-size: 14px;">
-                                </div>
-                                <div>
-                                    <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-d3">Dizziness/Vertigo:</label>
-                                    <input type="text" id="tia-fast4d-d3" placeholder="Dreh-/Schwankschwindel..." style="margin: 0; padding: 10px; font-size: 14px;">
-                                </div>
-                                <div>
-                                    <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-d4">Dysmetria/Ataxia:</label>
-                                    <input type="text" id="tia-fast4d-d4" placeholder="Koordinationsstörung..." style="margin: 0; padding: 10px; font-size: 14px;">
-                                </div>
-
-                                <!-- Symptombeginn Klickstruktur (verschoben unter Dysmetria/Ataxie) -->
-                                <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 10px; display: flex; flex-direction: column; gap: 8px;">
-                                    <div style="width: 100%;">
-                                        <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);">Bestimmung Symptombeginn (Time):</label>
-                                        <div class="segmented-control" style="width: 100%; height: 36px;">
-                                            <input type="radio" id="tia-status-sicher" name="tia-symptom-status" value="sicher" checked>
-                                            <label for="tia-status-sicher">Sicher</label>
-                                            
-                                            <input type="radio" id="tia-status-unsicher" name="tia-symptom-status" value="unsicher">
-                                            <label for="tia-status-unsicher">Unsicher</label>
-                                        </div>
-                                    </div>
-                                    <div id="tia-zeit-wrapper" style="width: 100%;">
-                                        <label id="tia-zeit-label" style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-zeit">Symptombeginn (Uhrzeit):</label>
-                                        <input type="time" id="tia-zeit" style="margin: 0; padding: 10px; font-size: 14px; width: 100%;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Weitere TIA Felder (orale Antikoagulation bleibt bestehen) -->
-                        <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 12px;">
-                            <!-- Orale Antikoagulation / Thrombozytenaggregationshemmer -->
-                            <div style="padding-top: 2px; margin-bottom: 8px;">
-                                <label style="margin: 0 0 8px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);">orale Antikoagulation / Thrombozytenaggregationshemmer:</label>
-                                <div class="ekg-checklist" id="oak-checklist-container" style="max-height: 160px;">
-                                    <label class="ekg-item-row">
-                                        <input type="checkbox" value="Acetylsalicylsäure (z. B. Aspirin)" class="oak-checkbox">
-                                        <span>Acetylsalicylsäure (z. B. Aspirin)</span>
-                                    </label>
-                                    <label class="ekg-item-row">
-                                        <input type="checkbox" value="Clopidogrel (z. B. Plavix)" class="oak-checkbox">
-                                        <span>Clopidogrel (z. B. Plavix)</span>
-                                    </label>
-                                    <label class="ekg-item-row">
-                                        <input type="checkbox" value="Prasugrel (z. B. Efient)" class="oak-checkbox">
-                                        <span>Prasugrel (z. B. Efient)</span>
-                                    </label>
-                                    <label class="ekg-item-row">
-                                        <input type="checkbox" value="Ticagrelor (z. B. Brilique)" class="oak-checkbox">
-                                        <span>Ticagrelor (z. B. Brilique)</span>
-                                    </label>
-                                    <label class="ekg-item-row">
-                                        <input type="checkbox" value="Apixaban (z. B. Eliquis)" class="oak-checkbox">
-                                        <span>Apixaban (z. B. Eliquis)</span>
-                                    </label>
-                                    <label class="ekg-item-row">
-                                        <input type="checkbox" value="Rivaroxaban (z. B. Xarelto)" class="oak-checkbox">
-                                        <span>Rivaroxaban (z. B. Xarelto)</span>
-                                    </label>
-                                    <label class="ekg-item-row">
-                                        <input type="checkbox" value="Edoxaban (z. B. Lixiana)" class="oak-checkbox">
-                                        <span>Edoxaban (z. B. Lixiana)</span>
-                                    </label>
-                                    <label class="ekg-item-row">
-                                        <input type="checkbox" value="Dabigatran (z. B. Pradaxa)" class="oak-checkbox">
-                                        <span>Dabigatran (z. B. Pradaxa)</span>
-                                    </label>
-                                    <label class="ekg-item-row">
-                                        <input type="checkbox" value="Phenprocoumon (z. B. Marcumar)" class="oak-checkbox">
-                                        <span>Phenprocoumon (z. B. Marcumar)</span>
-                                    </label>
-                                    <label class="ekg-item-row">
-                                        <input type="checkbox" value="Warfarin (z. B. Coumadin)" class="oak-checkbox">
-                                        <span>Warfarin (z. B. Coumadin)</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- MESSWERTE CONTAINER -->
-                    <div id="messwerte-container" class="messwerte-box" style="display: none;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-                            <span style="font-weight: 600; font-size: 14px; color: var(--md-color-on-surface-variant);">Messwerte erfassen:</span>
-                            <button type="button" class="secondary" style="width: auto; padding: 4px 12px; font-size: 12px; border-radius: 100px; margin: 0;" onclick="clearMesswerte()">🗑️ Leeren</button>
-                        </div>
-                        
-                        <div class="messwerte-grid" id="messwerte-grid-container"></div>
-                        
-                        <div class="messwerte-item" style="margin-top: 14px; width: 100%;">
-                            <div class="status-container" style="justify-content: flex-start; gap: 8px; margin-bottom: 6px;">
-                                <label style="margin-top: 0; margin-bottom: 0;">EKG (Mehrfachauswahl möglich)</label>
-                                <span id="status-ekg" class="status-indicator" onclick="toggleEkgStatus()">❓</span>
-                            </div>
-                            <div class="ekg-checklist" id="ekg-checklist-container"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Rechte Spalte: Editor und Auswertung -->
-                <div class="right-column">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; margin-bottom: 6px; gap: 8px; flex-wrap: wrap;">
-                        <label for="freitext" style="margin-top: 0; margin-bottom: 0; flex: 1 1 auto; min-width: 100px;">Text bearbeiten:</label>
-                        <div style="display: flex; gap: 8px; align-items: center; flex-shrink: 0; flex-wrap: nowrap;">
-                            <button type="button" id="connect-ble-btn" class="btn-connect" onclick="connectBluetooth()">
-                                <span class="material-symbols-outlined" id="connect-icon" style="font-size: 18px; margin-right: 4px;">bluetooth</span>
-                                <span id="connect-text">Verbinden</span>
-                            </button>
-                            <button type="button" id="clear-btn" class="secondary" style="margin-top: 0; width: auto; padding: 6px 16px; font-size: 13px; border-radius: 100px;" onclick="zeigeLoeschSlider()">🗑️ Löschen</button>
-                        </div>
-                    </div>
-
-                    <div id="loesch-slider-container" class="slide-container">
-                        <span class="slide-text">Zum Löschen schieben</span>
-                        <input type="range" id="delete-slider" class="slide-input" min="0" max="100" value="0" oninput="handleSliderInput(this)" onchange="handleSliderChange(this)">
-                    </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; margin-bottom: 8px;">
+                <label style="margin: 0;">Vorlagen:</label>
+                <div class="segmented-control" id="gender-filter-container">
+                    <input type="radio" id="gender-m" name="gender" value="m" checked>
+                    <label for="gender-m" style="display: inline-flex; align-items: center; gap: 4px;">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">male</span> männlich
+                    </label>
                     
-                    <textarea name="t" id="freitext" placeholder="Wähle eine Vorlage oder tippe hier freien Text..." autocomplete="off"></textarea>
+                    <input type="radio" id="gender-w" name="gender" value="w">
+                    <label for="gender-w" style="display: inline-flex; align-items: center; gap: 4px;">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">female</span> weiblich
+                    </label>
+                </div>
+            </div>
 
-                    <button type="submit" id="submit-btn" class="btn-disabled" disabled>Text senden</button>
+            <div id="vorlage-scroll-container" class="scroll-container">
+                <span style="font-size: 14px; color: var(--md-color-outline); padding: 8px 0;">Lade Vorlagen...</span>
+            </div>
 
-                    <div class="restore-subtle">
-                        <div class="restore-selector">
-                            <label class="restore-opt" for="restore-source-bt">
-                                <input type="radio" id="restore-source-bt" name="restore-source" value="bt" checked>
-                                <span>Letzter Bluetooth-Text</span>
-                            </label>
-                            <label class="restore-opt" id="restore-opt-ki" for="restore-source-ki">
-                                <input type="radio" id="restore-source-ki" name="restore-source" value="ki">
-                                <span>Letzter KI-Text</span>
-                            </label>
-                        </div>
-                        <button type="button" class="btn-restore-subtle" onclick="anwendenAusgewaehltenText()">In Textfeld einfügen</button>
+            <div id="ki-selection-container" style="margin-top: 16px; display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px;">
+                    <label id="ki-label" for="ki-select" style="margin: 0; flex: 1;">KI-Unterstützung wählen (optional):</label>
+                    <div class="segmented-control" id="provider-container">
+                        <input type="radio" id="provider-chatgpt" name="provider" value="chatgpt" checked>
+                        <label for="provider-chatgpt">ChatGPT</label>
+                        
+                        <input type="radio" id="provider-gemini" name="provider" value="gemini">
+                        <label for="provider-gemini">Gemini</label>
                     </div>
                 </div>
+
+                <div>
+                    <select id="ki-select" style="margin-bottom: 16px;">
+                        <option value="keine" selected>Keine KI (Text direkt senden)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- BUTTONS AUF GLEICHER HÖHE -->
+            <div style="display: flex; gap: 8px; margin-top: 8px; margin-bottom: 8px;">
+                <button type="button" id="toggle-tia-btn" class="secondary" style="margin: 0; flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px;" onclick="toggleTiaApoplex()">
+                    <span class="material-symbols-outlined" style="font-size: 20px;">cognition_2</span>
+                    V.a. TIA/Apoplex
+                </button>
+                <button type="button" id="toggle-messwerte-btn" class="secondary" style="margin: 0; flex: 1;" onclick="toggleMesswerte()"> <span class="material-symbols-outlined" style="font-size: 20px;">monitor_heart</span> Messwerte eingeben</button>
+            </div>
+
+            <!-- TIA/APOPLEX CONTAINER -->
+            <div id="tia-container" class="messwerte-box" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                    <span style="font-weight: 600; font-size: 14px; color: var(--md-color-on-surface-variant); display: inline-flex; align-items: center; gap: 6px;">
+                        <span class="material-symbols-outlined" style="font-size: 20px;">cognition_2</span>
+                        V.a. TIA / Apoplex:
+                    </span>
+                    <button type="button" class="secondary" style="width: auto; padding: 4px 12px; font-size: 12px; border-radius: 100px; margin: 0;" onclick="clearTiaFields()">🗑️ Leeren</button>
+                </div>
                 
+                <!-- FAST4D Sektion -->
+                <div style="margin-bottom: 14px;">
+                    <span style="font-weight: 600; font-size: 13px; color: var(--md-color-primary); display: block; margin-bottom: 8px;">FAST4D</span>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
+                        <div>
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-f">Face:</label>
+                            <input type="text" id="tia-fast4d-f" placeholder="Faziale Parese..." style="margin: 0; padding: 10px; font-size: 14px;">
+                        </div>
+                        <div>
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-a">Arm:</label>
+                            <input type="text" id="tia-fast4d-a" placeholder="Arm-/Beinparese..." style="margin: 0; padding: 10px; font-size: 14px;">
+                        </div>
+                        <div>
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-s">Speech:</label>
+                            <input type="text" id="tia-fast4d-s" placeholder="Sprach-/Sprechstörung..." style="margin: 0; padding: 10px; font-size: 14px;">
+                        </div>
+                        <div>
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-d1">Diplopic images:</label>
+                            <input type="text" id="tia-fast4d-d1" placeholder="Doppelbilder..." style="margin: 0; padding: 10px; font-size: 14px;">
+                        </div>
+                        <div>
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-d2">Deficit in field of view:</label>
+                            <input type="text" id="tia-fast4d-d2" placeholder="GesichtsfeldDefekt..." style="margin: 0; padding: 10px; font-size: 14px;">
+                        </div>
+                        <div>
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-d3">Dizziness/Vertigo:</label>
+                            <input type="text" id="tia-fast4d-d3" placeholder="Dreh-/Schwankschwindel..." style="margin: 0; padding: 10px; font-size: 14px;">
+                        </div>
+                        <div>
+                            <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-fast4d-d4">Dysmetria/Ataxia:</label>
+                            <input type="text" id="tia-fast4d-d4" placeholder="Koordinationsstörung..." style="margin: 0; padding: 10px; font-size: 14px;">
+                        </div>
+
+                        <!-- Symptombeginn Klickstruktur (verschoben unter Dysmetria/Ataxie) -->
+                        <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="width: 100%;">
+                                <label style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);">Bestimmung Symptombeginn (Time):</label>
+                                <div class="segmented-control" style="width: 100%; height: 36px;">
+                                    <input type="radio" id="tia-status-sicher" name="tia-symptom-status" value="sicher" checked>
+                                    <label for="tia-status-sicher">Sicher</label>
+                                    
+                                    <input type="radio" id="tia-status-unsicher" name="tia-symptom-status" value="unsicher">
+                                    <label for="tia-status-unsicher">Unsicher</label>
+                                </div>
+                            </div>
+                            <div id="tia-zeit-wrapper" style="width: 100%;">
+                                <label id="tia-zeit-label" style="margin: 0 0 4px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);" for="tia-zeit">Symptombeginn (Uhrzeit):</label>
+                                <input type="time" id="tia-zeit" style="margin: 0; padding: 10px; font-size: 14px; width: 100%;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weitere TIA Felder (orale Antikoagulation bleibt bestehen) -->
+                <div style="border-top: 1px solid var(--md-color-outline-variant); padding-top: 12px;">
+                    <!-- Orale Antikoagulation / Thrombozytenaggregationshemmer -->
+                    <div style="padding-top: 2px; margin-bottom: 8px;">
+                        <label style="margin: 0 0 8px 0; font-size: 12px; font-weight: 600; color: var(--md-color-on-surface-variant);">orale Antikoagulation / Thrombozytenaggregationshemmer:</label>
+                        <div class="ekg-checklist" id="oak-checklist-container" style="max-height: 160px;">
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Acetylsalicylsäure (z. B. Aspirin)" class="oak-checkbox">
+                                <span>Acetylsalicylsäure (z. B. Aspirin)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Clopidogrel (z. B. Plavix)" class="oak-checkbox">
+                                <span>Clopidogrel (z. B. Plavix)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Prasugrel (z. B. Efient)" class="oak-checkbox">
+                                <span>Prasugrel (z. B. Efient)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Ticagrelor (z. B. Brilique)" class="oak-checkbox">
+                                <span>Ticagrelor (z. B. Brilique)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Apixaban (z. B. Eliquis)" class="oak-checkbox">
+                                <span>Apixaban (z. B. Eliquis)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Rivaroxaban (z. B. Xarelto)" class="oak-checkbox">
+                                <span>Rivaroxaban (z. B. Xarelto)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Edoxaban (z. B. Lixiana)" class="oak-checkbox">
+                                <span>Edoxaban (z. B. Lixiana)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Dabigatran (z. B. Pradaxa)" class="oak-checkbox">
+                                <span>Dabigatran (z. B. Pradaxa)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Phenprocoumon (z. B. Marcumar)" class="oak-checkbox">
+                                <span>Phenprocoumon (z. B. Marcumar)</span>
+                            </label>
+                            <label class="ekg-item-row">
+                                <input type="checkbox" value="Warfarin (z. B. Coumadin)" class="oak-checkbox">
+                                <span>Warfarin (z. B. Coumadin)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MESSWERTE CONTAINER -->
+            <div id="messwerte-container" class="messwerte-box" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                    <span style="font-weight: 600; font-size: 14px; color: var(--md-color-on-surface-variant);">Messwerte erfassen:</span>
+                    <button type="button" class="secondary" style="width: auto; padding: 4px 12px; font-size: 12px; border-radius: 100px; margin: 0;" onclick="clearMesswerte()">🗑️ Leeren</button>
+                </div>
+                
+                <div class="messwerte-grid" id="messwerte-grid-container"></div>
+                
+                <div class="messwerte-item" style="margin-top: 14px; width: 100%;">
+                    <div class="status-container" style="justify-content: flex-start; gap: 8px; margin-bottom: 6px;">
+                        <label style="margin-top: 0; margin-bottom: 0;">EKG (Mehrfachauswahl möglich)</label>
+                        <span id="status-ekg" class="status-indicator" onclick="toggleEkgStatus()">❓</span>
+                    </div>
+                    <div class="ekg-checklist" id="ekg-checklist-container"></div>
+                </div>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; margin-bottom: 6px; gap: 8px; flex-wrap: wrap;">
+                <label for="freitext" style="margin-top: 0; margin-bottom: 0; flex: 1 1 auto; min-width: 100px;">Text bearbeiten:</label>
+                <div style="display: flex; gap: 8px; align-items: center; flex-shrink: 0; flex-wrap: nowrap;">
+                    <button type="button" id="connect-ble-btn" class="btn-connect" onclick="connectBluetooth()">
+                        <span class="material-symbols-outlined" id="connect-icon" style="font-size: 18px; margin-right: 4px;">bluetooth</span>
+                        <span id="connect-text">Verbinden</span>
+                    </button>
+                    <button type="button" id="clear-btn" class="secondary" style="margin-top: 0; width: auto; padding: 6px 16px; font-size: 13px; border-radius: 100px;" onclick="zeigeLoeschSlider()">🗑️ Löschen</button>
+                </div>
+            </div>
+
+            <div id="loesch-slider-container" class="slide-container">
+                <span class="slide-text">Zum Löschen schieben</span>
+                <input type="range" id="delete-slider" class="slide-input" min="0" max="100" value="0" oninput="handleSliderInput(this)" onchange="handleSliderChange(this)">
+            </div>
+            
+            <textarea name="t" id="freitext" placeholder="Wähle eine Vorlage oder tippe hier freien Text..." autocomplete="off"></textarea>
+
+            <button type="submit" id="submit-btn" class="btn-disabled" disabled>Text senden</button>
+
+            <div class="restore-subtle">
+                <div class="restore-selector">
+                    <label class="restore-opt" for="restore-source-bt">
+                        <input type="radio" id="restore-source-bt" name="restore-source" value="bt" checked>
+                        <span>Letzter Bluetooth-Text</span>
+                    </label>
+                    <label class="restore-opt" id="restore-opt-ki" for="restore-source-ki">
+                        <input type="radio" id="restore-source-ki" name="restore-source" value="ki">
+                        <span>Letzter KI-Text</span>
+                    </label>
+                </div>
+                <button type="button" class="btn-restore-subtle" onclick="anwendenAusgewaehltenText()">In Textfeld einfügen</button>
             </div>
         </form>
     </div>
@@ -2603,11 +2557,6 @@
         }
 
         function autoResize() {
-            // Bei Desktop-Layout übernimmt flex-grow die Größenanpassung
-            if (window.innerWidth >= 900) {
-                textarea.style.height = 'auto';
-                return;
-            }
             textarea.style.height = 'auto';
             const maxHeight = 350;
             const newHeight = textarea.scrollHeight;
@@ -2789,10 +2738,7 @@
             if (radio) {
                 radio.checked = true;
             }
-            autoResize();
         });
-
-        window.addEventListener("resize", autoResize);
                
         window.addEventListener('beforeunload', (event) => {
             if (textarea && textarea.value.trim() !== "") {
