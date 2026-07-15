@@ -699,6 +699,11 @@
                         <label for="new-gender-w" style="display: inline-flex; align-items: center; gap: 4px;">
                             <span class="material-symbols-outlined" style="font-size: 16px;">female</span> W
                         </label>
+
+                        <input type="radio" id="new-gender-2c" name="newgender" value="2c">
+                        <label for="new-gender-2c" style="display: inline-flex; align-items: center; gap: 4px;">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">medical_services</span> 2c
+                        </label>
                     </div>
                 </div>
             </div>
@@ -770,7 +775,7 @@
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; margin-bottom: 8px;">
                 <label style="margin: 0;">Vorlagen:</label>
-                <div class="segmented-control" id="gender-filter-container">
+                <div class="segmented-control" id="gender-filter-container" style="height: 32px;">
                     <input type="radio" id="gender-m" name="gender" value="m" checked>
                     <label for="gender-m" style="display: inline-flex; align-items: center; gap: 4px;">
                         <span class="material-symbols-outlined" style="font-size: 18px;">male</span> männlich
@@ -779,6 +784,11 @@
                     <input type="radio" id="gender-w" name="gender" value="w">
                     <label for="gender-w" style="display: inline-flex; align-items: center; gap: 4px;">
                         <span class="material-symbols-outlined" style="font-size: 18px;">female</span> weiblich
+                    </label>
+
+                    <input type="radio" id="gender-2c" name="gender" value="2c">
+                    <label for="gender-2c" style="display: inline-flex; align-items: center; gap: 4px;">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">medical_services</span> § 2c NotSanG
                     </label>
                 </div>
             </div>
@@ -1530,6 +1540,8 @@
                                 label = formatiereKey(key.slice(0, -2)) + " ♂️";
                             } else if (key.endsWith('_w')) {
                                 label = formatiereKey(key.slice(0, -2)) + " ♀️";
+                            } else if (key.endsWith('_2c')) {
+                                label = formatiereKey(key.slice(0, -3)) + " ⚕️ § 2c NotSanG";
                             } else {
                                 label = formatiereKey(key);
                             }
@@ -1604,12 +1616,14 @@
                 const gender = document.querySelector('input[name="newgender"]:checked').value;
                 
                 // Eventuell bereits eingetippte Endungen case-insensitiv entfernen, um Doppelungen zu vermeiden
-                dbKey = dbKey.replace(/_m$/i, '').replace(/_w$/i, '');
+                dbKey = dbKey.replace(/_m$/i, '').replace(/_w$/i, '').replace(/_2c$/i, '');
 
                 if (gender === "m") {
                     dbKey += "_m";
                 } else if (gender === "w") {
                     dbKey += "_w";
+                } else if (gender === "2c") {
+                    dbKey += "_2c";
                 }
 
                 if (!ACTIVE_PROFILE.vorlagen) ACTIVE_PROFILE.vorlagen = {};
@@ -1788,7 +1802,7 @@
                 switchImportType();
             } catch (err) {
                 console.error("Fehler beim Laden der globalen Standards:", err);
-                alert("Fehler beim Laden der Standards: " + err.message);
+                alert("Fehler beim Laden des Standards: " + err.message);
             }
         }
 
@@ -1810,6 +1824,8 @@
                         label = formatiereKey(key.slice(0, -2)) + " ♂️";
                     } else if (key.endsWith('_w')) {
                         label = formatiereKey(key.slice(0, -2)) + " ♀️";
+                    } else if (key.endsWith('_2c')) {
+                        label = formatiereKey(key.slice(0, -3)) + " ⚕️ § 2c NotSanG";
                     } else {
                         label = formatiereKey(key);
                     }
@@ -2025,6 +2041,9 @@
             } else if (key.endsWith('_w')) {
                 baseKey = key.slice(0, -2); // Entfernt das "_w" am Ende
                 iconHtml = '<span class="material-symbols-outlined" style="font-size: 18px; margin-left: 6px; vertical-align: middle;">female</span>';
+            } else if (key.endsWith('_2c')) {
+                baseKey = key.slice(0, -3); // Entfernt das "_2c" am Ende
+                iconHtml = '<span class="material-symbols-outlined" style="font-size: 18px; margin-left: 6px; vertical-align: middle;">medical_services</span>';
             }
             
             // Holt den Text aus OPTIONEN_NAMEN (falls manuell hinterlegt) oder formatiert den Schlüssel
@@ -2046,10 +2065,12 @@
             const keys = Object.keys(ACTIVE_PROFILE.vorlagen || {});
             
             let filteredKeys = [];
-            if (selectedGender === 'm') {
-                filteredKeys = keys.filter(key => !key.endsWith('_w'));
+            if (selectedGender === '2c') {
+                filteredKeys = keys.filter(key => key.endsWith('_2c'));
+            } else if (selectedGender === 'm') {
+                filteredKeys = keys.filter(key => !key.endsWith('_w') && !key.endsWith('_2c'));
             } else if (selectedGender === 'w') {
-                filteredKeys = keys.filter(key => !key.endsWith('_m'));
+                filteredKeys = keys.filter(key => !key.endsWith('_m') && !key.endsWith('_2c'));
             } else {
                 filteredKeys = keys;
             }
