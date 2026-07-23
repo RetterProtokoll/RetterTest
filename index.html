@@ -721,12 +721,18 @@
             </div>
         </div>
 
-       <!-- Sektion für Passwortänderung -->
+       <!-- Sektion für Passwortänderung & API Key -->
         <div id="editor-password-section" style="display: none;">
             <div id="pw-error-msg" style="color: var(--md-color-error); font-size: 13px; text-align: center; display: none; margin-bottom: 12px; font-weight: 500;"></div>
             
             <label for="edit-display-name">Anzeigename ändern:</label>
             <input type="text" id="edit-display-name" placeholder="Ihr Name...">
+
+            <label for="edit-gemini-api-key">Persönlicher Gemini API-Key (optional):</label>
+            <div style="position: relative; margin-bottom: 16px;">
+                <input type="password" id="edit-gemini-api-key" placeholder="AIzaSy..." autocomplete="off" style="padding-right: 48px; margin-bottom: 0;">
+                <span class="material-symbols-outlined" onclick="togglePasswordVisibility('edit-gemini-api-key', this)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; user-select: none; font-size: 20px;">visibility</span>
+            </div>
 
             <label for="new-password">Neues Passwort (optional):</label>
             <div style="position: relative; margin-bottom: 16px;">
@@ -805,7 +811,7 @@
                         <label for="provider-chatgpt">ChatGPT</label>
                         
                         <input type="radio" id="provider-gemini" name="provider" value="gemini">
-                        <label for="provider-gemini">Gemini</label>
+                        <label for="provider-gemini">KI</label>
                     </div>
                 </div>
 
@@ -998,15 +1004,16 @@
         <div class="overlay-content">
             <div id="overlay-loading" style="text-align: center;">
                 <div class="spinner"></div>
-                <h3 style="margin: 15px 0; color: var(--md-color-primary);">✍️ Daten werden verarbeitet...</h3>
+                <h3 id="overlay-title" style="margin: 15px 0; color: var(--md-color-primary);">✍️ Daten werden verarbeitet...</h3>
                 <p id="countdown-text" style="color: var(--md-color-primary); font-weight: bold; font-size: 18px; margin: 10px 0;">Bitte warten...</p>
-                <p style="color: var(--md-color-on-surface-variant); font-size: 14px; margin-bottom: 20px;">Bitte trennen Sie die Verbindung nicht.</p>
+                <p id="overlay-warning" style="color: var(--md-color-on-surface-variant); font-size: 14px; margin-bottom: 20px;">Bitte trennen Sie die Verbindung nicht.</p>
                 <button type="button" id="stop-ble-btn" class="btn-device" style="background: var(--md-color-error); margin: 10px auto 0 auto; max-width: 200px;" onclick="sendeStopSignal()">🛑 Schreiben abbrechen</button>
             </div>
             <div id="overlay-success" style="text-align: center; display: none;">
                 <span style="font-size: 60px;">✅</span>
-                <h3 style="margin: 15px 0;">Text erfolgreich übermittelt!</h3>
-                <button type="button" onclick="resetForm()" style="background: var(--md-color-primary); max-width: 280px; margin: 20px auto 0 auto;">Nächster Text</button>
+                <h3 id="overlay-success-title" style="margin: 15px 0;">Text erfolgreich übermittelt!</h3>
+                <div id="ki-result" style="display:none; text-align: left; margin: 10px 0; padding: 10px; background: var(--md-color-surface-container); border-radius: 8px; font-size: 14px; max-height: 200px; overflow-y: auto;"></div>
+                <button type="button" onclick="resetForm()" style="background: var(--md-color-primary); max-width: 280px; margin: 20px auto 0 auto;">Schließen</button>
             </div>
         </div>
     </div>
@@ -1119,6 +1126,7 @@
             { id: "puls", label: "Puls", unit: "/min", type: "number", maxLen: 4, placeholder: "72", minPlaus: 30, maxPlaus: 200 },
             { id: "bz", label: "BZ", unit: "mg/dl", type: "text", maxLen: 5, placeholder: "110", minPlaus: 40, maxPlaus: 450, isTextAllowed: true },
             { id: "af", label: "AF", unit: "/min", type: "number", maxLen: 4, placeholder: "14", minPlaus: 6, maxPlaus: 35 },
+            { id: "spo2", label: "SpO2", unit: "%", type: "number", maxLen: 3, placeholder: "98", minPlaus: 50, maxPlaus: 100 },
             { id: "temp", label: "Temp", unit: "°C", type: "text", maxLen: 5, placeholder: "36.5", minPlaus: 30.0, maxPlaus: 42.5, isTextAllowed: true },
             { id: "gcs", label: "GCS", unit: "", type: "number", maxLen: 2, placeholder: "15", minPlaus: 3, maxPlaus: 15 },
             { id: "nrs", label: "NRS", unit: "/10", type: "number", maxLen: 2, placeholder: "4", minPlaus: 0, maxPlaus: 10 },
@@ -1517,6 +1525,7 @@
                 passwordSection.style.display = "block";
                 if (ACTIVE_PROFILE) {
                     document.getElementById("edit-display-name").value = ACTIVE_PROFILE.name || "";
+                    document.getElementById("edit-gemini-api-key").value = ACTIVE_PROFILE.geminiApiKey || "";
                 }
             } else {
                 passwordSection.style.display = "none";
@@ -1713,6 +1722,7 @@
 
         async function fuehreProfilAenderungAus() {
             const newDisplayName = document.getElementById("edit-display-name").value.trim();
+            const newGeminiKey = document.getElementById("edit-gemini-api-key").value.trim();
             const newPassword = document.getElementById("new-password").value;
             const confirmPassword = document.getElementById("new-password-confirm").value;
             const errorEl = document.getElementById("pw-error-msg");
@@ -1735,9 +1745,10 @@
             try {
                 let profilGeaendert = false;
 
-                // 1. Anzeigename in Firestore aktualisieren, falls geändert
-                if (newDisplayName !== ACTIVE_PROFILE.name) {
+                // 1. Anzeigename & API-Key in Firestore aktualisieren, falls geändert
+                if (newDisplayName !== ACTIVE_PROFILE.name || newGeminiKey !== (ACTIVE_PROFILE.geminiApiKey || "")) {
                     ACTIVE_PROFILE.name = newDisplayName;
+                    ACTIVE_PROFILE.geminiApiKey = newGeminiKey;
                     await db.collection("users").doc(user.uid).set(ACTIVE_PROFILE);
                     document.getElementById("app-title").innerText = `RetterProtokoll ${ACTIVE_PROFILE.name}`;
                     profilGeaendert = true;
@@ -2224,6 +2235,113 @@
             }
         }
 
+        window.resetForm = function resetForm() {
+            overlay.style.display = "none";
+            loadingDiv.style.display = "none";
+            successDiv.style.display = "none";
+            document.getElementById("ki-result").style.display = "none";
+            textarea.value = "";
+            localStorage.removeItem("aktueller_entwurf");
+            clearMesswerte();
+            clearTiaFields();
+            autoResize();
+            updateSubmitButtonState();
+        };
+
+        window.handleFormSubmit = async function handleFormSubmit(event) {
+            event.preventDefault();
+            const text = textarea.value.trim();
+            const messwerte = formatMesswerteFuerAusgabe();
+            const tia = formatTiaFuerAusgabe();
+            const fullText = text + messwerte + tia;
+
+            const kiAuswahl = kiSelect ? kiSelect.value : 'keine';
+
+            if (kiAuswahl === 'keine') {
+                if (!rxCharacteristic) {
+                    alert("Bitte verbinden Sie zuerst ein Bluetooth-Gerät.");
+                    return;
+                }
+                localStorage.setItem("letzter_gesendeter_text", fullText);
+                overlay.style.display = "flex";
+                loadingDiv.style.display = "block";
+                successDiv.style.display = "none";
+                document.getElementById("overlay-title").innerText = "✍️ Daten werden gesendet...";
+                document.getElementById("overlay-warning").style.display = "block";
+                document.getElementById("stop-ble-btn").style.display = "block";
+
+                try {
+                    await sendBleData(fullText);
+                } catch (error) {
+                    console.error("Fehler beim Senden:", error);
+                    alert("Fehler beim Senden: " + error.message);
+                    overlay.style.display = "none";
+                }
+            } else {
+                localStorage.setItem("letzter_ki_gesendeter_text", fullText);
+                const promptText = ACTIVE_PROFILE.prompts[kiAuswahl] || "";
+                const finalPrompt = promptText ? `${promptText}\n\n${fullText}` : fullText;
+                
+                const providerRadio = document.querySelector('input[name="provider"]:checked');
+                const provider = providerRadio ? providerRadio.value : 'chatgpt';
+
+                if (provider === 'chatgpt') {
+                    const encodedText = encodeURIComponent(finalPrompt);
+                    window.open(`https://chatgpt.com/?q=${encodedText}`, '_blank');
+                    
+                    overlay.style.display = "flex";
+                    loadingDiv.style.display = "none";
+                    document.getElementById("overlay-success-title").innerText = "ChatGPT im neuen Tab geöffnet!";
+                    document.getElementById("ki-result").style.display = "none";
+                    successDiv.style.display = "block";
+                } else if (provider === 'gemini') {
+                    overlay.style.display = "flex";
+                    loadingDiv.style.display = "block";
+                    successDiv.style.display = "none";
+                    document.getElementById("overlay-title").innerText = "🤖 KI generiert...";
+                    document.getElementById("overlay-warning").style.display = "none";
+                    document.getElementById("stop-ble-btn").style.display = "none";
+                    countdownEl.innerText = "Bitte warten...";
+
+                    try {
+                        const GEMINI_API_KEY = (ACTIVE_PROFILE && ACTIVE_PROFILE.geminiApiKey) ? ACTIVE_PROFILE.geminiApiKey.trim() : "";
+                        if (!GEMINI_API_KEY) {
+                            throw new Error("Kein Gemini API-Key hinterlegt. Bitte trage deinen persönlichen Gemini API-Key unter 'Einstellungen & Verwaltung' -> 'Profil/PW' ein.");
+                        }
+
+                        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ 
+                                contents: [{ parts: [{ text: finalPrompt }] }] 
+                            })
+                        });
+                        
+                        const data = await response.json();
+
+                        if (!response.ok) throw new Error(data.error?.message || "Fehler von Gemini API");
+
+                        const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+                        
+                        textarea.value = generatedText;
+                        localStorage.setItem("aktueller_entwurf", generatedText);
+                        autoResize();
+                        
+                        if (kiSelect) kiSelect.value = "keine";
+                        updateSubmitButtonState();
+                        
+                        overlay.style.display = "none";
+                        loadingDiv.style.display = "none";
+                        successDiv.style.display = "none";
+                    } catch (error) {
+                        console.error("Gemini API Error:", error);
+                        alert("Fehler bei Gemini API: " + error.message);
+                        overlay.style.display = "none";
+                    }
+                }
+            }
+        }
+
         // Back-Button-Routing
         function zurueckZurHauptseite() {
             document.getElementById("editor-screen").style.display = "none";
@@ -2602,18 +2720,6 @@
             updateSubmitButtonState();
         }
 
-        function resetForm() {
-            textarea.value = "";
-            kiSelect.value = "keine";
-            loeschSliderContainer.classList.remove("show");
-            localStorage.removeItem("aktueller_entwurf"); 
-            clearMesswerte();
-            clearTiaFields();
-            autoResize();
-            updateSubmitButtonState();
-            overlay.style.display = "none";
-        }
-
         async function sendBleData(text) {
             const fullText = text + "\x04";
             const encoder = new TextEncoder();
@@ -2625,63 +2731,6 @@
                 const prozent = Math.round(((offset + chunk.length) / dataBytes.length) * 100);
                 countdownEl.innerText = `Übertrage: ${prozent}%`;
             }
-        }
-
-        async function handleFormSubmit(event) {
-            if (event) event.preventDefault();
-            if (!ACTIVE_PROFILE) return false;
-
-            const selectedProvider = document.querySelector('input[name="provider"]:checked');
-            const selectedProviderVal = selectedProvider ? selectedProvider.value : 'chatgpt';
-            const kiAuswahl = kiSelect.value;
-            
-            const basisText = textarea.value;
-            const tiaText = formatTiaFuerAusgabe();
-            const messwerteText = formatMesswerteFuerAusgabe();
-            const textMitMesswerten = basisText + tiaText + messwerteText;
-
-            if (kiAuswahl !== "keine") {
-                if (!textMitMesswerten.trim()) {
-                    alert("Bitte schreiben Sie einen Text oder erfassen Sie Messwerte/TIA-Daten.");
-                    return false;
-                }
-
-                const basisPrompt = ACTIVE_PROFILE.prompts[kiAuswahl] || "";
-                const promptString = basisPrompt + textMitMesswerten;
-
-                localStorage.setItem("letzter_ki_gesendeter_text", basisText);
-                
-                inZwischenablageKopieren(promptString);
-
-                let targetUrl = selectedProviderVal === 'chatgpt' 
-                    ? "https://chatgpt.com/?q=" + encodeURIComponent(promptString)
-                    : "https://gemini.google.com/";
-
-                window.open(targetUrl, "_blank");
-                
-                resetForm();
-                return false; 
-            }
-
-            if (!rxCharacteristic) {
-                alert("Bitte verbinden Sie zuerst das Bluetooth-Gerät.");
-                return false;
-            }
-
-            localStorage.setItem("letzter_gesendeter_text", basisText);
-            overlay.style.display = "flex";
-            loadingDiv.style.display = "block";
-            successDiv.style.display = "none";
-            countdownEl.innerText = "Übertragung startet...";
-
-            try {
-                await sendBleData(textMitMesswerten);
-                countdownEl.innerText = "Übertragen. Gerät schreibt...";
-            } catch (error) {
-                alert("Übertragungsfehler: " + error.message);
-                overlay.style.display = "none";
-            }
-            return false;
         }
 
         // Steuert das dynamische Label basierend auf "Sicher" / "Unsicher"
@@ -2723,6 +2772,10 @@
         });
 
         window.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("protokoll-form");
+            if (form) {
+                form.addEventListener("submit", handleFormSubmit);
+            }
             renderMesswerteInput();
             renderEkgChecklist();
             
